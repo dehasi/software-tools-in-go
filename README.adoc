@@ -17,3 +17,10 @@ yes, I am.
 yes, I am.
 ^D
 ----
+
+=== Count Characters
+-----
+$ ./charcount
+A single line of input.
+24
+-----
