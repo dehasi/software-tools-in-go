@@ -1,0 +1,19 @@
+= Software Tools in Go
+
+:toc:
+
+== CH1
+
+=== Copy Input to Output
+New line can be `\r\n` on Windows. I skipped this part.
+
+
+.example run
+----
+$ ./copy
+hello there, are you listening?
+hello there, are you listening?
+yes, I am.
+yes, I am.
+^D
+----
