@@ -8,7 +8,9 @@ import (
 )
 
 const ENDFILE int8 = -1
+const TAB = 9
 const NEWLINE int8 = 10
+const BLANK int8 = 32
 
 // getc -- get one character from standard input
 func getc(c *int8) int8 {
@@ -74,9 +76,27 @@ func linecount() {
 	putc(NEWLINE)
 }
 
+// wordcount -- count words in standard input
+func wordcount() {
+	var c int8 = 0
+	nw := 0
+	in_word := false
+	for getc(&c) != ENDFILE {
+		if c == NEWLINE || c == TAB || c == BLANK {
+			in_word = false
+		} else if !in_word {
+			in_word = true
+			nw += 1
+		}
+	}
+	putdec(nw, 1)
+	putc(NEWLINE)
+}
+
 // main program
 func main() {
 	//copy()
 	//charcount()
-	linecount()
+	//linecount()
+	wordcount()
 }
