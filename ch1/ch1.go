@@ -61,8 +61,22 @@ func charcount() {
 	putc(NEWLINE)
 }
 
+// linecount -- count lines in standard input
+func linecount() {
+	var c int8 = 0
+	nl := 0
+	for getc(&c) != ENDFILE {
+		if c == NEWLINE {
+			nl += 1
+		}
+	}
+	putdec(nl, 1)
+	putc(NEWLINE)
+}
+
 // main program
 func main() {
 	//copy()
-	charcount()
+	//charcount()
+	linecount()
 }
