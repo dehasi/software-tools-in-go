@@ -24,3 +24,11 @@ $ ./charcount
 A single line of input.
 24
 -----
+
+
+-----
+$ ./charcount
+12345
+^D
+6
+-----

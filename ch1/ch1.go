@@ -63,5 +63,6 @@ func charcount() {
 
 // main program
 func main() {
-	copy()
+	//copy()
+	charcount()
 }
