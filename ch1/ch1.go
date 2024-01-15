@@ -4,6 +4,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"strconv"
 )
 
 const ENDFILE int8 = -1
@@ -33,12 +34,31 @@ func putc(c int8) {
 	}
 }
 
+// putdec -- put number digits to  standard output
+func putdec(nc int, wide int) {
+	var str = strconv.Itoa(nc)
+	for _, ch := range str {
+		putc(int8(ch))
+	}
+}
+
 // copy -- copy input to output
 func copy() {
 	var c int8 = 0
 	for getc(&c) != ENDFILE {
 		putc(c)
 	}
+}
+
+// charcount -- count characters in standard input
+func charcount() {
+	var c int8 = 0
+	nc := 0
+	for getc(&c) != ENDFILE {
+		nc += 1
+	}
+	putdec(nc, 1)
+	putc(NEWLINE)
 }
 
 // main program
