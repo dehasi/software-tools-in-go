@@ -1,0 +1,57 @@
+== CH1
+
+All functions implemented in `ch1.go`.
+Just call a desired function to `main` and run.
+
+=== Copy Input to Output
+New line can be `\r\n` on Windows. I skipped this part.
+
+
+.example run
+----
+$ go run ch1.go
+hello there, are you listening?
+hello there, are you listening?
+yes, I am.
+yes, I am.
+^D
+----
+
+=== Count Characters
+-----
+$ go run ch1.go
+A single line of input.
+24
+-----
+
+=== Count Lines
+-----
+$ go run ch1.go
+qwert qwee werewr
+abd and ngg
+123
+^D
+3
+-----
+
+=== Count Words
+----
+$ go run ch1.go
+aaa bbb a
+ccc dd
+qqq www rerr ttt
+^D
+9
+----
+=== Delete Tabs
+As this example uses `#include`. I created a separate package and a seprate file.
+Just for demonstration. Also, in `go` arrays are zero indexed. That's why I start from `col := 0`.
+----
+$ ./ch1
+1       2               3                       4       4       2
+1 2  3   4 4 2
+
+----
+
+Honestly I didn't understand why to we need `tabpos` at all.
+Why we just print a space everytime when we find a tab?
