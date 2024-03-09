@@ -112,7 +112,7 @@ func detab() {
 			}
 		} else if c == NEWLINE {
 			putc(c)
-			col = 1
+			col = 0
 		} else {
 			putc(c)
 			col += 1
