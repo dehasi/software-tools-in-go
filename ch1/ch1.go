@@ -93,28 +93,31 @@ func wordcount() {
 	putc(NEWLINE)
 }
 
-// deltab -- converts tabs to equivalent number of blanks
-func deltab() {
+// detab -- converts tabs to equivalent number of blanks
+func detab() {
 	var c int8 = 0
-	nl := 0
+	col := 1
 	for getc(&c) != ENDFILE {
 		if c == TAB {
 			putc(BLANK)
 			putc(BLANK)
 			putc(BLANK)
 			putc(BLANK)
+		} else if c == NEWLINE {
+			putc(c)
+			col = 1
 		} else {
 			putc(c)
+			col += 1
 		}
 	}
-	putdec(nl, 1)
-	putc(NEWLINE)
 }
 
 // main program
 func main() {
 	//copy()
 	//charcount()
-	linecount()
+	//linecount()
 	//wordcount()
+	detab()
 }

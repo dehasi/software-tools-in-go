@@ -34,9 +34,18 @@ qwert qwee werewr
 abd and ngg
 123
 ^D
-3Ż
+3
 -----
 
 === Count Words
-
+----
+$ go run ch1.go
+aaa bbb a
+ccc dd
+qqq www rerr ttt
+^D
+9
+----
 === Delete Tabs
+----
+----
