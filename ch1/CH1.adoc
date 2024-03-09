@@ -45,7 +45,7 @@ qqq www rerr ttt
 ----
 === Delete Tabs
 As this example uses `#include`. I created a separate package and a seprate file.
-Just for demonstration.
+Just for demonstration. Also, in `go` arrays are zero indexed. That's why I start from `col := 0`.
 ----
 $ ./ch1
 1       2               3                       4       4       2
