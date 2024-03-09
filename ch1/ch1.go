@@ -12,7 +12,7 @@ const TAB = 9
 const NEWLINE int8 = 10
 const BLANK int8 = 32
 
-// getc -- get one character from standard input
+// getc -- gets one character from standard input
 func getc(c *int8) int8 {
 	var b1 int
 	_, err := fmt.Scanf("%c", &b1)
@@ -27,7 +27,7 @@ func getc(c *int8) int8 {
 	return *c
 }
 
-// putc -- put one character on standard output
+// putc -- puts one character on standard output
 func putc(c int8) {
 	if c == NEWLINE {
 		fmt.Println()
@@ -36,7 +36,7 @@ func putc(c int8) {
 	}
 }
 
-// putdec -- put number digits to  standard output
+// putdec -- puts number digits to  standard output
 func putdec(nc int, wide int) {
 	var str = strconv.Itoa(nc)
 	for _, ch := range str {
@@ -44,7 +44,7 @@ func putdec(nc int, wide int) {
 	}
 }
 
-// copy -- copy input to output
+// copy -- copies input to output
 func copy() {
 	var c int8 = 0
 	for getc(&c) != ENDFILE {
@@ -52,7 +52,7 @@ func copy() {
 	}
 }
 
-// charcount -- count characters in standard input
+// charcount -- counts characters in standard input
 func charcount() {
 	var c int8 = 0
 	nc := 0
@@ -63,7 +63,7 @@ func charcount() {
 	putc(NEWLINE)
 }
 
-// linecount -- count lines in standard input
+// linecount -- counts lines in standard input
 func linecount() {
 	var c int8 = 0
 	nl := 0
@@ -76,7 +76,7 @@ func linecount() {
 	putc(NEWLINE)
 }
 
-// wordcount -- count words in standard input
+// wordcount -- counts words in standard input
 func wordcount() {
 	var c int8 = 0
 	nw := 0
@@ -93,7 +93,7 @@ func wordcount() {
 	putc(NEWLINE)
 }
 
-// deltab -- convert tabs to equivalent number of blanks
+// deltab -- converts tabs to equivalent number of blanks
 func deltab() {
 	var c int8 = 0
 	nl := 0
