@@ -100,6 +100,11 @@ func deltab() {
 	for getc(&c) != ENDFILE {
 		if c == TAB {
 			putc(BLANK)
+			putc(BLANK)
+			putc(BLANK)
+			putc(BLANK)
+		} else {
+			putc(c)
 		}
 	}
 	putdec(nl, 1)
@@ -110,6 +115,6 @@ func deltab() {
 func main() {
 	//copy()
 	//charcount()
-	//linecount()
-	wordcount()
+	linecount()
+	//wordcount()
 }
