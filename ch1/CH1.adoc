@@ -52,3 +52,6 @@ $ ./ch1
 1 2  3   4 4 2
 
 ----
+
+Honestly I didn't understand why to we need `tabpos` at all.
+Why we just print a space everytime when we find a tab?
