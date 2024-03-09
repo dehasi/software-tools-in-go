@@ -2,11 +2,13 @@
 package main
 
 import (
+	"ch1/tabpos"
 	"fmt"
 	"io"
 	"strconv"
 )
 
+const MAXLINE = 1000
 const ENDFILE int8 = -1
 const TAB = 9
 const NEWLINE int8 = 10
@@ -96,13 +98,18 @@ func wordcount() {
 // detab -- converts tabs to equivalent number of blanks
 func detab() {
 	var c int8 = 0
+	var tabstops [MAXLINE]bool
+	settabs(tabstops)
 	col := 1
 	for getc(&c) != ENDFILE {
 		if c == TAB {
+			// imitation do-while loop
 			putc(BLANK)
-			putc(BLANK)
-			putc(BLANK)
-			putc(BLANK)
+			col += 1
+			for tabpos.Tabpos(col, tabstops) {
+				putc(BLANK)
+				col += 1
+			}
 		} else if c == NEWLINE {
 			putc(c)
 			col = 1
