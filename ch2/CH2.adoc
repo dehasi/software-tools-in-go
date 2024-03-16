@@ -1,0 +1,88 @@
+== CH2
+
+=== Add tabs
+
+----
+$ ./ch2
+q       q
+q       q
+q q
+q q
+q   q
+q       q
+    col  1    2    34   ewas
+        col      1        2        34   ewas
+^C
+
+----
+
+
+=== Overstrike
+
+It doesn't work, because terminal intercept backspace.
+
+
+=== Compression
+
+----
+$ go build ch2.go io.go compress.go && ./ch2
+Item    Name         Value
+Item~D Name~I Value
+----
+
+=== Decompression
+----
+$ go build ch2.go io.go expand.go && ./ch2
+Item~D Name~I Value
+Item   Name        Value
+----
+
+=== Echo
+
+----
+$ go build ch2.go io.go echo.go && ./ch2 a b c
+ a b c
+----
+
+
+=== Translit
+I've resigned from `makeset` bacause `Go` has API to get args.
+Also, I've rewritten `dordash` a bit. Keep in mind, string in `Go` are 0-indexed,
+however in `Pascal` 1-indexed.
+
+I use newline as `ENDSTR`, however it should be smth else.
+----
+$ go build ch2.go io.go translit.go
+
+$ ./ch2 a-c A-C
+abcd
+ABCd
+^C
+
+./ch2 ^a-c x
+as
+ax
+
+./ch2 ^a-c x
+abcDEF
+abcx
+
+ ./ch2 ^a
+bac
+
+a
+baba
+a
+a
+----
+
+=== Putdec
+
+----
+$ go build putdec-test.go io.go && ./putdec-test
+42          # putdec(42, 1)
+42          # putdec(42, 2)
+  42        # putdec(42, 4)
+ 42         # putdec(42, 3)
+42          # putdec(42, 2)
+----

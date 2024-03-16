@@ -1,4 +1,5 @@
 = Software Tools in Go
 
 .Chapters
-link:ch1/CH1.adoc[]
+* link:ch1/CH1.adoc[]
+* link:ch2/CH2.adoc[]

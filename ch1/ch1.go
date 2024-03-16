@@ -99,7 +99,7 @@ func wordcount() {
 func detab() {
 	var c int8 = 0
 	var tabstops [MAXLINE]bool
-	settabs(tabstops)
+	settabs(&tabstops)
 	col := 0
 	for getc(&c) != ENDFILE {
 		if c == TAB {
