@@ -1,0 +1,176 @@
+== CH3
+
+I used `mustopenf` to return `File` and `mustopenb` to return `Scanner`.
+I use `Scanner` to read a file line by line.
+
+=== Compare
+
+----
+
+$ cat a.txt
+aaa
+bbb
+ccc
+$ cat b.txt
+bbb
+aaa
+ccc
+
+$ go build ch3.go io.go compare.go && ./ch3 a.txt b.txt
+1:
+aaa
+bbb
+2:
+bbb
+aaa
+----
+
+=== Include
+
+----
+$ cat file1 ; echo
+AAAA
+#include "file2"
+BBB
+
+$ cat file2; echo
+CCC
+DDD
+
+$ go build ch3.go io.go include.go
+
+$ cat file1 | ./ch3
+AAAA
+CCC
+DDD
+BBB
+----
+
+=== Concat
+----
+$ go build ch3.go io.go concat.go && ./ch3 file1 file2
+AAAA
+#include "file2"
+BBB
+CCC
+DDD
+----
+
+
+=== Print
+
+----
+$ go build ch3.go io.go print.go && ./ch3 file1 file2
+
+
+file1 Page 1
+
+
+AAAA
+#include "file2"
+BBB
+
+
+file2 Page 1
+
+
+CCC
+DDD
+
+$ cat file1 file1 | ./ch3
+
+
+ Page 1
+
+
+AAAA
+#include "file2"
+BBB
+AAAA
+#include "file2"
+BBB
+
+----
+
+=== Make copy
+
+----
+$ go build ch3.go io.go makecopy.go
+$ ./ch3 file1 file1cp
+
+$ cat file1cp
+AAAA
+#include "file2"
+BBB
+----
+
+=== Archive
+
+----
+$ go build ch3.go io.go archive.go && ./ch3 -c my-archive  file1 file2
+
+$ cat my-archive
+-h- file1 26
+AAAA
+#include "file2"
+BBB
+-h- file2 8
+CCC
+DDD
+
+----
+
+=== Archive (more commands)
+
+.table
+----
+$ go build ch3.go io.go archive.go && ./ch3 -t my-archive
+file1 26
+file2 8
+
+$ go build ch3.go io.go archive.go && ./ch3 -t my-archive  some-file
+some-file: not in archive
+
+$ go build ch3.go io.go archive.go && ./ch3 -t my-archive  file2
+file2 8
+----
+
+.extract
+----
+$ go build ch3.go io.go archive.go && ./ch3 -p my-archive  file2
+CCC
+DDD
+
+$ go build ch3.go io.go archive.go && ./ch3 -p my-archive  file1
+AAAA
+#include "file2"
+BBB
+
+$ rm file2 && go build ch3.go io.go archive.go && ./ch3 -x my-archive  file2 && cat file2
+CCC
+DDD
+
+$ go build ch3.go io.go archive.go && ./ch3 -x my-archive  file3
+file3: not in archive
+----
+
+.delete
+----
+$ go build ch3.go io.go archive.go && ./ch3 -d my-archive  file1
+ravil@ravils-mbp-2 ~/projects/software-tools-in-go/ch3 (ch3)
+$ cat my-archive
+-h- file2 8CCC
+DDD
+----
+
+.update
+----
+$ echo new line >> file2
+
+$ go build ch3.go io.go archive.go && ./ch3 -u my-archive  file2
+
+$ go build ch3.go io.go archive.go && ./ch3 -p my-archive  file2
+CCC
+DDD
+new line
+----

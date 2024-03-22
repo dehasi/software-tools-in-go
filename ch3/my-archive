@@ -1,0 +1,7 @@
+-h- file1 26
+AAAA
+#include "file2"
+BBB
+-h- file2 8
+CCC
+DDD
