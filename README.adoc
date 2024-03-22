@@ -4,3 +4,4 @@
 * link:ch1/CH1.adoc[]
 * link:ch2/CH2.adoc[]
 * link:ch3/CH3.adoc[]
+* link:ch4/CH4.adoc[]
