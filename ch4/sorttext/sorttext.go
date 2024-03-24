@@ -7,6 +7,7 @@ import (
 const MAXCHARS = 10_000
 const MAXLINES = 300
 
+// inmemsort -- sorts text lines in memory }
 func inmemsort() {
 
 	linebuf := make([]string, MAXLINES)
@@ -22,6 +23,7 @@ func inmemsort() {
 	}
 }
 
+// gtext -- gets text lines into linebuf, ans set pointers in linepos
 func gtext(linebuf []string, linepos []*string, fd *os.File) int {
 	i := 0
 	for {
@@ -39,6 +41,7 @@ func gtext(linebuf []string, linepos []*string, fd *os.File) int {
 	return i
 }
 
+// shell -- ascending Shell sort for lines
 func shell(linebuf []*string, nlines int) {
 	for gap := nlines / 2; gap > 0; gap /= 2 {
 		for i := gap; i < nlines; i++ {
@@ -55,6 +58,7 @@ func shell(linebuf []*string, nlines int) {
 	}
 }
 
+// ptext -- outputs text lines from linepos
 func ptext(linepos []*string, nlines int, fd *os.File) {
 	for i := 0; i < nlines; i++ {
 		putstr(*linepos[i], fd)
@@ -62,6 +66,7 @@ func ptext(linepos []*string, nlines int, fd *os.File) {
 	}
 }
 
+// ptexts -- outputs text lines from linebuf
 func ptexto(linebuf []string, nlines int, fd *os.File) {
 	for i := 0; i < nlines; i++ {
 		putstr(linebuf[i], fd)
@@ -70,5 +75,4 @@ func ptexto(linebuf []string, nlines int, fd *os.File) {
 }
 func main() {
 	inmemsort()
-
 }
