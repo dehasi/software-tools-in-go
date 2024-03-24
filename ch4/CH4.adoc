@@ -6,3 +6,18 @@ They are in the `sorting` module, tested by unit-tests.
 
 == Sorting Text
 
+`Go` can compare strings lexicographically, therefore no additional `cmp` method is needed.
+Also, as `Go` array is a pointer to strings, no additional `posbuf` needed.
+
+----
+$ go build  sorttext.go  io.go
+
+$ ./sorttext
+zzz
+aaa
+nnn
+aaa
+nnn
+zzz
+
+----
