@@ -23,6 +23,9 @@ zzz
 
 ----
 
+However, to keep the code close to the original idea, I've created  `posbuf` as array of pointers to `string`.
+Then I sort and print `posbuf`.
+
 .modified inmemsort
 ----
 $ go build  sorttext.go  io.go  && ./sorttext
