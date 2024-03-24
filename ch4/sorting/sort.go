@@ -31,3 +31,39 @@ func ShellSort(v []int) {
 		}
 	}
 }
+
+func QuickSort(v []int) {
+	qsort(v, 0, len(v)-1)
+}
+
+func qsort(v []int, l int, r int) {
+	if l >= r {
+		return
+	}
+
+	k := partition(v, l, r)
+	qsort(v, l, k-1)
+	qsort(v, k+1, r)
+}
+
+func partition(v []int, l int, r int) int {
+	pi := (l + r) / 2 // L + (R-L)/2
+	p := v[pi]
+	for l < r {
+		for (v[l] < p) && (l < r) {
+			l++
+		}
+		for p < v[r] && (l < r) {
+			r--
+		}
+
+		if (v[l] > v[r]) && (l < r) {
+			tmp := v[l]
+			v[l] = v[r]
+			v[r] = tmp
+			l += 1
+			r -= 1
+		}
+	}
+	return l
+}
