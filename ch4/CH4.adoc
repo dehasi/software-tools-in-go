@@ -1,1 +1,8 @@
 = CH 4
+
+== Bubble & Shell Sort
+
+They are in the `sorting` module, tested by unit-tests.
+
+== Sorting Text
+
