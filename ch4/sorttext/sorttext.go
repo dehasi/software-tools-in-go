@@ -10,19 +10,40 @@ const MAXLINES = 300
 func inmemsort() {
 
 	linebuf := make([]string, MAXLINES)
-	nlines := gtext(linebuf, STDIN)
+	linepos := make([]*string, MAXLINES)
+
+	nlines := gtext(linebuf, linepos, MAXLINES, STDIN)
 	if nlines > 0 {
-		shell(linebuf, nlines)
-		ptext(linebuf, nlines, STDOUT)
+		shell(linepos, nlines)
+		ptext(linepos, nlines, STDOUT)
+		putstr("ORIGINAL:\n", STDOUT)
+		ptexto(linebuf, nlines, STDOUT)
 	}
 }
 
-func shell(linebuf []string, nlines int) {
+func gtext(linebuf []string, linepos []*string, maxline int, fd *os.File) int {
+	i := 0
+	for {
+		line, got := getlinef(fd, MAXCHARS)
+		if !got {
+			break
+		}
+		linebuf[i] = line
+		linepos[i] = &linebuf[i]
+		i += 1
+		if i >= MAXLINES {
+			return -1 // to many lines
+		}
+	}
+	return i
+}
+
+func shell(linebuf []*string, nlines int) {
 	for gap := nlines / 2; gap > 0; gap /= 2 {
 		for i := gap; i < nlines; i++ {
 			for j := i - gap; j >= 0; j = j - gap {
 				jq := j + gap
-				if linebuf[j] <= linebuf[jq] {
+				if *linebuf[j] <= *linebuf[jq] {
 					break
 				}
 				tmp := linebuf[j]
@@ -33,26 +54,19 @@ func shell(linebuf []string, nlines int) {
 	}
 }
 
-func ptext(linebuf []string, nlines int, fd *os.File) {
+func ptext(linepos []*string, nlines int, fd *os.File) {
+	for i := 0; i < nlines; i++ {
+		putstr(*linepos[i], fd)
+		putcf(NEWLINE, fd)
+	}
+}
+
+func ptexto(linebuf []string, nlines int, fd *os.File) {
 	for i := 0; i < nlines; i++ {
 		putstr(linebuf[i], fd)
 		putcf(NEWLINE, fd)
 	}
 }
-
-func gtext(linebuf []string, fd *os.File) int {
-	i := 0
-	for {
-		line, got := getlinef(fd, MAXCHARS)
-		if !got {
-			break
-		}
-		linebuf[i] = line
-		i += 1
-	}
-	return i
-}
-
 func main() {
 	inmemsort()
 
