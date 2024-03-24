@@ -32,7 +32,7 @@ func gtext(linebuf []string, linepos []*string, maxline int, fd *os.File) int {
 		linebuf[i] = line
 		linepos[i] = &linebuf[i]
 		i += 1
-		if i >= MAXLINES {
+		if i >= maxline {
 			return -1 // to many lines
 		}
 	}
