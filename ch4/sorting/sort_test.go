@@ -18,9 +18,9 @@ func TestBubbleSort(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		output := BubbleSort(test.array)
-		if !reflect.DeepEqual(output, test.expected) {
-			t.Errorf("got %v want %v", output, test.expected)
+		BubbleSort(test.array)
+		if !reflect.DeepEqual(test.array, test.expected) {
+			t.Errorf("got %v want %v", test.array, test.expected)
 		}
 	}
 
