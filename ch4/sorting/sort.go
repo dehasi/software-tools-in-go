@@ -17,22 +17,19 @@ func BubbleSort(arr []int) {
 // ShellSort -- sorts input arr in place using Shell's sort
 func ShellSort(v []int) {
 	n := len(v)
-	gap := n / 2
-	for gap > 0 {
-		for i := gap + 1; i < n; i++ {
-			j := i - gap
-			for j >= 0 {
+
+	for gap := n / 2; gap > 0; gap /= 2 {
+		for i := gap; i < n; i++ {
+
+			for j := i - gap; j >= 0; j = j - gap {
 				jq := j + gap
 				if v[j] <= v[jq] {
-					j = -1 // why not break?
-				} else {
-					k := v[j]
-					v[j] = v[jq]
-					v[jq] = k
+					break
 				}
-				j = j - gap
+				k := v[j]
+				v[j] = v[jq]
+				v[jq] = k
 			}
 		}
-		gap /= 2
 	}
 }
