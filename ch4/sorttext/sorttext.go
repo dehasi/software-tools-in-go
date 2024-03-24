@@ -17,9 +17,9 @@ func inmemsort() {
 	}
 }
 
-func ptext(strings []string, nlines int, fd *os.File) {
+func ptext(linebuf []string, nlines int, fd *os.File) {
 	for i := 0; i < nlines; i++ {
-		putstr(strings[i], fd)
+		putstr(linebuf[i], fd)
 		putcf(NEWLINE, fd)
 	}
 }
