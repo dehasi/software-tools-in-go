@@ -10,22 +10,22 @@ const MAXLINES = 300
 func inmemsort() {
 
 	posbuf := make([]string, MAXLINES)
-	res := gtext(posbuf, STDIN)
-	if res {
+	nlines := gtext(posbuf, STDIN)
+	if nlines > 0 {
 		// shell(posbuf)
-		ptext(posbuf, STDOUT)
+		ptext(posbuf, nlines, STDOUT)
 	}
 }
 
-func ptext(strings []string, fd *os.File) {
-	n := len(strings)
-	for i := 0; i < n; i++ {
+func ptext(strings []string, nlines int, fd *os.File) {
+	println("ptext, n=" + itoc(nlines))
+	for i := 0; i < nlines; i++ {
 		putstr(strings[i], fd)
 		putcf(NEWLINE, fd)
 	}
 }
 
-func gtext(posbuf []string, fd *os.File) bool {
+func gtext(posbuf []string, fd *os.File) int {
 	i := 0
 	for {
 		line, got := getlinef(fd, MAXCHARS)
@@ -35,9 +35,10 @@ func gtext(posbuf []string, fd *os.File) bool {
 		posbuf[i] = line
 		i += 1
 	}
-	return true
+	return i
 }
 
 func main() {
+	inmemsort()
 
 }
