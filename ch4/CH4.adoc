@@ -24,7 +24,7 @@ zzz
 ----
 
 However, to keep the code close to the original idea, I've created  `posbuf` as array of pointers to `string`.
-Then I sort and print `posbuf`.
+Then I sort and print `posbuf`. To show that the original input is not changed, I print original input as well.
 
 .modified inmemsort
 ----
@@ -32,6 +32,7 @@ $ go build  sorttext.go  io.go  && ./sorttext
 zzz
 aaa
 nnn
+SORTED:
 aaa
 nnn
 zzz

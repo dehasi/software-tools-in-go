@@ -15,6 +15,7 @@ func inmemsort() {
 	nlines := gtext(linebuf, linepos, MAXLINES, STDIN)
 	if nlines > 0 {
 		shell(linepos, nlines)
+		putstr("SORTED:\n", STDOUT)
 		ptext(linepos, nlines, STDOUT)
 		putstr("ORIGINAL:\n", STDOUT)
 		ptexto(linebuf, nlines, STDOUT)
