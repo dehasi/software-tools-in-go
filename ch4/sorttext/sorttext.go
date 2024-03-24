@@ -12,7 +12,7 @@ func inmemsort() {
 	linebuf := make([]string, MAXLINES)
 	linepos := make([]*string, MAXLINES)
 
-	nlines := gtext(linebuf, linepos, MAXLINES, STDIN)
+	nlines := gtext(linebuf, linepos, STDIN)
 	if nlines > 0 {
 		shell(linepos, nlines)
 		putstr("SORTED:\n", STDOUT)
@@ -22,7 +22,7 @@ func inmemsort() {
 	}
 }
 
-func gtext(linebuf []string, linepos []*string, maxline int, fd *os.File) int {
+func gtext(linebuf []string, linepos []*string, fd *os.File) int {
 	i := 0
 	for {
 		line, got := getlinef(fd, MAXCHARS)
@@ -32,7 +32,7 @@ func gtext(linebuf []string, linepos []*string, maxline int, fd *os.File) int {
 		linebuf[i] = line
 		linepos[i] = &linebuf[i]
 		i += 1
-		if i >= maxline {
+		if i >= MAXLINES {
 			return -1 // to many lines
 		}
 	}
