@@ -1,11 +1,11 @@
-package sort
+package sorting
 
 import (
 	"reflect"
 	"testing"
 )
 
-func testBubbleSort(t *testing.T) {
+func TestBubbleSort(t *testing.T) {
 	tests := []struct {
 		array    []int
 		expected []int
@@ -18,9 +18,9 @@ func testBubbleSort(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		bubbleSort(test.array)
-		if !reflect.DeepEqual(test.array, test.expected) {
-			t.Errorf("got %v want %v", test.array, test.expected)
+		output := BubbleSort(test.array)
+		if !reflect.DeepEqual(output, test.expected) {
+			t.Errorf("got %v want %v", output, test.expected)
 		}
 	}
 
