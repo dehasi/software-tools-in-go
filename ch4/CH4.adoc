@@ -41,3 +41,23 @@ zzz
 aaa
 nnn
 ----
+
+== Quicksort
+
+There is also an implementation of `quicksort` in `sortring/sort.go` tested by unit tests.
+
+.inmemsort with quick
+----
+$ go build  sorttext.go  io.go  && ./sorttext
+zzz
+aaa
+nnn
+SORTED:
+aaa
+zzz
+nnn
+ORIGINAL:
+zzz
+aaa
+nnn
+----
