@@ -76,12 +76,33 @@ func ptexto(linebuf []string, nlines int, fd *os.File) {
 
 // quick -- quicksort for lines
 func quick(linepos []*string, nlines int, linebuf []string) {
-
+	rquick(0, nlines-1, linepos)
 }
 
 // rquick -- recursive quicksort
-func rquick(lo int, hi int, linepos []*string, nlines int) {
+func rquick(lo int, hi int, linepos []*string) {
+	if lo < hi {
+		i := lo
+		j := hi
+		pivline := linepos[j] // pivot line
+		for /*repeat*/ {
+			for i < j && *linepos[i] <= *pivline {
+				i += 1
+			}
+			for j > i && *linepos[j] >= *pivline {
+				j += 1
+			}
+			if i < j { // out of order pair
+				tmp := linepos[i]
+				linepos[i] = linepos[j]
+				linepos[j] = tmp
+			}
+			if /*until*/ i >= j {
+				break
+			}
+		}
 
+	}
 }
 func main() {
 	inmemsort()
