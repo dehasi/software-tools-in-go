@@ -37,36 +37,38 @@ func QuickSort(v []int) {
 }
 
 func rquick(v []int, lo int, hi int) {
-	if lo < hi {
-
-		println("rquick", "lo=", lo, "hi=", hi)
-		i := lo
-		j := hi
-		piv := v[j]
-		for /*repeat*/ {
-			for i < j && v[i] <= piv {
-				i++
-			}
-			for i < j && v[j] >= piv {
-				j--
-			}
-			if i < j {
-				println("swap", v[i], "and", v[j])
-				tmp := v[i]
-				v[i] = v[j]
-				v[j] = tmp
-			}
-			if /*until*/ i >= j {
-				break
-			}
-		}
-		//set pivot into "center"
-		tmp := v[i]
-		v[i] = v[hi]
-		v[hi] = tmp
-		rquick(v, lo, i-1)
-		rquick(v, i+1, hi)
+	if lo >= hi {
+		return
 	}
+
+	println("rquick", "lo=", lo, "hi=", hi)
+	i := lo
+	j := hi
+	piv := v[j]
+	for /*repeat*/ {
+		for i < j && v[i] <= piv {
+			i++
+		}
+		for i < j && v[j] >= piv {
+			j--
+		}
+		if i < j {
+			println("swap", v[i], "and", v[j])
+			tmp := v[i]
+			v[i] = v[j]
+			v[j] = tmp
+		}
+		if /*until*/ i >= j {
+			break
+		}
+	}
+	//set pivot into "center"
+	tmp := v[i]
+	v[i] = v[hi]
+	v[hi] = tmp
+	rquick(v, lo, i-1)
+	rquick(v, i+1, hi)
+
 }
 func qsort(v []int, l int, r int) {
 	if l >= r {
