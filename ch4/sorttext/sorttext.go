@@ -73,6 +73,16 @@ func ptexto(linebuf []string, nlines int, fd *os.File) {
 		putcf(NEWLINE, fd)
 	}
 }
+
+// quick -- quicksort for lines
+func quick(linepos []*string, nlines int, linebuf []string) {
+
+}
+
+// rquick -- recursive quicksort
+func rquick(lo int, hi int, linepos []*string, nlines int) {
+
+}
 func main() {
 	inmemsort()
 }
