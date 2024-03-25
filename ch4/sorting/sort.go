@@ -47,23 +47,20 @@ func qsort(v []int, l int, r int) {
 }
 
 func partition(v []int, l int, r int) int {
-	pi := (l + r) / 2 // L + (R-L)/2
-	p := v[pi]
-	for l < r {
-		for (v[l] < p) && (l < r) {
-			l++
-		}
-		for p < v[r] && (l < r) {
-			r--
-		}
-
-		if (v[l] > v[r]) && (l < r) {
-			tmp := v[l]
-			v[l] = v[r]
-			v[r] = tmp
-			l += 1
-			r -= 1
+	i := l - 1
+	for j := l; j < r; j++ {
+		if v[j] > v[r] {
+			// do nothing
+		} else {
+			i++
+			tmp := v[i]
+			v[i] = v[j]
+			v[j] = tmp
 		}
 	}
-	return l
+	i += 1
+	tmp := v[i]
+	v[i] = v[r]
+	v[r] = tmp
+	return i
 }
