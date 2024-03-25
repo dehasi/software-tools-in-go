@@ -101,7 +101,13 @@ func rquick(lo int, hi int, linepos []*string) {
 				break
 			}
 		}
-
+		if (i - lo) < (hi - i) {
+			rquick(lo, i-1, linepos)
+			rquick(i+1, hi, linepos)
+		} else {
+			rquick(i+1, hi, linepos)
+			rquick(lo, i-1, linepos)
+		}
 	}
 }
 func main() {
