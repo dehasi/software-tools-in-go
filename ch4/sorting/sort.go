@@ -40,12 +40,10 @@ func rquick(v []int, lo int, hi int) {
 	if lo >= hi {
 		return
 	}
-
-	println("rquick", "lo=", lo, "hi=", hi)
 	i := lo
 	j := hi
 	piv := v[j]
-	for /*repeat*/ {
+	for i < j {
 		for i < j && v[i] <= piv {
 			i++
 		}
@@ -57,9 +55,6 @@ func rquick(v []int, lo int, hi int) {
 			tmp := v[i]
 			v[i] = v[j]
 			v[j] = tmp
-		}
-		if /*until*/ i >= j {
-			break
 		}
 	}
 	//set pivot into "center"

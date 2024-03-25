@@ -102,6 +102,12 @@ func rquick(lo int, hi int, linepos []*string) {
 				break
 			}
 		}
+		// move pivot to i
+		tmp := linepos[i]
+		linepos[i] = linepos[hi]
+		linepos[hi] = tmp
+
+		// I don't understand this optimization
 		if (i - lo) < (hi - i) {
 			rquick(lo, i-1, linepos)
 			rquick(i+1, hi, linepos)
