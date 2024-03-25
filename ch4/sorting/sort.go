@@ -51,7 +51,6 @@ func rquick(v []int, lo int, hi int) {
 			j--
 		}
 		if i < j {
-			println("swap", v[i], "and", v[j])
 			tmp := v[i]
 			v[i] = v[j]
 			v[j] = tmp

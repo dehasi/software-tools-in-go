@@ -55,6 +55,8 @@ func TestQuickSort(t *testing.T) {
 		{array: []int{40, 20, 30}, expected: []int{20, 30, 40}},
 		{array: []int{1, 2, 3, 4}, expected: []int{1, 2, 3, 4}},
 		{array: []int{4, 3, 2, 1}, expected: []int{1, 2, 3, 4}},
+		{array: []int{4, 2, 3, 1}, expected: []int{1, 2, 3, 4}},
+		{array: []int{1, 3, 2, 4}, expected: []int{1, 2, 3, 4}},
 		{array: []int{5, 4, 3, 2, 1}, expected: []int{1, 2, 3, 4, 5}},
 	}
 
