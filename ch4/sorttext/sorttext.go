@@ -15,7 +15,8 @@ func inmemsort() {
 
 	nlines := gtext(linebuf, linepos, STDIN)
 	if nlines > 0 {
-		shell(linepos, nlines)
+		//shell(linepos, nlines)
+		quick(linepos, nlines)
 		putstr("SORTED:\n", STDOUT)
 		ptext(linepos, nlines, STDOUT)
 		putstr("ORIGINAL:\n", STDOUT)
@@ -75,7 +76,7 @@ func ptexto(linebuf []string, nlines int, fd *os.File) {
 }
 
 // quick -- quicksort for lines
-func quick(linepos []*string, nlines int, linebuf []string) {
+func quick(linepos []*string, nlines int) {
 	rquick(0, nlines-1, linepos)
 }
 
@@ -90,7 +91,7 @@ func rquick(lo int, hi int, linepos []*string) {
 				i += 1
 			}
 			for j > i && *linepos[j] >= *pivline {
-				j += 1
+				j -= 1
 			}
 			if i < j { // out of order pair
 				tmp := linepos[i]
