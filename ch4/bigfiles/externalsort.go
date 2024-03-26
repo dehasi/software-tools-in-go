@@ -86,10 +86,12 @@ func ptext(linepos []*string, lines int, linebuf []string, fd *os.File) {
 	}
 }
 
-func quick(linepos []*string, lines int, linebuf []string) {
-
+// quick -- quicksort for lines
+func quick(linepos []*string, nlines int, linebuf []string) {
+	rquick(linepos, 0, nlines-1)
 }
 
+// rquick -- recursive quicksort
 func rquick(linepos []*string, lo int, hi int) {
 	if lo >= hi {
 		return
