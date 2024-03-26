@@ -144,9 +144,18 @@ func create(name string) *os.File {
 		return nil
 	}
 	return file
-
 }
-func mustcreatef(name string) *os.File {
+
+func mustcreate(name string) *os.File {
+	file, err := os.Create(name)
+	if err != nil {
+		putstr(name, STDERR)
+		putstr(err.Error(), STDERR)
+		error(": cant open file")
+	}
+	return file
+}
+func atef(name string) *os.File {
 	file, err := os.Create(name)
 	if err != nil {
 		putstr(name, STDERR)
