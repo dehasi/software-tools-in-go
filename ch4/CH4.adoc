@@ -22,6 +22,7 @@ $ ./sorttext
 zzz
 aaa
 nnn
+^D
 aaa
 nnn
 zzz
@@ -38,6 +39,7 @@ $ go build  sorttext.go  io.go  && ./sorttext
 zzz
 aaa
 nnn
+^D
 aaa
 nnn
 zzz
