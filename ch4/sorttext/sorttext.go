@@ -82,7 +82,7 @@ func cmp(i int, j int, linebuf []uint8) int {
 	}
 }
 
-// exchange -- exchanges linepos[lp1] with linepos[lp2]
+// exchange -- exchanges linepos[lp1] with linepos[lp2]; divergents from the original
 func exchange(linepos []int, lp1 int, lp2 int) {
 	tmp := linepos[lp1]
 	linepos[lp1] = linepos[lp2]
