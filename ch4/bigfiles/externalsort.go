@@ -50,6 +50,8 @@ func makefile(n int) *os.File {
 	name := gname(n)
 	return mustcreate(name)
 }
+
+// gname -- generates unique name for file id n
 func gname(n int) string {
 	return "stemp" + itoc(n)
 }
