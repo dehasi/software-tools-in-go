@@ -66,6 +66,6 @@ nnn
 
 .externalsort
 ----
-$ go build externalsort.go  io.go
+$ go build externalsort.go io.go qsort.go
 
 ----
