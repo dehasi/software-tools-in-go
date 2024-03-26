@@ -3,7 +3,7 @@ package main
 import "os"
 
 const MAX_CHARS = 10_000
-const MAX_LINES = 300
+const MAX_LINES = 10 // for testing
 const MERGE_ORDER = 5
 
 // sort -- external sort of text lines
@@ -56,16 +56,27 @@ func gname(n int) string {
 	return "stemp" + itoc(n)
 }
 
-func gremove(infile []*os.File, low int, lim int) {
+func gremove(infile []*os.File, f1 int, f2 int) {
+	n := f2 - f1 + 1
+	for i := 0; i < n; i++ {
+		close(infile[i])
+		name := gname(f1 + i) // -1
+		remove(name)
+	}
+}
 
+func gopen(f1 int, f2 int) []*os.File {
+	n := f2 - f1 + 1
+	result := make([]*os.File, n)
+	for i := 0; i < n; i++ {
+		name := gname(f1 + i) // -1
+		result[i] = mustopenf(name)
+	}
+	return result
 }
 
 func merge(infile []*os.File, i int, outfile *os.File) {
 
-}
-
-func gopen(low int, lim int) []*os.File {
-	return nil
 }
 
 func ptext(linepos []*string, lines int, linebuf []string, fd *os.File) {
