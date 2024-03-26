@@ -55,9 +55,7 @@ func shell(linepos []int, nlines int, linebuf []uint8) {
 				if cmp(linepos[j], linepos[jq], linebuf) <= 0 {
 					break
 				}
-				tmp := linepos[j]
-				linepos[j] = linepos[jq]
-				linepos[jq] = tmp
+				exchange(linepos, j, jq)
 			}
 		}
 	}
@@ -84,10 +82,14 @@ func cmp(i int, j int, linebuf []uint8) int {
 	}
 }
 
-// exchange -- exchanges linebuf[lp1] with linebuf[lp2]
-func exchange(lp1 int, lp2 int) {
-	// looks strange
+func exchange(linepos []int, j int, jq int) {
+	tmp := linepos[j]
+	linepos[j] = linepos[jq]
+	linepos[jq] = tmp
 }
+
+// exchange -- exchanges linebuf[lp1] with linebuf[lp2]
+//func exchange(lp1 int, lp2 int) { }
 
 // ptext -- outputs text lines from linebuf
 func ptext(linepos []int, nlines int, linebuf []uint8, outfile *os.File) {
