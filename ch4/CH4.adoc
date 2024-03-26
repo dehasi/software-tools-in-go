@@ -64,5 +64,8 @@ nnn
 
 == Sorting Big Files
 
+.externalsort
 ----
+$ go build externalsort.go  io.go
+
 ----
