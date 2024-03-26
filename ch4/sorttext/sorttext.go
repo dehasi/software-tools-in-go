@@ -16,12 +16,9 @@ func inmemsort() {
 
 	nlines := gtext(linebuf, linepos, STDIN)
 	if nlines > 0 {
-		//shell(linepos, nlines)
-		quick(linepos, nlines)
-		putstr("SORTED:\n", STDOUT)
-		ptext(linepos, nlines, STDOUT)
-		putstr("ORIGINAL:\n", STDOUT)
-		ptexto(linebuf, nlines, STDOUT)
+		shell(linepos, nlines, linebuf)
+		//quick(linepos, nlines)
+		ptext(linepos, nlines, linebuf, STDOUT)
 	}
 }
 
@@ -50,7 +47,7 @@ func gtext(linebuf []uint8, linepos []int, fd *os.File) int {
 }
 
 // shell -- ascending Shell sort for lines
-func shell(linebuf []*string, nlines int) {
+func shell(linepos []int, nlines int, linebuf []uint8) {
 	for gap := nlines / 2; gap > 0; gap /= 2 {
 		for i := gap; i < nlines; i++ {
 			for j := i - gap; j >= 0; j = j - gap {
@@ -66,64 +63,88 @@ func shell(linebuf []*string, nlines int) {
 	}
 }
 
-// ptext -- outputs text lines from linepos
-func ptext(linepos []*string, nlines int, fd *os.File) {
-	for i := 0; i < nlines; i++ {
-		putstr(*linepos[i], fd)
-		putcf(NEWLINE, fd)
+// cmp -- compare linebuf[lp1] with linebuf[lp2]
+func cmp(i int, j int, linebuf []uint8) int {
+	for linebuf[i] == linebuf[j] &&
+		linebuf[i] != ENDSTR {
+		i = i + 1
+		j = j + 1
+	}
+	// get the first not equal symbol
+	if linebuf[i] == linebuf[j] {
+		return 0
+	} else if linebuf[i] == ENDSTR { // 1st is shorter
+		return -1
+	} else if linebuf[j] == ENDSTR { // 2st is shorter
+		return 1
+	} else if linebuf[i] < linebuf[j] {
+		return -1
+	} else {
+		return 1
 	}
 }
 
-// ptexts -- outputs text lines from linebuf
-func ptexto(linebuf []string, nlines int, fd *os.File) {
+// exchange -- exchanges linebuf[lp1] with linebuf[lp2]
+func exchange(lp1 int, lp2 int) {
+	// looks strange
+}
+
+// ptext -- outputs text lines from linebuf
+func ptext(linepos []int, nlines int, linebuf []uint8, outfile *os.File) {
 	for i := 0; i < nlines; i++ {
-		putstr(linebuf[i], fd)
-		putcf(NEWLINE, fd)
+		j := linepos[i]
+		for linebuf[j] != ENDSTR {
+			putcf(int8(linebuf[j]), outfile)
+			j += 1
+		}
+		putcf(NEWLINE, outfile)
 	}
 }
 
 // quick -- quicksort for lines
-func quick(linepos []*string, nlines int) {
-	rquick(0, nlines-1, linepos)
-}
-
-// rquick -- recursive quicksort
-func rquick(lo int, hi int, linepos []*string) {
-	if lo < hi {
-		i := lo
-		j := hi
-		pivline := linepos[j] // pivot line
-		for /*repeat*/ {
-			for i < j && *linepos[i] <= *pivline {
-				i += 1
-			}
-			for j > i && *linepos[j] >= *pivline {
-				j -= 1
-			}
-			if i < j { // out of order pair
-				tmp := linepos[i]
-				linepos[i] = linepos[j]
-				linepos[j] = tmp
-			}
-			if /*until*/ i >= j {
-				break
-			}
-		}
-		// move pivot to i
-		tmp := linepos[i]
-		linepos[i] = linepos[hi]
-		linepos[hi] = tmp
-
-		// I don't understand this optimization
-		if (i - lo) < (hi - i) {
-			rquick(lo, i-1, linepos)
-			rquick(i+1, hi, linepos)
-		} else {
-			rquick(i+1, hi, linepos)
-			rquick(lo, i-1, linepos)
-		}
-	}
-}
+//
+//	func quick(linepos []*string, nlines int) {
+//		rquick(0, nlines-1, linepos)
+//	}
+//
+// // rquick -- recursive quicksort
+//
+//	func rquick(lo int, hi int, linepos []*string) {
+//		if lo < hi {
+//			i := lo
+//			j := hi
+//			pivline := linepos[j] // pivot line
+//			for /*repeat*/ {
+//				for i < j && *linepos[i] <= *pivline {
+//					i += 1
+//				}
+//				for j > i && *linepos[j] >= *pivline {
+//					j -= 1
+//				}
+//				if i < j { // out of order pair
+//					tmp := linepos[i]
+//					linepos[i] = linepos[j]
+//					linepos[j] = tmp
+//				}
+//				if /*until*/ i >= j {
+//					break
+//				}
+//			}
+//			// move pivot to i
+//			tmp := linepos[i]
+//			linepos[i] = linepos[hi]
+//			linepos[hi] = tmp
+//
+//			// I don't understand this optimization
+//			if (i - lo) < (hi - i) {
+//				rquick(lo, i-1, linepos)
+//				rquick(i+1, hi, linepos)
+//			} else {
+//				rquick(i+1, hi, linepos)
+//				rquick(lo, i-1, linepos)
+//			}
+//		}
+//	}
 func main() {
 	inmemsort()
 }
