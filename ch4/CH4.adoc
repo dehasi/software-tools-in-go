@@ -7,7 +7,9 @@ They are in the `sorting` module, tested by unit-tests.
 == Sorting Text
 
 `Go` can compare strings lexicographically, therefore no additional `cmp` method is needed.
-Also, as `Go` array is a pointer to strings, no additional `posbuf` needed.
+Also, `Go` can have an array of stringsand we just exchange pointers.
+
+However, I think the idea of having one long array of text and array of pointers is interesting. That's why I implemented it as in the original
 
 .inmemsort
 ----
@@ -20,27 +22,8 @@ nnn
 aaa
 nnn
 zzz
-
 ----
 
-However, to keep the code close to the original idea, I've created  `posbuf` as array of pointers to `string`.
-Then I sort and print `posbuf`. To show that the original input is not changed, I print original input as well.
-
-.modified inmemsort
-----
-$ go build  sorttext.go  io.go  && ./sorttext
-zzz
-aaa
-nnn
-SORTED:
-aaa
-nnn
-zzz
-ORIGINAL:
-zzz
-aaa
-nnn
-----
 
 == Quicksort
 
@@ -52,14 +35,9 @@ $ go build  sorttext.go  io.go  && ./sorttext
 zzz
 aaa
 nnn
-SORTED:
-aaa
-zzz
-nnn
-ORIGINAL:
-zzz
 aaa
 nnn
+zzz
 ----
 
 == Sorting Big Files
