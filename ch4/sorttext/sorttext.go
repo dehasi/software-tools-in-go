@@ -52,12 +52,12 @@ func shell(linepos []int, nlines int, linebuf []uint8) {
 		for i := gap; i < nlines; i++ {
 			for j := i - gap; j >= 0; j = j - gap {
 				jq := j + gap
-				if *linebuf[j] <= *linebuf[jq] {
+				if cmp(linepos[j], linepos[jq], linebuf) <= 0 {
 					break
 				}
-				tmp := linebuf[j]
-				linebuf[j] = linebuf[jq]
-				linebuf[jq] = tmp
+				tmp := linepos[j]
+				linepos[j] = linepos[jq]
+				linepos[jq] = tmp
 			}
 		}
 	}
