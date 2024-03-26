@@ -22,8 +22,8 @@ func sort() {
 			break
 		}
 		quick(linepos, nlines, linebuf)
-		high += 1
-		outfile := mustcreate(itoc(high))
+		high = high + 1
+		outfile := makefile(high)
 		ptext(linepos, nlines, linebuf, outfile)
 		close(outfile)
 	}
@@ -32,11 +32,11 @@ func sort() {
 		lim := min(low+MERGE_ORDER-1, high)
 		infile := gopen(low, lim)
 		high += 1
-		outfile := mustcreate(itoc(high))
+		outfile := makefile(high)
 		merge(infile, lim-low+1, outfile)
 		close(outfile)
 		gremove(infile, low, lim)
-		low += MERGE_ORDER
+		low = low + MERGE_ORDER
 	}
 	name := gname(high)
 	outfile := mustopenf(name)
@@ -45,8 +45,13 @@ func sort() {
 	remove(name)
 }
 
-func gname(high int) string {
-	return ""
+// makefile -- make new file for number n
+func makefile(n int) *os.File {
+	name := gname(n)
+	return mustcreate(name)
+}
+func gname(n int) string {
+	return "stemp" + itoc(n)
 }
 
 func gremove(infile []*os.File, low int, lim int) {
