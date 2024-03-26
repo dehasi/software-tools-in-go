@@ -75,8 +75,16 @@ func gopen(f1 int, f2 int) []*os.File {
 	return result
 }
 
-func merge(infile []*os.File, i int, outfile *os.File) {
+// merge -- merges infile[1] ... infile[nf] onto outfile
+func merge(infile []*os.File, nf int, outfile *os.File) {
 
+	//for i := 0; i < nf; i++ { //get one line from each file
+	//	temp, read := getlinef(infile[i], MAX_CHARS)
+	//	if read { // if we read the line => file stll not empty
+	//
+	//	}
+	//
+	//}
 }
 
 func ptext(linepos []*string, lines int, linebuf []string, fd *os.File) {
