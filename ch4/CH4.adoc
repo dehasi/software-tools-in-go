@@ -11,6 +11,9 @@ Also, `Go` can have an array of stringsand we just exchange pointers.
 
 However, I think the idea of having one long array of text and array of pointers is interesting. That's why I implemented it as in the original
 
+I only hesitate about implementation of `exachange` function. As in `Go` integers are copied, I have to pass `linepos` and indexes there.
+Original is a bit different.
+
 .inmemsort
 ----
 $ go build  sorttext.go  io.go
