@@ -13,20 +13,52 @@ const MERGE_ORDER = 5
 // Merges files "1", "2", "3" to one file
 // Outputs result into STDOUT
 func sort() {
-	done := false
 	high := 0
-	for !done {
-		linebuf := make([]string, MAX_LINES)
-		linepos := make([]*string, MAX_LINES)
-		lines := gtext(linebuf, linepos, STDIN)
-		if lines < 0 {
+	linebuf := make([]string, MAX_LINES)
+	linepos := make([]*string, MAX_LINES) // maybe use array of integers instead
+	for {
+		nlines := gtext(linebuf, linepos, STDIN)
+		if nlines < 0 {
 			break
 		}
-		quick(linepos, lines, linebuf)
+		quick(linepos, nlines, linebuf)
 		high += 1
 		outfile := mustcreate(itoc(high))
-		ptext(linepos, lines, linebuf, outfile)
+		ptext(linepos, nlines, linebuf, outfile)
+		close(outfile)
 	}
+	low := 1 // it should be 0
+	for low < high {
+		lim := min(low+MERGE_ORDER-1, high)
+		infile := gopen(low, lim)
+		high += 1
+		outfile := mustcreate(itoc(high))
+		merge(infile, lim-low+1, outfile)
+		close(outfile)
+		gremove(infile, low, lim)
+		low += MERGE_ORDER
+	}
+	name := gname(high)
+	outfile := mustopenf(name)
+	fcopy(outfile, STDOUT)
+	close(outfile)
+	remove(name)
+}
+
+func gname(high int) string {
+	return ""
+}
+
+func gremove(infile []*os.File, low int, lim int) {
+
+}
+
+func merge(infile []*os.File, i int, outfile *os.File) {
+
+}
+
+func gopen(low int, lim int) []*os.File {
+	return nil
 }
 
 func ptext(linepos []*string, lines int, linebuf []string, fd *os.File) {
