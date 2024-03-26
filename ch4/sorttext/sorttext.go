@@ -82,10 +82,11 @@ func cmp(i int, j int, linebuf []uint8) int {
 	}
 }
 
-func exchange(linepos []int, j int, jq int) {
-	tmp := linepos[j]
-	linepos[j] = linepos[jq]
-	linepos[jq] = tmp
+// exchange -- exchanges linepos[lp1] with linepos[lp2]
+func exchange(linepos []int, lp1 int, lp2 int) {
+	tmp := linepos[lp1]
+	linepos[lp1] = linepos[lp2]
+	linepos[lp2] = tmp
 }
 
 // exchange -- exchanges linebuf[lp1] with linebuf[lp2]
