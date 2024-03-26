@@ -6,12 +6,13 @@ import (
 
 const MAXCHARS = 10_000
 const MAXLINES = 300
+const ENDSTR uint8 = 10 // Go dosn't have '\0' concept as C, let's use '\n'
 
-// inmemsort -- sorts text lines in memory }
+// inmemsort -- sorts text lines in memory
 func inmemsort() {
 
-	linebuf := make([]string, MAXLINES)
-	linepos := make([]*string, MAXLINES)
+	linebuf := make([]uint8, MAXLINES) // holds all chars of the text
+	linepos := make([]int, MAXLINES)   // holds indexes, where a line begins in linebuf
 
 	nlines := gtext(linebuf, linepos, STDIN)
 	if nlines > 0 {
@@ -25,21 +26,27 @@ func inmemsort() {
 }
 
 // gtext -- gets text lines into linebuf, and set pointers in linepos
-func gtext(linebuf []string, linepos []*string, fd *os.File) int {
-	i := 0
+func gtext(linebuf []uint8, linepos []int, fd *os.File) int {
+	nlines := 0
+	nextpos := 0
 	for {
-		line, got := getlinef(fd, MAXCHARS)
-		if !got {
+		temp, done := getlinef(fd, MAXCHARS)
+		if !done {
 			break
 		}
-		linebuf[i] = line
-		linepos[i] = &linebuf[i]
-		i += 1
-		if i >= MAXLINES {
+		linepos[nlines] = nextpos
+		slen := len(temp)
+		for i := 0; i < slen; i++ {
+			linebuf[nextpos+i] = temp[i]
+		}
+		linebuf[nextpos+slen] = ENDSTR
+		nlines = nlines + 1
+		nextpos = nextpos + slen + 1
+		if nlines >= MAXLINES {
 			return -1 // to many lines
 		}
 	}
-	return i
+	return nlines
 }
 
 // shell -- ascending Shell sort for lines
