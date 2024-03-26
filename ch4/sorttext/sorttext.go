@@ -16,8 +16,8 @@ func inmemsort() {
 
 	nlines := gtext(linebuf, linepos, STDIN)
 	if nlines > 0 {
-		shell(linepos, nlines, linebuf)
-		//quick(linepos, nlines)
+		//shell(linepos, nlines, linebuf)
+		quick(linepos, nlines, linebuf)
 		ptext(linepos, nlines, linebuf, STDOUT)
 	}
 }
@@ -104,49 +104,45 @@ func ptext(linepos []int, nlines int, linebuf []uint8, outfile *os.File) {
 }
 
 // quick -- quicksort for lines
-//
-//	func quick(linepos []*string, nlines int) {
-//		rquick(0, nlines-1, linepos)
-//	}
-//
-// // rquick -- recursive quicksort
-//
-//	func rquick(lo int, hi int, linepos []*string) {
-//		if lo < hi {
-//			i := lo
-//			j := hi
-//			pivline := linepos[j] // pivot line
-//			for /*repeat*/ {
-//				for i < j && *linepos[i] <= *pivline {
-//					i += 1
-//				}
-//				for j > i && *linepos[j] >= *pivline {
-//					j -= 1
-//				}
-//				if i < j { // out of order pair
-//					tmp := linepos[i]
-//					linepos[i] = linepos[j]
-//					linepos[j] = tmp
-//				}
-//				if /*until*/ i >= j {
-//					break
-//				}
-//			}
-//			// move pivot to i
-//			tmp := linepos[i]
-//			linepos[i] = linepos[hi]
-//			linepos[hi] = tmp
-//
-//			// I don't understand this optimization
-//			if (i - lo) < (hi - i) {
-//				rquick(lo, i-1, linepos)
-//				rquick(i+1, hi, linepos)
-//			} else {
-//				rquick(i+1, hi, linepos)
-//				rquick(lo, i-1, linepos)
-//			}
-//		}
-//	}
+
+func quick(linepos []int, nlines int, linebuf []uint8) {
+	rquick(0, nlines-1, linepos, linebuf)
+}
+
+// rquick -- recursive quicksort
+
+func rquick(lo int, hi int, linepos []int, linebuf []uint8) {
+	if lo < hi {
+		i := lo
+		j := hi
+		pivline := linepos[j] // pivot line
+		for /*repeat*/ {
+			for i < j && cmp(linepos[i], pivline, linebuf) <= 0 {
+				i += 1
+			}
+			for j > i && cmp(linepos[j], pivline, linebuf) >= 0 {
+				j -= 1
+			}
+			if i < j { // out of order pair
+				exchange(linepos, i, j)
+			}
+			if /*until*/ i >= j {
+				break
+			}
+		}
+		// move pivot to i
+		exchange(linepos, i, hi)
+
+		// I don't understand this optimization
+		if (i - lo) < (hi - i) {
+			rquick(lo, i-1, linepos, linebuf)
+			rquick(i+1, hi, linepos, linebuf)
+		} else {
+			rquick(i+1, hi, linepos, linebuf)
+			rquick(lo, i-1, linepos, linebuf)
+		}
+	}
+}
 func main() {
 	inmemsort()
 }
