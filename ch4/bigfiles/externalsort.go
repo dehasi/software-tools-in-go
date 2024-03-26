@@ -14,7 +14,7 @@ func sort() {
 	}
 }
 
-// gtext -- gets text lines into linebuf, ans set pointers in linepos
+// gtext -- gets text lines into linebuf, and set pointers in linepos
 func gtext(linebuf []string, nlines int, linepos []*string, fd *os.File) int {
 	i := 0
 	for i < nlines {
