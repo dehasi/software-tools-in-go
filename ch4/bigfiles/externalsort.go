@@ -3,8 +3,8 @@ package main
 import "os"
 
 const MAX_CHARS = 10_000
-const MAX_STR = 100  // max symbols per line for buffred reader
-const MAX_LINES = 10 // for testing
+const MAX_STR = 100    // max symbols per line for buffred reader
+const MAX_LINES = 1000 // for testing
 const MERGE_ORDER = 5
 
 // sort -- external sort of text lines
@@ -19,14 +19,14 @@ func sort() {
 	linepos := make([]int, MAX_LINES)   // holds indexes, where a line begins in linebuf
 	for {
 		nlines := gtext(linebuf, linepos, STDIN)
-		if nlines < 0 {
+		if nlines <= 0 {
 			break
 		}
-		quick(linepos, nlines, linebuf)
-		high = high + 1
-		outfile := makefile(high)
-		ptext(linepos, nlines, linebuf, outfile)
-		close(outfile)
+		//quick(linepos, nlines, linebuf)
+		//high = high + 1
+		//outfile := makefile(high)
+		ptext(linepos, nlines, linebuf, STDOUT)
+		//close(outfile)
 	}
 	if true {
 		return
@@ -95,6 +95,7 @@ func merge(infile []*os.File, nf int, outfile *os.File) {
 func gtext(linebuf []uint8, linepos []int, fd *os.File) int {
 	nlines := 0
 	nextpos := 0
+
 	for {
 		temp, done := getlinef(fd, MAX_STR)
 		if !done {

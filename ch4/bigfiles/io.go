@@ -202,7 +202,8 @@ func getcf(c *int8, f *os.File) int8 {
 		if err == io.EOF {
 			return ENDFILE
 		} else {
-			return 0
+			error("ERROR: " + err.Error())
+			return -18 // this line is unreachable
 		}
 	}
 	*c = int8(b[0])
