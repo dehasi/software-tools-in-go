@@ -3,8 +3,8 @@ package main
 import "os"
 
 const MAX_CHARS = 10_000
-const MAX_STR = 100    // max symbols per line for buffred reader
-const MAX_LINES = 1000 // for testing
+const MAX_STR = 100  // max symbols per line for buffred reader
+const MAX_LINES = 10 // for testing
 const MERGE_ORDER = 5
 
 // sort -- external sort of text lines
@@ -22,16 +22,14 @@ func sort() {
 		if nlines <= 0 {
 			break
 		}
-		//quick(linepos, nlines, linebuf)
-		//high = high + 1
-		//outfile := makefile(high)
-		ptext(linepos, nlines, linebuf, STDOUT)
-		//close(outfile)
+		quick(linepos, nlines, linebuf)
+		high = high + 1
+		outfile := makefile(high)
+		ptext(linepos, nlines, linebuf, outfile)
+		close(outfile)
 	}
-	if true {
-		return
-	}
-	low := 1 // it should be 0
+
+	low := 1 // it should be 0?
 	for low < high {
 		lim := min(low+MERGE_ORDER-1, high)
 		infile := gopen(low, lim)
