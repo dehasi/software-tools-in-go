@@ -3,7 +3,7 @@ package main
 import "os"
 
 const MAX_CHARS = 10_000
-const MAX_STR = 100  // max symbols per line for buffred reader
+const MAX_STR = 100  // max symbols per line
 const MAX_LINES = 10 // for testing
 const MERGE_ORDER = 5
 
@@ -114,15 +114,24 @@ func ptext(linepos []int, nlines int, linebuf []uint8, outfile *os.File) {
 	}
 }
 
+// charpos = 1...MAX_CHARS => int
+// type
+// charpos = 1 .. MAXCHARS;
+// charbuf = array [1 .. MAXCHARS] of character;
+// posbuf = array [1 .. MAXLINES] of charpos;
+// pos = O.. MAXLINES;
+// fdbuf = array [1 .. MERGEORDER] of filedesc;
 // merge -- merges infile[1] ... infile[nf] onto outfile
 func merge(infile []*os.File, nf int, outfile *os.File) {
-	//for i := 0; i < nf; i++ { //get one line from each file
-	//	temp, read := getlinef(infile[i], MAX_CHARS)
-	//	if read { // if we read the line => file stll not empty
-	//
-	//	}
-	//
-	//}
+	lbp := 0                  // charpos
+	for i := 0; i < nf; i++ { //get one line from each file
+		temp, read := getlinef(infile[i], MAX_CHARS)
+		if read { // if we read the line => file stll not empty
+			lbp := (i)*MAX_STR + 1 // room for longest, (i-1)
+
+		}
+
+	}
 }
 
 func main() {
