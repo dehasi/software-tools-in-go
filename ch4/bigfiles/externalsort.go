@@ -1,6 +1,8 @@
 package main
 
-import "os"
+import (
+	"os"
+)
 
 const MAX_CHARS = 10_000 // MAX_STR* MAX_LINES => max size of the whole text
 const MAX_STR = 100      // max symbols per line
@@ -191,6 +193,7 @@ func cscopy(cb []uint8, i int) string {
 
 // sccopy -- copy string s to cb[i] - array of chars
 func sccopy(temp string, cb []uint8, i int) {
+	//println("sccopy", "temp", temp, "cb", cb[i:100], "i", i)
 	for j := 0; temp[j] != ENDSTR; {
 		cb[i] = temp[j]
 		i++

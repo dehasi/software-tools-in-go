@@ -96,11 +96,11 @@ func getlinef(fd *os.File, maxstr int) (string, bool) {
 	i := 0
 	var c int8 = 0
 	for i < maxstr && getcf(&c, fd) != ENDFILE {
+		buf[i] = byte(c)
+		i += 1
 		if c == NEWLINE {
 			break
 		}
-		buf[i] = byte(c)
-		i += 1
 	}
 	if i == 0 {
 		return "nil", false
