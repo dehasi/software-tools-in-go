@@ -2,9 +2,9 @@ package main
 
 import "os"
 
-const MAX_CHARS = 10_000
-const MAX_STR = 100  // max symbols per line
-const MAX_LINES = 10 // for testing
+const MAX_CHARS = 10_000 // MAX_STR* MAX_LINES => max size of the whole text
+const MAX_STR = 100      // max symbols per line
+const MAX_LINES = 10     // for testing
 const MERGE_ORDER = 5
 
 // sort -- external sort of text lines
