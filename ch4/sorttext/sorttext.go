@@ -5,13 +5,14 @@ import (
 )
 
 const MAXCHARS = 10_000
+const MAXSTR = 1000
 const MAXLINES = 300
 const ENDSTR uint8 = 10 // Go dosn't have '\0' concept as C, let's use '\n'
 
 // inmemsort -- sorts text lines in memory
 func inmemsort() {
 
-	linebuf := make([]uint8, MAXLINES) // holds all chars of the text
+	linebuf := make([]uint8, MAXCHARS) // holds all chars of the text
 	linepos := make([]int, MAXLINES)   // holds indexes, where a line begins in linebuf
 
 	nlines := gtext(linebuf, linepos, STDIN)
@@ -27,7 +28,7 @@ func gtext(linebuf []uint8, linepos []int, fd *os.File) int {
 	nlines := 0
 	nextpos := 0
 	for {
-		temp, done := getlinef(fd, MAXCHARS)
+		temp, done := getlinef(fd, MAXSTR)
 		if !done {
 			break
 		}

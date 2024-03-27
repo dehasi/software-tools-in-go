@@ -3,6 +3,7 @@ package main
 import "os"
 
 const MAX_CHARS = 10_000
+const MAX_STR = 100  // max symbols per line for buffred reader
 const MAX_LINES = 10 // for testing
 const MERGE_ORDER = 5
 
@@ -14,8 +15,8 @@ const MERGE_ORDER = 5
 // Outputs result into STDOUT
 func sort() {
 	high := 0
-	linebuf := make([]string, MAX_LINES)
-	linepos := make([]*string, MAX_LINES) // maybe use array of integers instead
+	linebuf := make([]uint8, MAX_CHARS) // holds all chars of the text
+	linepos := make([]int, MAX_LINES)   // holds indexes, where a line begins in linebuf
 	for {
 		nlines := gtext(linebuf, linepos, STDIN)
 		if nlines < 0 {
@@ -87,30 +88,40 @@ func merge(infile []*os.File, nf int, outfile *os.File) {
 	//}
 }
 
-func ptext(linepos []*string, lines int, linebuf []string, fd *os.File) {
-	for i := 0; i < lines; i++ {
-		putstr(*linepos[i], fd)
-		putcf(NEWLINE, fd)
-	}
-}
-
 // gtext -- gets text lines into linebuf, and set pointers in linepos
-func gtext(linebuf []string, linepos []*string, fd *os.File) int {
-	nlines := len(linebuf)
-	i := 0
+func gtext(linebuf []uint8, linepos []int, fd *os.File) int {
+	nlines := 0
+	nextpos := 0
 	for {
-		line, got := getlinef(fd, MAX_CHARS)
-		if !got {
+		temp, done := getlinef(fd, MAX_STR)
+		if !done {
 			break
 		}
-		linebuf[i] = line
-		linepos[i] = &linebuf[i]
-		i += 1
-		if i >= nlines {
+		linepos[nlines] = nextpos
+		slen := len(temp)
+		for i := 0; i < slen; i++ {
+			linebuf[nextpos+i] = temp[i]
+		}
+		linebuf[nextpos+slen] = ENDSTR
+		nlines = nlines + 1
+		nextpos = nextpos + slen + 1
+		if nlines >= MAX_LINES {
 			return -1 // to many lines
 		}
 	}
-	return i
+	return nlines
+}
+
+// ptext -- outputs text lines from linebuf
+func ptext(linepos []int, nlines int, linebuf []uint8, outfile *os.File) {
+	for i := 0; i < nlines; i++ {
+		j := linepos[i]
+		for linebuf[j] != ENDSTR {
+			putcf(int8(linebuf[j]), outfile)
+			j += 1
+		}
+		putcf(NEWLINE, outfile)
+	}
 }
 
 func main() {
