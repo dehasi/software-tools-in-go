@@ -28,6 +28,9 @@ func sort() {
 		ptext(linepos, nlines, linebuf, outfile)
 		close(outfile)
 	}
+	if true {
+		return
+	}
 	low := 1 // it should be 0
 	for low < high {
 		lim := min(low+MERGE_ORDER-1, high)

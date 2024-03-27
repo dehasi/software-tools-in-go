@@ -49,6 +49,6 @@ zzz
 
 .externalsort
 ----
-$ go build externalsort.go io.go qsort.go
+$ go build externalsort.go io.go qsort.go && ./externalsort
 
 ----
