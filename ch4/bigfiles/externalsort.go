@@ -123,15 +123,41 @@ func ptext(linepos []int, nlines int, linebuf []uint8, outfile *os.File) {
 // fdbuf = array [1 .. MERGEORDER] of filedesc;
 // merge -- merges infile[1] ... infile[nf] onto outfile
 func merge(infile []*os.File, nf int, outfile *os.File) {
-	lbp := 0                  // charpos
+	// technically we cam ,ake them global variables and reuse.
+	// after colleciting input and putting it into files they are not used
+	linebuf := make([]uint8, MAX_CHARS) // holds all chars of the text
+	linepos := make([]int, MAX_LINES)   // holds indexes, where a line begins in linebuf
+	j := 0
 	for i := 0; i < nf; i++ { //get one line from each file
 		temp, read := getlinef(infile[i], MAX_CHARS)
 		if read { // if we read the line => file stll not empty
 			lbp := (i)*MAX_STR + 1 // room for longest, (i-1)
-
+			sccopy(temp, linebuf, lbp)
+			linepos[i] = lbp
+			j = j + 1
 		}
-
 	}
+	nf = j                      // some infile[] will be eventually empty
+	quick(linepos, nf, linebuf) // make initial heap
+	for nf > 0 {
+		lbp := linepos[0] // lowest line
+		temp := cscopy(linebuf, lbp)
+		putstr(temp, outfile)
+		i := lbp/MAX_STR + 1 // compute file index
+		temp, got := getlinef(infile[i], MAX_STR)
+		if got {
+			sccopy(temp, linebuf, lbp)
+		} else { // one less input file
+			linepos[0] = linepos[nf-1]
+			nf = nf - 1
+		}
+		reheap(linepos, nf, linebuf)
+	}
+
+}
+
+func sccopy(temp string, linebuf []uint8, lbp int) {
+
 }
 
 func main() {
