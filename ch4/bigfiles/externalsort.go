@@ -156,6 +156,14 @@ func merge(infile []*os.File, nf int, outfile *os.File) {
 
 }
 
+func reheap(linepos []int, nf int, linebuf []uint8) {
+
+}
+
+func cscopy(linebuf []uint8, lbp int) string {
+	return ""
+}
+
 func sccopy(temp string, linebuf []uint8, lbp int) {
 
 }
