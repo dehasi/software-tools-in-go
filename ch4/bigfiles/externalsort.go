@@ -156,8 +156,25 @@ func merge(infile []*os.File, nf int, outfile *os.File) {
 
 }
 
+// reheap -- put linebuf[linepos[0]] in proper place in heap
 func reheap(linepos []int, nf int, linebuf []uint8) {
-
+	i := 0       // parent
+	j := 2*i + 1 // left child
+	for j < nf {
+		if j < nf-1 { // find smaller child
+			if cmp(linepos[j], linepos[j+1], linebuf) > 0 { // child(j) is bigger then child(j+1)
+				j += 1 // take child(j+1)
+			}
+		}
+		if cmp(linepos[i], linepos[j], linebuf) <= 0 { // parent is smaller than the smallest child
+			i = nf // proper position found; terminate loop
+			return
+		} else {
+			exchange(linepos, i, j) // percolate
+		}
+		i = j
+		j = 2*i + 1
+	}
 }
 
 // cscopy -- copy ch[i] - array of chars - to string
