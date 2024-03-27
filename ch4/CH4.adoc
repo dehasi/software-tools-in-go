@@ -47,8 +47,10 @@ zzz
 
 == Sorting Big Files
 
+Very interesting approach with heap, see `reheap`.
+
 .externalsort
 ----
-$ go build externalsort.go io.go qsort.go && ./externalsort
-
+ go build externalsort.go io.go qsort.go && cat bigfile | ./externalsort
+# it indeed sorts
 ----
