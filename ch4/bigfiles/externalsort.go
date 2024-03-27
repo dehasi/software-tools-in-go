@@ -5,7 +5,7 @@ import (
 )
 
 const MAX_CHARS = 10_000 // MAX_STR* MAX_LINES => max size of the whole text
-const MAX_STR = 100      // max symbols per line
+const MAX_STR = 1000     // max symbols per line
 const MAX_LINES = 10     // for testing
 const MERGE_ORDER = 5
 
@@ -30,7 +30,6 @@ func sort() {
 		ptext(linepos, nlines, linebuf, outfile)
 		close(outfile)
 	}
-
 	low := 1 // it should be 0?
 	for low < high {
 		lim := min(low+MERGE_ORDER-1, high)
@@ -64,7 +63,7 @@ func gremove(infile []*os.File, f1 int, f2 int) {
 	n := f2 - f1 + 1
 	for i := 0; i < n; i++ {
 		close(infile[i])
-		name := gname(f1 + i) // -1
+		name := gname(f1 + i)
 		remove(name)
 	}
 }
@@ -73,7 +72,7 @@ func gopen(f1 int, f2 int) []*os.File {
 	n := f2 - f1 + 1
 	result := make([]*os.File, n)
 	for i := 0; i < n; i++ {
-		name := gname(f1 + i) // -1
+		name := gname(f1 + i)
 		result[i] = mustopenf(name)
 	}
 	return result
@@ -98,7 +97,7 @@ func gtext(linebuf []uint8, linepos []int, fd *os.File) int {
 		nlines = nlines + 1
 		nextpos = nextpos + slen + 1
 		if nlines >= MAX_LINES {
-			return -1 // to many lines
+			return nlines // to many lines
 		}
 	}
 	return nlines
@@ -116,13 +115,6 @@ func ptext(linepos []int, nlines int, linebuf []uint8, outfile *os.File) {
 	}
 }
 
-// charpos = 1...MAX_CHARS => int
-// type
-// charpos = 1 .. MAXCHARS;
-// charbuf = array [1 .. MAXCHARS] of character;
-// posbuf = array [1 .. MAXLINES] of charpos;
-// pos = O.. MAXLINES;
-// fdbuf = array [1 .. MERGEORDER] of filedesc;
 // merge -- merges infile[1] ... infile[nf] onto outfile
 func merge(infile []*os.File, nf int, outfile *os.File) {
 	// technically we cam ,ake them global variables and reuse.
@@ -145,7 +137,7 @@ func merge(infile []*os.File, nf int, outfile *os.File) {
 		lbp := linepos[0] // lowest line
 		temp := cscopy(linebuf, lbp)
 		putstr(temp, outfile)
-		i := lbp/MAX_STR + 1 // compute file index
+		i := lbp / MAX_STR // compute file index
 		temp, got := getlinef(infile[i], MAX_STR)
 		if got {
 			sccopy(temp, linebuf, lbp)
