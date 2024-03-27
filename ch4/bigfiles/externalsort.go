@@ -160,12 +160,26 @@ func reheap(linepos []int, nf int, linebuf []uint8) {
 
 }
 
-func cscopy(linebuf []uint8, lbp int) string {
-	return ""
+// cscopy -- copy ch[i] - array of chars - to string
+func cscopy(cb []uint8, i int) string {
+	start := i
+	for cb[i] != ENDSTR {
+		i++
+	}
+	end := i
+
+	// Strings in Go are immutable, let's make a string from a slice of the array
+	return string(cb[start : end+1])
 }
 
-func sccopy(temp string, linebuf []uint8, lbp int) {
-
+// sccopy -- copy string s to cb[i] - array of chars
+func sccopy(temp string, cb []uint8, i int) {
+	for j := 0; temp[j] != ENDSTR; {
+		cb[i] = temp[j]
+		i++
+		j++
+	}
+	cb[i] = ENDSTR
 }
 
 func main() {
