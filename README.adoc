@@ -1,6 +1,15 @@
 = Software Tools in Go
 
-.Chapters
+== Chapters
+.each chapter has own readme
 * link:ch1/CH1.adoc[]
 * link:ch2/CH2.adoc[]
 * link:ch3/CH3.adoc[]
+* link:ch4/CH4.adoc[]
+
+== Notes
+
+Initially I made a mistake using `int8` for `getc`. I fixed it only at the end of `CH4`.
+
+As `go` doesn't have (and doesn't need) end string marker,
+I made `getline`  return a line ended with `\n`. I think it was a mistake.

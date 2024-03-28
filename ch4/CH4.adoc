@@ -1,0 +1,121 @@
+= CH 4
+
+== Bubble & Shell Sort
+
+They are in the `sorting` module, tested by unit-tests.
+
+== Sorting Text
+
+`Go` can compare strings lexicographically, therefore no additional `cmp` method is needed.
+Also, `Go` can have an array of stringsand we just exchange pointers.
+
+However, I think the idea of having one long array of text and array of pointers is interesting. That's why I implemented it as in the original
+
+I only hesitate about implementation of `exachange` function. As in `Go` integers are copied, I have to pass `linepos` and indexes there.
+Original is a bit different.
+
+.inmemsort
+----
+$ go build  sorttext.go  io.go
+
+$ ./sorttext
+zzz
+aaa
+nnn
+^D
+aaa
+nnn
+zzz
+----
+
+
+== Quicksort
+
+There is also an implementation of `quicksort` in `sortring/sort.go` tested by unit tests.
+
+.inmemsort with quick
+----
+$ go build  sorttext.go  io.go  && ./sorttext
+zzz
+aaa
+nnn
+^D
+aaa
+nnn
+zzz
+----
+
+== Sorting Big Files
+
+Very interesting approach with heap, see `reheap`.
+
+.externalsort
+----
+ go build externalsort.go io.go qsort.go && cat bigfile | ./externalsort
+# it indeed sorts
+----
+
+To test it I used built-in `sort`.
+
+----
+$ cat bigfile | sort > expected
+
+$ cat bigfile | ./externalsort  > actual
+
+$ diff actual  expected
+----
+
+Our program is much slower than built-in `sort`.
+----
+$ time cat bigfile | sort > expected
+
+real    0m0.010s
+user    0m0.003s
+sys     0m0.007s
+
+$ time  cat bigfile | ./externalsort  > actual
+
+real    0m0.048s
+user    0m0.012s
+sys     0m0.038s
+
+$ time cat bigfile > tmp
+
+real    0m0.005s
+user    0m0.001s
+sys     0m0.003s
+----
+
+
+== Unique
+
+.unique
+----
+$ go build unique.go io.go
+$ sort bigfile  | ./unique  > actual
+
+$ sort bigfile  | uniq > expected
+
+$ diff actual expected
+# it indeed works
+----
+
+== Permuted Index
+
+.rotate
+----
+$ go build kwic.go io.go
+
+$ echo 'now is the time' | ./kwic
+now is the time$
+is the time$now
+the time$now is
+time$now is the
+
+$ echo 'now is the time' | ./kwic | ./kwic -u
+                                          now is the time
+                                   now    is the time
+                                now is    the time
+                            now is the    time
+
+----
