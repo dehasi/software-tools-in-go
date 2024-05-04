@@ -2,7 +2,6 @@
 
 This repository is `Go` adaptation of code for the book
 https://www.goodreads.com/en/book/show/515602[Software Tools in Pascal].
-The original code is written in `Pascal`.
 
 image::book.png[]
 
@@ -19,4 +18,4 @@ Each chapter has its own readme.
 == Contributing
 
 Improvements are welcome! Feel free to create issues or pull requests.
-Feel free to refactor code to make more idiomatic for `Go`.
+Feel free to refactor the code to make it more idiomatic for `Go`.
