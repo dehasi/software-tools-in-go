@@ -1,0 +1,51 @@
+= CH 5
+
+This is the first chapter where I started writing unit-tests. I should have to start writing tests earlier.
+It helped me find a few bugs.
+
+It would have been helpful if the authors had added examples of input and output for function,
+not only for the resulting program. It would have also helped with writing unit-tests. Sometimes it was a bit challenging to figure out inputs and outputs.
+
+== Find
+
+As strings in `Go` start from `0`, `amatch` return `-1` if not matched.
+Therefore, in `match` I check `pos >= 0`.
+
+
+I don't need `addstr`. `addstr` adds a character at a time to a specified position of an array and increments the index. In `Go` we can concatenate strings.
+
+It seems the authors forgot to add the handling of `CLOSURE` in `omatch`.
+
+.find
+----
+$ go build find.go io.go makepat.go
+
+$ cat file | ./find %A
+AAAxBBB
+----
+
+== Change
+
+`change` uses the same code for matching, it differs from `find` only by output.
+That's why I put it into `find.go` instead of coding `change` in a separate project.
+Although, some additional code is in `subline.go`
+
+.change
+----
+$ go build -o change find.go io.go makepat.go subline.go
+
+# as & is a special symbol for bash, we need to put the second arg into quotes
+$ cat file | ./change x '(&)'
+AAA(x)B
+
+$ cat file | ./change x 
+AAABBB
+BBBcAAA
+
+$ cat file | ./change x '(&)---(&)'
+AAA(x)---(x)BBB
+BBBcAAA
+
+$ echo active | ./change active 'in&'
+inactive
+----

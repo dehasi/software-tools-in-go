@@ -1,15 +1,22 @@
 = Software Tools in Go
 
+This repository is `Go` adaptation of code for the book
+https://www.goodreads.com/en/book/show/515602[Software Tools in Pascal].
+The original code is written in `Pascal`.
+
+image::book.png[]
+
 == Chapters
-.each chapter has own readme
+Each chapter has its own readme.
+
 * link:ch1/CH1.adoc[]
 * link:ch2/CH2.adoc[]
 * link:ch3/CH3.adoc[]
 * link:ch4/CH4.adoc[]
+* link:ch5/CH5.adoc[]
 
-== Notes
 
-Initially I made a mistake using `int8` for `getc`. I fixed it only at the end of `CH4`.
+== Contributing
 
-As `go` doesn't have (and doesn't need) end string marker,
-I made `getline`  return a line ended with `\n`. I think it was a mistake.
+Improvements are welcome! Feel free to create issues or pull requests.
+Feel free to refactor code to make more idiomatic for `Go`.

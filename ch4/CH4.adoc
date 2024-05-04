@@ -119,3 +119,9 @@ $ echo 'now is the time' | ./kwic | ./kwic -u
                             now is the    time
 
 ----
+
+== Notes
+Initially I made a mistake using `int8` for `getc`. I fixed it only at the end of `CH4`.
+
+As `go` doesn't have (and doesn't need) end string marker,
+I made `getline`  return a line ended with `\n`. I think it was a mistake.
