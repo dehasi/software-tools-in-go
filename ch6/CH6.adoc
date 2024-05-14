@@ -1,0 +1,3 @@
+= CH 6
+
+In this chapter I eventually started using packages.
