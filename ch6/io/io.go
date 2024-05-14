@@ -34,8 +34,8 @@ func getc(c *uint8) uint8 {
 	return *c
 }
 
-// putc -- puts one character on standard output
-func putc(c uint8) {
+// Putc -- puts one character on standard output
+func Putc(c uint8) {
 	if c == NEWLINE {
 		fmt.Println()
 	} else {
@@ -48,10 +48,10 @@ func putdec(nc int, wide int) {
 	var s = itoc(nc)
 	nd := len(s)
 	for i := nd; i < wide; i++ {
-		putc(BLANK)
+		Putc(BLANK)
 	}
 	for i := 0; i < nd; i++ {
-		putc(uint8(s[i]))
+		Putc(uint8(s[i]))
 	}
 }
 
@@ -76,14 +76,14 @@ func ctoi(c string) int {
 	return n
 }
 
-func putstr(s string, f *os.File) {
+func Putstr(s string, f *os.File) {
 	_, err := f.WriteString(s)
 	if err != nil {
 		return
 	}
 }
 
-func getline(fd *os.File, maxstr int) (string, bool) {
+func Getline(fd *os.File, maxstr int) (string, bool) {
 	buf := make([]byte, maxstr)
 	i := 0
 	var c uint8 = 0
@@ -104,19 +104,19 @@ func getline(fd *os.File, maxstr int) (string, bool) {
 	return string(buf[:i]), true
 }
 
-func nargs() int {
+func NArgs() int {
 	return len(os.Args)
 }
-func getarg(index int) string {
+func GetArg(index int) string {
 	return os.Args[index]
 }
 
 func mustopen(name string) *os.File {
 	file, err := os.Open(name)
 	if err != nil {
-		putstr(name, STDERR)
-		putstr(err.Error(), STDERR)
-		error(": cant open file")
+		Putstr(name, STDERR)
+		Putstr(err.Error(), STDERR)
+		Error(": cant open file")
 	}
 	return file
 }
@@ -132,18 +132,18 @@ func create(name string) *os.File {
 func mustcreate(name string) *os.File {
 	file, err := os.Create(name)
 	if err != nil {
-		putstr(name, STDERR)
-		putstr(err.Error(), STDERR)
-		error(": cant open file")
+		Putstr(name, STDERR)
+		Putstr(err.Error(), STDERR)
+		Error(": cant open file")
 	}
 	return file
 }
 func atef(name string) *os.File {
 	file, err := os.Create(name)
 	if err != nil {
-		putstr(name, STDERR)
-		putstr(err.Error(), STDERR)
-		error(": cant create file: " + name)
+		Putstr(name, STDERR)
+		Putstr(err.Error(), STDERR)
+		Error(": cant create file: " + name)
 	}
 	return file
 }
@@ -159,18 +159,18 @@ func remove(filename string) {
 	os.Remove(filename)
 }
 
-func error(message string) {
+func Error(message string) {
 	for _, ch := range message {
-		putc(uint8(ch))
+		Putc(uint8(ch))
 	}
-	putc(NEWLINE)
+	Putc(NEWLINE)
 	os.Exit(42)
 }
 
 // message -- prints message string to the output
 func message(message string) {
-	putstr(message, STDOUT)
-	putc(NEWLINE)
+	Putstr(message, STDOUT)
+	Putc(NEWLINE)
 }
 
 // debug -- prints debug message string to the output
@@ -186,7 +186,7 @@ func getcf(c *uint8, f *os.File) uint8 {
 		if err == io.EOF {
 			return ENDFILE
 		} else {
-			error("ERROR: " + err.Error())
+			Error("ERROR: " + err.Error())
 			return ENDFILE // this line is unreachable
 		}
 	}

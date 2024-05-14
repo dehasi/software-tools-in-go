@@ -1,6 +1,10 @@
 package find
 
-const MAXPAT = MAX_STR
+import (
+	"ch6/io"
+)
+
+const MAXPAT = io.MAX_STR
 const CLOSIZE = 1
 const CLOSURE uint8 = '*'
 const BOL uint8 = '%'
@@ -20,40 +24,40 @@ const DASH uint8 = '-'
 const ENDSTR uint8 = '\n'
 
 // change -- change "from" into "to" on each line }
-func change() {
-	if nargs() != 2 && nargs() != 3 {
-		error("usage: change from [to]")
+func Change() {
+	if io.NArgs() != 2 && io.NArgs() != 3 {
+		io.Error("usage: change from [to]")
 	}
-	pat, ok := getpat(getarg(1))
+	pat, ok := getpat(io.GetArg(1))
 	if !ok {
-		error("change: illegal 'from' pattern")
+		io.Error("change: illegal 'from' pattern")
 	}
 	sub := ""
-	if nargs() == 3 {
-		sub, ok = getsub(getarg(2))
+	if io.NArgs() == 3 {
+		sub, ok = getsub(io.GetArg(2))
 		if !ok {
-			error("change: illegal 'to' pattern")
+			io.Error("change: illegal 'to' pattern")
 		}
 	}
 
-	for line, lineRead := getline(STDIN, MAX_STR); lineRead; line, lineRead = getline(STDIN, MAX_STR) {
+	for line, lineRead := io.Getline(io.STDIN, io.MAX_STR); lineRead; line, lineRead = io.Getline(io.STDIN, io.MAX_STR) {
 		subline(line, pat, sub)
 	}
 }
 
 // find -- finds patterns in text
 func find() {
-	if nargs() != 2 {
-		error("usage: find pattern")
+	if io.NArgs() != 2 {
+		io.Error("usage: find pattern")
 	}
-	pattern, ok := getpat(getarg(1))
+	pattern, ok := getpat(io.GetArg(1))
 	if !ok {
-		error("find: illegal pattern")
+		io.Error("find: illegal pattern")
 	}
 
-	for line, lineRead := getline(STDIN, MAX_STR); lineRead; line, lineRead = getline(STDIN, MAX_STR) {
+	for line, lineRead := io.Getline(io.STDIN, io.MAX_STR); lineRead; line, lineRead = io.Getline(io.STDIN, io.MAX_STR) {
 		if match(line, pattern) {
-			putstr(line, STDOUT)
+			io.Putstr(line, io.STDOUT)
 		}
 	}
 }
@@ -122,7 +126,7 @@ func patsize(pattern string, n int) int {
 	case CLOSURE:
 		return 1 + CLOSIZE // closure is the same as LITCHAR
 	default:
-		error("in patsize: can't happen: " + string(pattern[n]))
+		io.Error("in patsize: can't happen: " + string(pattern[n]))
 		return 42
 	}
 }
@@ -134,7 +138,7 @@ func omatch(line string, i int, pattern string, j int) (bool, int) {
 	if i > line_size {
 		return false, i
 	} else if !contains([]uint8{LITCHAR, BOL, EOL, ANY, CCL, NCCL, CLOSURE}, pattern[j]) {
-		error("in omatch: can't happen: " + string(pattern[j]))
+		io.Error("in omatch: can't happen: " + string(pattern[j]))
 		return false, i
 	}
 
@@ -165,7 +169,7 @@ func omatch(line string, i int, pattern string, j int) (bool, int) {
 			advance = 1
 		}
 	default:
-		error("in omatch: can't happen")
+		io.Error("in omatch: can't happen")
 	}
 
 	if advance >= 0 {
@@ -194,6 +198,5 @@ func contains(array []uint8, val uint8) bool {
 	return false
 }
 func getpat(arg string) (string, bool) {
-	return makepat(arg+"\n", 0, NEWLINE), true
+	return makepat(arg+"\n", 0, io.NEWLINE), true
 }
-ś

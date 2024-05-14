@@ -1,5 +1,9 @@
 package find
 
+import (
+	"ch6/io"
+)
+
 // makepat -- make pattern from arg[i], terminate at delim
 func makepat(arg string, start int, delim uint8) string {
 
@@ -83,7 +87,7 @@ func step_ccl(arg string, i int) int {
 		}
 		i++
 	}
-	error("step_ccl: no CCLEND found")
+	io.Error("step_ccl: no CCLEND found")
 	return i // never happen
 }
 
@@ -119,9 +123,9 @@ func esc(s string, i int) uint8 {
 	} else {
 		i++
 		if s[i] == 'n' {
-			return NEWLINE
+			return io.NEWLINE
 		} else if s[i] == 't' {
-			return TAB
+			return io.TAB
 		} else {
 			return s[i]
 		}

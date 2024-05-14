@@ -1,5 +1,9 @@
 package find
 
+import (
+	"ch6/io"
+)
+
 const DITTO uint8 = '\x01'
 
 // subline -- substitute sub for pat in lin and print
@@ -14,7 +18,7 @@ func subline(line, pat, sub string) {
 		}
 		if m == -1 || m == i {
 			// no match or null match
-			putc(line[i])
+			io.Putc(line[i])
 			i = i + 1
 		} else {
 			// skip matched text
@@ -28,10 +32,10 @@ func putsub(line string, from int, to int, sub string) {
 	for i := 0; i < len(sub); i++ {
 		if sub[i] == DITTO {
 			for j := from; j < to; j++ {
-				putc(line[j])
+				io.Putc(line[j])
 			}
 		} else {
-			putc(sub[i])
+			io.Putc(sub[i])
 		}
 	}
 }
