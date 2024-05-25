@@ -1,3 +1,6 @@
 = CH 6
 
 In this chapter I eventually started using packages.
+
+Stopped at PDF page 191, book page 182
+getone
