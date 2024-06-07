@@ -10,6 +10,7 @@ const (
 	OK      StCode = 0
 	ERR     StCode = 1
 	ERRDATA StCode = 2
+	ENDDATA StCode = 3 // wtf?
 )
 
 var line1 int32 = 0 // first line number
@@ -51,11 +52,37 @@ func getlist(lin string, i int32, status StCode) StCode {
 
 }
 
-func getone(lin string, i int32, num int, status StCode) {
+func getone(lin string, i int32, num int32, status StCode) StCode {
 	// istart, mul, pnum int32
 	istart := i
-	num := 0
+	num = 0
+	if getnum(lin, i, num, status) == OK {
+		for { // repeat
 
+			skipbl(lin, i)
+			if lin[i] != '+' && lin[i] != '-' {
+				status = ENDDATA
+			}
+			// until
+			if status == OK {
+				break
+			}
+		}
+	}
+	if num < 0 || num > lastln {
+		return ERR
+	}
+	if i <= istart {
+		return ENDDATA
+	}
+	return OK
+
+}
+
+// getnum -- get single line number component
+func getnum(lin string, i int32, num int32, status StCode) StCode {
+	status = OK
+	skipbl(lin, i)
 	panic("unimplemented")
 }
 
