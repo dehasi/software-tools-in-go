@@ -5,7 +5,7 @@ import (
 )
 
 // as it "main" package, run tests as > go test *.go
-func Test_match(t *testing.T) {
+func Test_Match(t *testing.T) {
 	tests := []struct {
 		line     string
 		pattern  string
@@ -24,14 +24,14 @@ func Test_match(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result := match(test.line, test.pattern)
+		result := Match(test.line, test.pattern)
 		if result != test.expected {
 			t.Errorf("got %v want %v", result, test.expected)
 		}
 	}
 }
 
-func Test_match_closure(t *testing.T) {
+func Test_Match_closure(t *testing.T) {
 	tests := []struct {
 		line     string
 		pattern  string
@@ -46,7 +46,7 @@ func Test_match_closure(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result := match(test.line, test.pattern)
+		result := Match(test.line, test.pattern)
 		if result != test.expected {
 			t.Errorf("got %v want %v", result, test.expected)
 		}

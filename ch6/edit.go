@@ -10,8 +10,7 @@ type StCode int8
 const (
 	OK      StCode = 0
 	ERR     StCode = 1
-	ERRDATA StCode = 2
-	ENDDATA StCode = 3 // wtf?
+	ENDDATA StCode = 2
 )
 
 var line1 int = 0 // first line number
@@ -19,6 +18,17 @@ var line2 int = 0 // second line number
 var nlines int    // # of line numbers specified
 var curln int     // current line -- value of dot
 var lastln int    // last line -- value of $
+var pat string    // pattern
+
+func edit() {
+
+	for line, ok := io.Getline(io.STDIN, io.MAXLINE); ok; line, ok = io.Getline(io.STDIN, io.MAXLINE) {
+		status := getlist(line, 0, OK)
+		if status == OK {
+			// do command
+		}
+	}
+}
 
 // getlist -- get list of line nums at lin[i], increment i
 func getlist(lin string, i int, status StCode) StCode {
@@ -136,6 +146,31 @@ func getnum(lin string, i int, num int, status StCode) StCode {
 
 // patscan -- find next occurrence of pattern after line n
 func patscan(way byte, num int) StCode {
+
+	n := curln
+	patscanSt := ERR
+	done := false
+	line := ""
+	for {
+		if way == SCAN {
+			n = nextln(n)
+		} else {
+			n = prevln(n)
+		}
+		line = gettxt(n)
+		if find.Match(line, pat) {
+			patscanSt = OK
+			done = true
+		}
+		// until n == curln || done
+		if n == curln || done {
+			break
+		}
+	}
+	return patscanSt
+}
+
+func gettxt(n int) string {
 	panic("unimplemented")
 }
 
@@ -150,12 +185,13 @@ func optpat(lin string, i int) StCode {
 		//  leave existing pattern alone
 		i = i + 1
 	} else {
-		pat := find.Makepat(lin, i+1, lin[i])
+		pat = find.Makepat(lin, i+1, lin[i])
 		if pat == "" {
 			i = 0
 		}
 	}
 	if i == 0 {
+		pat = ""
 		return ERR
 	}
 	return OK
@@ -176,7 +212,7 @@ func skipbl(s string, i int) int {
 // nextln -- get line after n
 func nextln(n int) int {
 	if n >= lastln {
-		return 0
+		return -1 // 0 in original, arrays in pascal starts form 1
 	} else {
 		return n + 1
 	}

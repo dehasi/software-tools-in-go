@@ -56,14 +56,14 @@ func find() {
 	}
 
 	for line, lineRead := io.Getline(io.STDIN, io.MAX_STR); lineRead; line, lineRead = io.Getline(io.STDIN, io.MAX_STR) {
-		if match(line, pattern) {
+		if Match(line, pattern) {
 			io.Putstr(line, io.STDOUT)
 		}
 	}
 }
 
-// match -- finds match anywhere on the line
-func match(line string, pattern string) bool {
+// Match -- finds Match anywhere on the line
+func Match(line string, pattern string) bool {
 	pos := -1
 	n := len(line)
 	for i := 0; i < n && pos == -1; i++ {
