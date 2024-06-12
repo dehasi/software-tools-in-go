@@ -31,6 +31,7 @@ func edit() {
 }
 
 // getlist -- get list of line nums at lin[i], increment i
+// TODO: delete status from parameters
 func getlist(lin string, i int, status StCode) StCode {
 	var num int = 0
 	done := getone(lin, i, num, status) != OK
@@ -171,6 +172,7 @@ func patscan(way byte, num int) StCode {
 }
 
 func gettxt(n int) string {
+	// I think it should open file and get text at line 'n'
 	panic("unimplemented")
 }
 
