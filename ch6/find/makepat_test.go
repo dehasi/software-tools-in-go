@@ -64,7 +64,7 @@ func Test_stclose(t *testing.T) {
 	}
 }
 
-func Test_makepat(t *testing.T) {
+func Test_Makepat(t *testing.T) {
 	tests := []struct {
 		arg      string
 		start    int
@@ -81,13 +81,13 @@ func Test_makepat(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result := makepat(test.arg, test.start, test.delim)
+		result := Makepat(test.arg, test.start, test.delim)
 		if result != test.expected {
 			t.Errorf("got %v want %v", result, test.expected)
 		}
 	}
 }
-func Test_makepat__ccl(t *testing.T) {
+func Test_Makepat__ccl(t *testing.T) {
 	tests := []struct {
 		arg      string
 		start    int
@@ -100,14 +100,14 @@ func Test_makepat__ccl(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result := makepat(test.arg, test.start, test.delim)
+		result := Makepat(test.arg, test.start, test.delim)
 		if result != test.expected {
 			t.Errorf("got %v want %v", result, test.expected)
 		}
 	}
 }
 
-func Test_makepat__closure(t *testing.T) {
+func Test_Makepat__closure(t *testing.T) {
 	tests := []struct {
 		arg      string
 		start    int
@@ -120,7 +120,7 @@ func Test_makepat__closure(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result := makepat(test.arg, test.start, test.delim)
+		result := Makepat(test.arg, test.start, test.delim)
 		if result != test.expected {
 			t.Errorf("got %v want %v", result, test.expected)
 		}

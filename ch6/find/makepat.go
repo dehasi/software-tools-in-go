@@ -5,7 +5,7 @@ import (
 )
 
 // makepat -- make pattern from arg[i], terminate at delim
-func makepat(arg string, start int, delim uint8) string {
+func Makepat(arg string, start int, delim uint8) string {
 
 	/*
 	   junk : boolean;
@@ -52,7 +52,7 @@ func makepat(arg string, start int, delim uint8) string {
 		}
 	}
 	if done || arg[i] != delim { // finished early
-		return "-1"
+		return "" // was -1
 	} else {
 		return pat // all is well
 	}

@@ -66,8 +66,8 @@ func itoc(n int) string {
 	return string(rune('0' + (n % 10)))
 }
 
-// ctoi - converts string to integer
-func ctoi(c string) int {
+// Ctoi - converts string to integer
+func Ctoi(c string) int {
 	n := 0
 	for i := 0; i < len(c); i++ {
 		n *= 10

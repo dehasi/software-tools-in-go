@@ -1,6 +1,7 @@
 package main
 
 import (
+	"ch6/find"
 	"ch6/io"
 )
 
@@ -13,15 +14,15 @@ const (
 	ENDDATA StCode = 3 // wtf?
 )
 
-var line1 int32 = 0 // first line number
-var line2 int32 = 0 // second line number
-var nlines int32    // # of line numbers specified
-var curln int32     // current line -- value of dot
-var lastln int32    // last line -- value of $
+var line1 int = 0 // first line number
+var line2 int = 0 // second line number
+var nlines int    // # of line numbers specified
+var curln int     // current line -- value of dot
+var lastln int    // last line -- value of $
 
 // getlist -- get list of line nums at lin[i], increment i
-func getlist(lin string, i int32, status StCode) StCode {
-	var num int32 = 0
+func getlist(lin string, i int, status StCode) StCode {
+	var num int = 0
 	done := getone(lin, i, num, status) != OK
 
 	for !done {
@@ -29,7 +30,7 @@ func getlist(lin string, i int32, status StCode) StCode {
 		line2 = num
 		nlines = nlines + 1
 		if lin[i] == ':' {
-			curln = int32(num)
+			curln = num
 		}
 		if lin[i] == ',' || lin[i] == ':' {
 			i = i + 1
@@ -52,18 +53,41 @@ func getlist(lin string, i int32, status StCode) StCode {
 
 }
 
-func getone(lin string, i int32, num int32, status StCode) StCode {
+const PLUS uint8 = '+'
+const MINUS uint8 = '-'
+const CURLINE uint8 = '.'
+const LASTLINE uint8 = '$'
+const SCAN uint8 = '/'
+const BACKSCAN uint8 = '\\'
+
+// getone -- get one line number expression
+func getone(lin string, i int, num int, status StCode) StCode {
 	// istart, mul, pnum int32
 	istart := i
 	num = 0
+	var mul int = 0
+	var pnum int = 42
 	if getnum(lin, i, num, status) == OK {
-		for { // repeat
+		for { // repeat + or - terms
 
-			skipbl(lin, i)
-			if lin[i] != '+' && lin[i] != '-' {
+			i = skipbl(lin, i)
+			if lin[i] != PLUS && lin[i] != MINUS {
 				status = ENDDATA
+			} else {
+				if lin[i] == PLUS {
+					mul += 1
+				} else {
+					mul -= 1
+				}
+				i = i + 1
+				if getnum(lin, i, pnum, status) == OK {
+					num = num + mul*pnum
+				}
+				if status == ENDDATA {
+					status = ERR
+				}
 			}
-			// until
+			// until status <> OK
 			if status == OK {
 				break
 			}
@@ -80,14 +104,69 @@ func getone(lin string, i int32, num int32, status StCode) StCode {
 }
 
 // getnum -- get single line number component
-func getnum(lin string, i int32, num int32, status StCode) StCode {
+// evaluates one number in a line number expression, where a number is either an integer, . (dot), $, or a context search
+func getnum(lin string, i int, num int, status StCode) StCode {
+	// we expet that 'num' will hold a result
+	// we expect that i will also be changed (incresed)
+	// so ideally we have to return i, nm, status
 	status = OK
-	skipbl(lin, i)
+	i = skipbl(lin, i)
+	if isdigit(lin[i]) {
+		num = io.Ctoi(lin[i:])
+		i = i - 1 // move back; to be advanced at end
+	} else if lin[i] == CURLINE {
+		num = curln
+	} else if lin[i] == LASTLINE {
+		num = lastln
+	} else if lin[i] == SCAN || lin[i] == BACKSCAN {
+		if optpat(lin, i) == ERR { // build pattern
+			status = ERR
+		} else {
+			status = patscan(lin[i], num)
+		}
+	} else {
+		status = ENDDATA
+	}
+
+	if status == OK {
+		i = i + 1 // next character to be examined
+	}
+	return status
+}
+
+// patscan -- find next occurrence of pattern after line n
+func patscan(way byte, num int) StCode {
 	panic("unimplemented")
 }
 
+// optpat -- get optional pattern from lin[i], increment i
+func optpat(lin string, i int) StCode {
+	// not sure what we need to return besides i, maybe pat?
+	// or pat should be global like lastln?
+	n := len(lin)
+	if n == i || n == i+1 {
+		i = 0
+	} else if lin[i+1] == lin[i] { // repeated delimiter
+		//  leave existing pattern alone
+		i = i + 1
+	} else {
+		pat := find.Makepat(lin, i+1, lin[i])
+		if pat == "" {
+			i = 0
+		}
+	}
+	if i == 0 {
+		return ERR
+	}
+	return OK
+}
+
+func isdigit(b byte) bool {
+	return ('0' <= b) && (b <= '9')
+}
+
 // skipbl -- skip blanks and tabs at s[i]
-func skipbl(s string, i int32) int32 {
+func skipbl(s string, i int) int {
 	for s[i] == io.TAB || s[i] == io.BLANK {
 		i += 1
 	}
@@ -95,7 +174,7 @@ func skipbl(s string, i int32) int32 {
 }
 
 // nextln -- get line after n
-func nextln(n int32) int32 {
+func nextln(n int) int {
 	if n >= lastln {
 		return 0
 	} else {
@@ -104,7 +183,7 @@ func nextln(n int32) int32 {
 }
 
 // prevln -- get line before n
-func prevln(n int32) int32 {
+func prevln(n int) int {
 	if n <= 0 {
 		return lastln
 	} else {

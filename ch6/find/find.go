@@ -198,5 +198,5 @@ func contains(array []uint8, val uint8) bool {
 	return false
 }
 func getpat(arg string) (string, bool) {
-	return makepat(arg+"\n", 0, io.NEWLINE), true
+	return Makepat(arg+"\n", 0, io.NEWLINE), true
 }
