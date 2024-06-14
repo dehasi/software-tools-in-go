@@ -56,7 +56,7 @@ func setDefault(def1 int, def2 int, status StCode) StCode {
 }
 
 // doprint -- print lines n1 through n2
-func doprint(n1 int, n2 int, status StCode) StCode {
+func doprint(n1 int, n2 int) StCode {
 	if n1 < 0 {
 		return ERR
 	}
@@ -75,10 +75,30 @@ func docmd(lin string, i int, glob bool, status StCode) StCode {
 	// fil, sub string;
 	// line3 : integer;
 	// gflag, pflag : boolean;
-
-	pflag := false // may be set by d, m, s
 	status = ERR
-
+	pflag := false // may be set by d, m, s
+	switch lin[i] {
+	case PCMD:
+		if lin[i+1] == io.NEWLINE {
+			if setDefault(curln, curln, status) == OK {
+				status = doprint(line1, line2)
+			}
+		}
+	case io.NEWLINE:
+		if nlines == 0 {
+			line2 = nextln(curln)
+		}
+		status = doprint(line2, line2)
+	case QCMD:
+		if (lin[i+1] == io.NEWLINE) && nlines == 0 && (!glob) {
+			status = ENDDATA
+		}
+	default:
+		status = ERR
+	}
+	if status == OK && pflag {
+		status = doprint(curln, curln)
+	}
 	return status
 }
 

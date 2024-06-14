@@ -2,8 +2,8 @@
 
 In this chapter I eventually started using packages.
 
-Stopped at PDF page 195, book page 186
-getone
+Stopped at PDF page 200, book page 191
+
 
 
 > Pascal, like many languages, does not guarantee any particular order for evaluation of logical expressions (or any other expressions, for that matter), nor does
