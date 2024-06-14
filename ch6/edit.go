@@ -31,13 +31,41 @@ func edit() {
 				status = doglob(line, i, cursave, status)
 			} else if status != ERR {
 				status = docmd(line, i, false, status)
-			}
+			} // else error, do nothing
 		} else if status == ERR {
 			io.Putstr("?", io.STDOUT)
 		} else if status == ENDDATA {
 			break
 		}
 	}
+}
+
+// setDefault -- set defaulted line numbers, original name 'default'
+func setDefault(def1 int, def2 int, status StCode) StCode {
+
+	if nlines == 0 {
+		line1 = def1
+		line2 = def2
+		return OK
+	}
+
+	if (line1 > line2) || (line1 < 0) {
+		return ERR
+	}
+	return OK
+}
+
+// doprint -- print lines n1 through n2
+func doprint(n1 int, n2 int, status StCode) StCode {
+	if n1 < 0 {
+		return ERR
+	}
+	for i := n1; i <= n2; i++ {
+		line := gettxt(i)
+		io.Putstr(line, io.STDOUT)
+	}
+	curln = n2
+	return OK
 }
 
 // The false argument to docmd says that it is not being called from within a global prefix
