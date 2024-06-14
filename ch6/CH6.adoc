@@ -4,3 +4,8 @@ In this chapter I eventually started using packages.
 
 Stopped at PDF page 195, book page 186
 getone
+
+
+> Pascal, like many languages, does not guarantee any particular order for evaluation of logical expressions (or any other expressions, for that matter), nor does
+it guarantee that evaluation of a logical expression will terminate as soon as the
+truth value is known

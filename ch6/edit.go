@@ -23,11 +23,36 @@ var pat string    // pattern
 func edit() {
 
 	for line, ok := io.Getline(io.STDIN, io.MAXLINE); ok; line, ok = io.Getline(io.STDIN, io.MAXLINE) {
+		i := 0
+		cursave := curln
 		status := getlist(line, 0, OK)
 		if status == OK {
-			// do command
+			if ckglob(line, i, status) == OK {
+				status = doglob(line, i, cursave, status)
+			} else if status != ERR {
+				status = docmd(line, i, false, status)
+			}
+		} else if status == ERR {
+			io.Putstr("?", io.STDOUT)
+		} else if status == ENDDATA {
+			break
 		}
 	}
+}
+
+// The false argument to docmd says that it is not being called from within a global prefix
+func docmd(line string, i int, global bool, status StCode) StCode {
+	panic("unimplemented")
+}
+
+func doglob(line string, i, cursave int, status StCode) StCode {
+	panic("unimplemented")
+}
+
+// ckglob looks for g/.../ or x/.../;
+// if either is found, ckglob marks the lines for processing by doglob,
+func ckglob(line string, i int, status StCode) StCode {
+	return ENDDATA
 }
 
 // getlist -- get list of line nums at lin[i], increment i
@@ -230,5 +255,5 @@ func prevln(n int) int {
 }
 
 func main() {
-
+	io.Putstr("Compiled", io.STDOUT)
 }
