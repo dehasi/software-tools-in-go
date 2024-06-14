@@ -76,7 +76,7 @@ func docmd(lin string, i int, glob bool, status StCode) StCode {
 	// line3 : integer;
 	// gflag, pflag : boolean;
 
-	pflag := false // may be set by d, m, sś
+	pflag := false // may be set by d, m, s
 	status = ERR
 
 	return status
@@ -129,12 +129,13 @@ func getlist(lin string, i int, status StCode) StCode {
 const PLUS uint8 = '+'
 const MINUS uint8 = '-'
 
+const MAXLINES = 100
+const MAXPAT = io.MAX_STR
 const DITTO = -1
 const CLOSURE uint8 = '*'
 const BOL uint8 = '%'
 const EOL uint8 = '$'
-const QUESTION uint8 = '?'
-
+const ANY uint8 = '?'
 const CCL uint8 = '['
 const CCLEND uint8 = ']'
 const NEGATE uint8 = '^'
@@ -144,6 +145,7 @@ const CURLINE uint8 = '.'
 const LASTLINE uint8 = '$'
 const SCAN uint8 = '/'
 const BACKSCAN uint8 = '\\'
+
 const ACMD uint8 = 'a'
 const CCMD uint8 = 'c'
 const DCMD uint8 = 'd'
