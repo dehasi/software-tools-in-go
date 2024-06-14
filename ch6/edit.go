@@ -68,9 +68,18 @@ func doprint(n1 int, n2 int, status StCode) StCode {
 	return OK
 }
 
+// docmd -- handle all commands except globals
 // The false argument to docmd says that it is not being called from within a global prefix
-func docmd(line string, i int, global bool, status StCode) StCode {
-	panic("unimplemented")
+func docmd(lin string, i int, glob bool, status StCode) StCode {
+
+	// fil, sub string;
+	// line3 : integer;
+	// gflag, pflag : boolean;
+
+	pflag := false // may be set by d, m, sś
+	status = ERR
+
+	return status
 }
 
 func doglob(line string, i, cursave int, status StCode) StCode {
@@ -119,10 +128,38 @@ func getlist(lin string, i int, status StCode) StCode {
 
 const PLUS uint8 = '+'
 const MINUS uint8 = '-'
+
+const DITTO = -1
+const CLOSURE uint8 = '*'
+const BOL uint8 = '%'
+const EOL uint8 = '$'
+const QUESTION uint8 = '?'
+
+//	CCL  = LBRACK;
+//
+// CCLEND = RBRACK;
+const NEGATE uint8 = '^'
+const NCCL uint8 = '!'
+const LITCHAR = 'c'
 const CURLINE uint8 = '.'
 const LASTLINE uint8 = '$'
 const SCAN uint8 = '/'
 const BACKSCAN uint8 = '\\'
+const ACMD uint8 = 'a'
+const CCMD uint8 = 'c'
+const DCMD uint8 = 'd'
+const ECMD uint8 = 'e'
+const EQCMD uint8 = '='
+const FCMD uint8 = 'f'
+const GCMD uint8 = 'g'
+const ICMD uint8 = 'i'
+const MCMD uint8 = 'm'
+const PCMD uint8 = 'p'
+const QCMD uint8 = 'q'
+const RCMD uint8 = 'r'
+const SCMD uint8 = 's'
+const WCMD uint8 = 'w'
+const XCMD uint8 = 'x'
 
 // getone -- get one line number expression
 func getone(lin string, i int, num int, status StCode) StCode {
