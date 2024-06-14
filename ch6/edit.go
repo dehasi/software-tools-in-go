@@ -135,9 +135,8 @@ const BOL uint8 = '%'
 const EOL uint8 = '$'
 const QUESTION uint8 = '?'
 
-//	CCL  = LBRACK;
-//
-// CCLEND = RBRACK;
+const CCL uint8 = '['
+const CCLEND uint8 = ']'
 const NEGATE uint8 = '^'
 const NCCL uint8 = '!'
 const LITCHAR = 'c'
