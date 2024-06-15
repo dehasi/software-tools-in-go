@@ -32,6 +32,6 @@ func putmark(n int, m int) {
 }
 
 // returns the mark on line n.
-func getmark(int n) {
+func getmark(n int) {
 	panic("unimplemented")
 }
