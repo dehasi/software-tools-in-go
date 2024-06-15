@@ -93,6 +93,10 @@ func docmd(lin string, i int, glob bool, status StCode) StCode {
 		if (lin[i+1] == io.NEWLINE) && nlines == 0 && (!glob) {
 			status = ENDDATA
 		}
+	case ACMD:
+		if lin[i+1] == io.NEWLINE {
+			status = append(line2, glob)
+		}
 	default:
 		status = ERR
 	}
@@ -100,6 +104,32 @@ func docmd(lin string, i int, glob bool, status StCode) StCode {
 		status = doprint(curln, curln)
 	}
 	return status
+}
+
+// append -- append lines after "line"
+func append(line int, glob bool) StCode {
+	// inline : string;
+	// stat stcode;
+	// done : boolean;
+
+	if glob {
+		return ERR
+	}
+	curln = line
+	stat := OK
+	done := false
+
+	for !done && stat == OK {
+		inline, ok := io.Getline(io.STDIN, io.MAX_STR)
+		if !ok {
+			stat = ENDDATA
+		} else if inline[0] == PERIOD && inline[1] == io.NEWLINE {
+			done = true
+		} else if puttxt(inline) == ERR {
+			stat = ERR
+		}
+	}
+	return stat
 }
 
 func doglob(line string, i, cursave int, status StCode) StCode {
@@ -148,6 +178,7 @@ func getlist(lin string, i int, status StCode) StCode {
 
 const PLUS uint8 = '+'
 const MINUS uint8 = '-'
+const PERIOD uint8 = '.'
 
 const MAXLINES = 100
 const MAXPAT = io.MAX_STR
@@ -161,7 +192,7 @@ const CCLEND uint8 = ']'
 const NEGATE uint8 = '^'
 const NCCL uint8 = '!'
 const LITCHAR = 'c'
-const CURLINE uint8 = '.'
+const CURLINE uint8 = PERIOD
 const LASTLINE uint8 = '$'
 const SCAN uint8 = '/'
 const BACKSCAN uint8 = '\\'
@@ -280,11 +311,6 @@ func patscan(way byte, num int) StCode {
 		}
 	}
 	return patscanSt
-}
-
-func gettxt(n int) string {
-	// I think it should open file and get text at line 'n'
-	panic("unimplemented")
 }
 
 // optpat -- get optional pattern from lin[i], increment i
