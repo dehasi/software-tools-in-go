@@ -4,7 +4,11 @@ In this chapter I eventually started using packages.
 
 Stopped at PDF page 206, book page 197
 
+We have `p` and `a` comands and in-memory buffer. So, time to debug
 
+----
+go build *.go && ./buf
+----
 
 > Pascal, like many languages, does not guarantee any particular order for evaluation of logical expressions (or any other expressions, for that matter), nor does
 it guarantee that evaluation of a logical expression will terminate as soon as the

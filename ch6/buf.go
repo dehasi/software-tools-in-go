@@ -28,6 +28,7 @@ func clrbuf() StCode {
 // puttxt (in memory) -- put text from lin after curln
 // copies the text in lin into the buffer immediately after the current line and sets curln to the last line added.
 func puttxt(inline string) StCode {
+	println("puttxt", "inline:", inline)
 	if lastln < MAXLINES {
 		lastln := lastln + 1
 		buf[lastln].txt = strings.Clone(inline)
@@ -42,6 +43,7 @@ func puttxt(inline string) StCode {
 // gettxt (in memory) -- get text from line n into s
 // copies the contents of line n into the string s.
 func gettxt(n int) string {
+	println("gettxt", "n:", n)
 	// scopy(buf(n].txt, 1, s, 1)
 	return strings.Clone(buf[n].txt)
 }
@@ -73,10 +75,12 @@ func reverse(n1 int, n2 int) {
 
 // places the mark m on line n for global prefix processing.
 func putmark(n int, mark bool) {
-	panic("unimplemented")
+	buf[n].mark = mark
+	// panic("unimplemented")
 }
 
 // returns the mark on line n.
-func getmark(n int) {
-	panic("unimplemented")
+func getmark(n int) bool {
+	return buf[n].mark
+	// panic("unimplemented")
 }

@@ -23,9 +23,10 @@ var pat string    // pattern
 func edit() {
 
 	for line, ok := io.Getline(io.STDIN, io.MAXLINE); ok; line, ok = io.Getline(io.STDIN, io.MAXLINE) {
+		println("process line: ", line)
 		i := 0
 		cursave := curln
-		status := getlist(line, 0, OK)
+		i, status := getlist(line, 0, OK)
 		if status == OK {
 			if ckglob(line, i, status) == OK {
 				status = doglob(line, i, cursave, status)
@@ -57,6 +58,7 @@ func setDefault(def1 int, def2 int, status StCode) StCode {
 
 // doprint -- print lines n1 through n2
 func doprint(n1 int, n2 int) StCode {
+	println("doprint", "n1: ", n1, "n2:", n2)
 	if n1 < 0 {
 		return ERR
 	}
@@ -71,7 +73,7 @@ func doprint(n1 int, n2 int) StCode {
 // docmd -- handle all commands except globals
 // The false argument to docmd says that it is not being called from within a global prefix
 func docmd(lin string, i int, glob bool, status StCode) StCode {
-
+	println("docmd", "lin", lin, "i", i, "lin[i]", lin[i])
 	// fil, sub string;
 	// line3 : integer;
 	// gflag, pflag : boolean;
@@ -79,6 +81,7 @@ func docmd(lin string, i int, glob bool, status StCode) StCode {
 	pflag := false // may be set by d, m, s
 	switch lin[i] {
 	case PCMD:
+		println("PCMD")
 		if lin[i+1] == io.NEWLINE {
 			if setDefault(curln, curln, status) == OK {
 				status = doprint(line1, line2)
@@ -94,6 +97,7 @@ func docmd(lin string, i int, glob bool, status StCode) StCode {
 			status = ENDDATA
 		}
 	case ACMD:
+		println("ACMD")
 		if lin[i+1] == io.NEWLINE {
 			status = append(line2, glob)
 		}
@@ -103,14 +107,13 @@ func docmd(lin string, i int, glob bool, status StCode) StCode {
 	if status == OK && pflag {
 		status = doprint(curln, curln)
 	}
+	println("docmd return status", status)
 	return status
 }
 
 // append -- append lines after "line"
 func append(line int, glob bool) StCode {
-	// inline : string;
-	// stat stcode;
-	// done : boolean;
+	println("append")
 
 	if glob {
 		return ERR
@@ -129,6 +132,7 @@ func append(line int, glob bool) StCode {
 			stat = ERR
 		}
 	}
+	println("append return stat:", stat)
 	return stat
 }
 
@@ -144,9 +148,11 @@ func ckglob(line string, i int, status StCode) StCode {
 
 // getlist -- get list of line nums at lin[i], increment i
 // TODO: delete status from parameters
-func getlist(lin string, i int, status StCode) StCode {
-	var num int = 0
-	done := getone(lin, i, num, status) != OK
+func getlist(lin string, i int, status StCode) (int, StCode) {
+	println("getlist", "lin", lin, "i", i)
+
+	num, i, status := getone(lin, i)
+	done := status != OK
 
 	for !done {
 		line1 = line2
@@ -157,7 +163,8 @@ func getlist(lin string, i int, status StCode) StCode {
 		}
 		if lin[i] == ',' || lin[i] == ':' {
 			i = i + 1
-			done = getone(lin, i, num, status) != OK
+			num, i, status = getone(lin, i)
+			done = status != OK
 		} else {
 			done = true // TODO break
 		}
@@ -172,18 +179,20 @@ func getlist(lin string, i int, status StCode) StCode {
 	if status != ERR {
 		status = OK
 	}
-	return status
+
+	println("getlist return", "i:", i, "status:", status, "num:", num)
+	return i, status
 
 }
 
 // getone -- get one line number expression
-func getone(lin string, i int, num int, status StCode) StCode {
-	// istart, mul, pnum int32
+func getone(lin string, i int) (int, int, StCode) {
+	println("getone", "lin:", lin, "i:", i)
 	istart := i
-	num = 0
 	var mul int = 0
 	var pnum int = 42
-	if getnum(lin, i, num, status) == OK {
+	num, i, status := getnum(lin, i)
+	if status == OK {
 		for { // repeat + or - terms
 
 			i = skipbl(lin, i)
@@ -196,7 +205,8 @@ func getone(lin string, i int, num int, status StCode) StCode {
 					mul -= 1
 				}
 				i = i + 1
-				if getnum(lin, i, pnum, status) == OK {
+				num, i, status = getnum(lin, i)
+				if status == OK {
 					num = num + mul*pnum
 				}
 				if status == ENDDATA {
@@ -210,22 +220,24 @@ func getone(lin string, i int, num int, status StCode) StCode {
 		}
 	}
 	if num < 0 || num > lastln {
-		return ERR
+		return -1, -1, ERR
 	}
 	if i <= istart {
-		return ENDDATA
+		return 1, -1, ENDDATA
 	}
-	return OK
+	println("getone return OK", "num:", num, "i:", i)
+	return num, i, OK
 
 }
 
 // getnum -- get single line number component
 // evaluates one number in a line number expression, where a number is either an integer, . (dot), $, or a context search
-func getnum(lin string, i int, num int, status StCode) StCode {
+func getnum(lin string, i int) (int, int, StCode) {
 	// we expet that 'num' will hold a result
 	// we expect that i will also be changed (incresed)
 	// so ideally we have to return i, nm, status
-	status = OK
+	status := OK
+	num := 0
 	i = skipbl(lin, i)
 	if isdigit(lin[i]) {
 		num = io.Ctoi(lin[i:])
@@ -246,8 +258,9 @@ func getnum(lin string, i int, num int, status StCode) StCode {
 
 	if status == OK {
 		i = i + 1 // next character to be examined
+		return num, i, OK
 	}
-	return status
+	return -1, -1, status
 }
 
 // patscan -- find next occurrence of pattern after line n
@@ -330,6 +343,7 @@ func prevln(n int) int {
 }
 
 func main() {
+	io.Putstr("Start editing\n", io.STDOUT)
 	edit()
-	io.Putstr("Compiled", io.STDOUT)
+	io.Putstr("Compiled\n", io.STDOUT)
 }
