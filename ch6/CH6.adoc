@@ -55,3 +55,56 @@ confinguration to use input from terminal while debugging
 
 
 Pattern matching will be tested in 6.6 chapter "The Substitute Command".
+
+
+Move
+----
+$ go build *.go  && ./main
+i 
+111
+222
+333
+444
+555
+666
+.
+1,3m5
+1,$p
+444
+555
+111
+222
+333
+666
+----
+
+Change and Delete
+----
+$ go build *.go  && ./main
+i
+111
+222
+333
+444
+555
+666
+.
+2,3c
+aaa
+bbb
+ccc
+ddd
+.
+1,$p
+111
+aaa
+bbb
+ccc
+ddd
+444
+555
+2,$-1d
+1,$p
+111
+666
+----

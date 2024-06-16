@@ -140,12 +140,12 @@ func docmd(lin string, i int, glob bool) StCode {
 		}
 	case MCMD:
 		i = i + 1
-		line3, i, status := getone(lin, i)
-		if status == ENDDATA {
+		line3, i, st := getone(lin, i)
+		if st == ENDDATA || st == ERR {
 			status = ERR
 		}
-		if status == OK &&
-			ckp(lin, i+1, &pflag) == OK &&
+		if st == OK &&
+			ckp(lin, i, &pflag) == OK &&
 			setDefault(curln, curln) == OK {
 			status = move(line3)
 		}
@@ -161,7 +161,7 @@ func docmd(lin string, i int, glob bool) StCode {
 
 // move -- move line1 through line2 after line3
 func move(line3 int) StCode {
-	if line1 < 0 || (line3 >= line1 && line3 < line2) {
+	if line1 < 0 || (line1 <= line3 && line3 < line2) {
 		return ERR
 	}
 	blkmove(line1, line2, line3)
@@ -400,7 +400,8 @@ func optpat(lin string, i int) StCode {
 
 // skipbl -- skip blanks and tabs at s[i]
 func skipbl(s string, i int) int {
-	for i < len(s) && (s[i] == io.TAB || s[i] == io.BLANK) {
+	// As Go strings don't have EOL marker, so I need to be creative
+	for i < len(s) && s[i] != io.NEWLINE && (s[i] == io.TAB || s[i] == io.BLANK) {
 		i += 1
 	}
 	return i
