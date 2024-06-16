@@ -2,7 +2,7 @@
 
 In this chapter I eventually started using packages.
 
-Stopped at PDF page 206, book page 197
+Stopped at PDF page 209, book page 200
 
 We have `p` and `a` comands and in-memory buffer. So, time to debug and write unit tests
 
