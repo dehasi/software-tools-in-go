@@ -89,6 +89,16 @@ func Test_getlist(t *testing.T) {
 		{line: ".-27p", i: 0, status: OK, ii: 4,
 			before: globals{line1: -1, line2: -1, nlines: 505, curln: 101, lastln: 504, pat: ""},
 			after:  globals{line1: 74, line2: 74, nlines: 1, curln: 101, lastln: 504, pat: ""}},
+
+		// parses comma, reads line1 = curln, line2 = lastln
+		{line: ".,$p", i: 0, status: OK, ii: 3,
+			before: globals{line1: -1, line2: -1, nlines: 505, curln: 101, lastln: 504, pat: ""},
+			after:  globals{line1: 101, line2: 504, nlines: 2, curln: 101, lastln: 504, pat: ""}},
+
+		// parses comma,
+		{line: ".+42,$-24p", i: 0, status: OK, ii: 9,
+			before: globals{line1: -1, line2: -1, nlines: 505, curln: 101, lastln: 504, pat: ""},
+			after:  globals{line1: 101 + 42, line2: 504 - 24, nlines: 2, curln: 101, lastln: 504, pat: ""}},
 	}
 
 	for _, test := range tests {
