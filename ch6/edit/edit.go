@@ -153,10 +153,10 @@ func getlist(lin string, i int) (int, StCode) {
 		line1 = line2
 		line2 = num
 		nlines = nlines + 1
-		if lin[i] == ':' {
+		if lin[i] == SEMICOL {
 			curln = num
 		}
-		if lin[i] == ',' || lin[i] == ':' {
+		if lin[i] == COMMA || lin[i] == SEMICOL {
 			i = i + 1
 			num, i, status = getone(lin, i)
 			done = status != OK

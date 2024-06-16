@@ -5,6 +5,8 @@ import "ch6/io"
 const PLUS uint8 = '+'
 const MINUS uint8 = '-'
 const PERIOD uint8 = '.'
+const COMMA uint8 = ','
+const SEMICOL uint8 = ';'
 
 const MAXLINES = 100
 const MAXPAT = io.MAX_STR
