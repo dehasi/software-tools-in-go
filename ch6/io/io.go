@@ -43,8 +43,8 @@ func Putc(c uint8) {
 	}
 }
 
-// putdec -- puts number digits to  standard output
-func putdec(nc int, wide int) {
+// Putdec -- puts number digits to  standard output
+func Putdec(nc int, wide int) {
 	var s = itoc(nc)
 	nd := len(s)
 	for i := nd; i < wide; i++ {

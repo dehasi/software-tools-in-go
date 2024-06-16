@@ -52,3 +52,6 @@ confinguration to use input from terminal while debugging
       ]
 }
 ----
+
+
+Pattern matching will be tested in 6.6 chapter "The Substitute Command".

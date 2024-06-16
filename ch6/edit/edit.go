@@ -65,7 +65,7 @@ func setDefault(def1 int, def2 int) StCode {
 
 // doprint -- print lines n1 through n2
 func doprint(n1 int, n2 int) StCode {
-	println("doprint", "n1: ", n1, "n2:", n2)
+	// println("doprint", "n1: ", n1, "n2:", n2)
 	if n1 < 0 {
 		return ERR
 	}
@@ -105,6 +105,50 @@ func docmd(lin string, i int, glob bool) StCode {
 		if lin[i+1] == io.NEWLINE {
 			status = append(line2, glob)
 		}
+	case DCMD:
+		if ckp(lin, i+1, &pflag) == OK {
+			if setDefault(curln, curln) == OK {
+				if lndelete(line1, line2) == OK {
+					if nextln(curln) >= 0 {
+						curln = nextln(curln)
+					}
+					status = OK
+				}
+			}
+		}
+	case ICMD:
+		if lin[i+1] == io.NEWLINE {
+			if line2 == 0 {
+				status = append(0, glob)
+			} else {
+				status = append(prevln(line2), glob)
+			}
+		}
+	case CCMD:
+		if lin[i+1] == io.NEWLINE {
+			if setDefault(curln, curln) == OK {
+				if lndelete(line1, line2) == OK {
+					status = append(prevln(line1), glob)
+				}
+			}
+		}
+	case EQCMD:
+		if ckp(lin, i+1, &pflag) == OK {
+			io.Putdec(line2, 1)
+			io.Putc(io.NEWLINE)
+			status = OK
+		}
+	case MCMD:
+		i = i + 1
+		line3, i, status := getone(lin, i)
+		if status == ENDDATA {
+			status = ERR
+		}
+		if status == OK &&
+			ckp(lin, i+1, &pflag) == OK &&
+			setDefault(curln, curln) == OK {
+			status = move(line3)
+		}
 	default:
 		status = ERR
 	}
@@ -113,6 +157,48 @@ func docmd(lin string, i int, glob bool) StCode {
 	}
 	// println("docmd return status", status)
 	return status
+}
+
+// move -- move line1 through line2 after line3
+func move(line3 int) StCode {
+	if line1 < 0 || (line3 >= line1 && line3 < line2) {
+		return ERR
+	}
+	blkmove(line1, line2, line3)
+	if line3 > line1 {
+		curln = line3
+	} else {
+		curln = line3 + (line2 - line1 + 1)
+	}
+	return OK
+}
+
+// lndelete -- delete lines n1 through n2
+// lines are "deleted" by moving them to the end of the buffer, then abandoning them by decreasing lastln.
+func lndelete(n1, n2 int) StCode {
+	if n1 < 0 {
+		return ERR
+	}
+	blkmove(n1, n2, lastln)
+	lastln = lastln - (n2 - n1 + 1) // do I need +1?
+	curln = prevln(n1)
+	return OK
+}
+
+// ckp -- check for "p" after command
+func ckp(lin string, i int, pflag *bool) StCode {
+	i = skipbl(lin, i)
+	if lin[i] == PCMD {
+		i = i + 1
+		*pflag = true
+	} else {
+		*pflag = false
+	}
+	if lin[i] == io.NEWLINE {
+		return OK
+	} else {
+		return ERR
+	}
 }
 
 // append -- append lines after "line"
@@ -314,7 +400,7 @@ func optpat(lin string, i int) StCode {
 
 // skipbl -- skip blanks and tabs at s[i]
 func skipbl(s string, i int) int {
-	for s[i] == io.TAB || s[i] == io.BLANK {
+	for i < len(s) && (s[i] == io.TAB || s[i] == io.BLANK) {
 		i += 1
 	}
 	return i
