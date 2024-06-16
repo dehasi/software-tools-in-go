@@ -66,6 +66,21 @@ func itoc(n int) string {
 	return string(rune('0' + (n % 10)))
 }
 
+// Isdigit -- checks is a char is a digit
+func Isdigit(b byte) bool {
+	return ('0' <= b) && (b <= '9')
+}
+
+// Ctoi2 - converts string to integer from i, and as possible
+func Ctoi2(c string, i int) (int, int) {
+	n := 0
+	for ; i < len(c) && Isdigit(c[i]); i++ {
+		n *= 10
+		n += int(c[i] - '0')
+	}
+	return i, n
+}
+
 // Ctoi - converts string to integer
 func Ctoi(c string) int {
 	n := 0

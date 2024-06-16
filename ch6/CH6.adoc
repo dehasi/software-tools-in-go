@@ -6,8 +6,27 @@ Stopped at PDF page 206, book page 197
 
 We have `p` and `a` comands and in-memory buffer. So, time to debug and write unit tests
 
+After writing some unit tests, append and print seems working
 ----
-go build *.go && ./buf
+$ go build *.go  && ./main
+$a
+1111
+22222
+3333
+.
+.p
+3333
+$p
+3333
+1p
+1111
+2p
+22222
+3p
+3333
+0p
+4p
+?^C
 ----
 
 > Pascal, like many languages, does not guarantee any particular order for evaluation of logical expressions (or any other expressions, for that matter), nor does
