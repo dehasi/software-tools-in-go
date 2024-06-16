@@ -73,16 +73,27 @@ func Test_getlist(t *testing.T) {
 		// return
 		ii     int
 		status StCode
-		line1  int // first line number
-		line2  int // second line number
-		nlines int // # of line numbers specified
-		curln  int // current line -- value of dot
-		lastln int
+		// global state
+		before globals
+		after  globals
 	}{
-		{line: ".p", i: 0, status: OK, line1: 0, line2: 0, nlines: 0, curln: 1, lastln: 0},
+		// reads curln
+		// {line: ".p", i: 0, status: OK, ii: 1,
+		// 	before: globals{line1: -1, line2: -1, nlines: 505, curln: 101, lastln: 504, pat: ""},
+		// 	after:  globals{line1: 101, line2: 101, nlines: 1, curln: 101, lastln: 504, pat: ""}},
+		// reads curln +42
+		{line: ".+42p", i: 0, status: OK, ii: 4,
+			before: globals{line1: -1, line2: -1, nlines: 505, curln: 101, lastln: 504, pat: ""},
+			after:  globals{line1: 143, line2: 143, nlines: 1, curln: 101, lastln: 504, pat: ""}},
+		// reads curln +27
+		{line: ".-27p", i: 0, status: OK, ii: 4,
+			before: globals{line1: -1, line2: -1, nlines: 505, curln: 101, lastln: 504, pat: ""},
+			after:  globals{line1: 74, line2: 74, nlines: 1, curln: 101, lastln: 504, pat: ""}},
 	}
 
 	for _, test := range tests {
+		prepareState(test.before)
+
 		i, status := getlist(test.line, test.i)
 		if status != test.status {
 			t.Errorf("status: got %v want %v", status, test.status)
@@ -90,14 +101,7 @@ func Test_getlist(t *testing.T) {
 		if i != test.ii {
 			t.Errorf("i: got %v want %v", i, test.ii)
 		}
-		assert_gobals(t, globals{
-			line1:  test.line1,
-			line2:  test.line2,
-			nlines: test.nlines,
-			curln:  test.curln,
-			lastln: test.lastln,
-			pat:    "",
-		})
+		assert_gobals(t, test.after)
 	}
 }
 

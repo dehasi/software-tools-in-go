@@ -31,7 +31,7 @@ func Edit() {
 			if ckglob(line, i, status) == OK {
 				status = doglob(line, i, cursave, status)
 			} else if status != ERR {
-				status = docmd(line, i, false, status)
+				status = docmd(line, i, false)
 			} // else error, do nothing
 		} else if status == ERR {
 			io.Putstr("?", io.STDOUT)
@@ -42,7 +42,7 @@ func Edit() {
 }
 
 // setDefault -- set defaulted line numbers, original name 'default'
-func setDefault(def1 int, def2 int, status StCode) StCode {
+func setDefault(def1 int, def2 int) StCode {
 
 	if nlines == 0 {
 		line1 = def1
@@ -72,15 +72,15 @@ func doprint(n1 int, n2 int) StCode {
 
 // docmd -- handle all commands except globals
 // The false argument to docmd says that it is not being called from within a global prefix
-func docmd(lin string, i int, glob bool, status StCode) StCode {
+func docmd(lin string, i int, glob bool) StCode {
 	// println("docmd", "lin", lin, "i", i, "lin[i]", lin[i])
-	status = ERR
+	status := ERR
 	pflag := false // may be set by d, m, s
 	switch lin[i] {
 	case PCMD:
 		// println("PCMD")
 		if lin[i+1] == io.NEWLINE {
-			if setDefault(curln, curln, status) == OK {
+			if setDefault(curln, curln) == OK {
 				status = doprint(line1, line2)
 			}
 		}
@@ -143,15 +143,13 @@ func ckglob(line string, i int, status StCode) StCode {
 }
 
 // getlist -- get list of line nums at lin[i], increment i
-// TODO: delete status from parameters
 func getlist(lin string, i int) (int, StCode) {
 	// println("getlist", "lin", lin, "i", i)
 	line2 = 0
 	nlines = 0
 	num, i, status := getone(lin, i)
 	done := status != OK
-	// num = 0
-	for !done {
+	for !done { // if not ERR, jump in
 		line1 = line2
 		line2 = num
 		nlines = nlines + 1
@@ -187,7 +185,6 @@ func getone(lin string, i int) (int, int, StCode) {
 	// println("getone", "lin:", lin, "i:", i)
 	istart := i
 	var mul int = 0
-	var pnum int = 42
 	num, i, status := getnum(lin, i)
 	if status == OK {
 		for { // repeat + or - terms
@@ -202,7 +199,8 @@ func getone(lin string, i int) (int, int, StCode) {
 					mul -= 1
 				}
 				i = i + 1
-				num, i, status = getnum(lin, i)
+				var pnum = 0
+				pnum, i, status = getnum(lin, i)
 				if status == OK {
 					num = num + mul*pnum
 				}
@@ -260,9 +258,9 @@ func getnum(lin string, i int) (int, int, StCode) {
 }
 
 // patscan -- find next occurrence of pattern after line n
-func patscan(way byte, num int) StCode {
+func patscan(way byte, n int) StCode {
 
-	n := curln
+	// n = curln // do we need it? it always be after curln
 	patscanSt := ERR
 	done := false
 	line := ""
