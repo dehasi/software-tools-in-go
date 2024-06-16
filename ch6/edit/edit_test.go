@@ -78,9 +78,9 @@ func Test_getlist(t *testing.T) {
 		after  globals
 	}{
 		// reads curln
-		// {line: ".p", i: 0, status: OK, ii: 1,
-		// 	before: globals{line1: -1, line2: -1, nlines: 505, curln: 101, lastln: 504, pat: ""},
-		// 	after:  globals{line1: 101, line2: 101, nlines: 1, curln: 101, lastln: 504, pat: ""}},
+		{line: ".p", i: 0, status: OK, ii: 1,
+			before: globals{line1: -1, line2: -1, nlines: 505, curln: 101, lastln: 504, pat: ""},
+			after:  globals{line1: 101, line2: 101, nlines: 1, curln: 101, lastln: 504, pat: ""}},
 		// reads curln +42
 		{line: ".+42p", i: 0, status: OK, ii: 4,
 			before: globals{line1: -1, line2: -1, nlines: 505, curln: 101, lastln: 504, pat: ""},
