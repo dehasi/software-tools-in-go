@@ -32,3 +32,23 @@ $p
 > Pascal, like many languages, does not guarantee any particular order for evaluation of logical expressions (or any other expressions, for that matter), nor does
 it guarantee that evaluation of a logical expression will terminate as soon as the
 truth value is known
+
+
+confinguration to use input from terminal while debugging
+
+[source, json]
+----
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+          "name": "Debug Main Edit",
+          "type": "go",
+          "request": "launch",
+          "mode": "auto",
+          "program": "${workspaceFolder}/ch6",
+          "console": "integratedTerminal"
+        }
+      ]
+}
+----

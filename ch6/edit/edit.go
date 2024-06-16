@@ -58,7 +58,7 @@ func setDefault(def1 int, def2 int) StCode {
 
 // doprint -- print lines n1 through n2
 func doprint(n1 int, n2 int) StCode {
-	// println("doprint", "n1: ", n1, "n2:", n2)
+	println("doprint", "n1: ", n1, "n2:", n2)
 	if n1 < 0 {
 		return ERR
 	}
@@ -254,7 +254,7 @@ func getnum(lin string, i int) (int, int, StCode) {
 		i = i + 1 // next character to be examined
 		return num, i, OK
 	}
-	return -1, -1, status
+	return -1, i, status
 }
 
 // patscan -- find next occurrence of pattern after line n
