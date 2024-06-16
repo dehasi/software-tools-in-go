@@ -1,4 +1,4 @@
-package main
+package edit
 
 import (
 	"ch6/find"
@@ -20,13 +20,13 @@ var curln int     // current line -- value of dot
 var lastln int    // last line -- value of $
 var pat string    // pattern
 
-func edit() {
+func Edit() {
 
 	for line, ok := io.Getline(io.STDIN, io.MAXLINE); ok; line, ok = io.Getline(io.STDIN, io.MAXLINE) {
 		println("process line: ", line)
 		i := 0
 		cursave := curln
-		i, status := getlist(line, 0, OK)
+		i, status := getlist(line, i)
 		if status == OK {
 			if ckglob(line, i, status) == OK {
 				status = doglob(line, i, cursave, status)
@@ -148,12 +148,13 @@ func ckglob(line string, i int, status StCode) StCode {
 
 // getlist -- get list of line nums at lin[i], increment i
 // TODO: delete status from parameters
-func getlist(lin string, i int, status StCode) (int, StCode) {
+func getlist(lin string, i int) (int, StCode) {
 	println("getlist", "lin", lin, "i", i)
-
+	line2 = 0
+	nlines = 0
 	num, i, status := getone(lin, i)
 	done := status != OK
-
+	// num = 0
 	for !done {
 		line1 = line2
 		line2 = num
@@ -214,7 +215,7 @@ func getone(lin string, i int) (int, int, StCode) {
 				}
 			}
 			// until status <> OK
-			if status == OK {
+			if status != OK {
 				break
 			}
 		}
@@ -340,10 +341,4 @@ func prevln(n int) int {
 	} else {
 		return n - 1
 	}
-}
-
-func main() {
-	io.Putstr("Start editing\n", io.STDOUT)
-	edit()
-	io.Putstr("Compiled\n", io.STDOUT)
 }

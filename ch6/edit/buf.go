@@ -1,4 +1,4 @@
-package main
+package edit
 
 import (
 	"strings"
@@ -30,7 +30,7 @@ func clrbuf() StCode {
 func puttxt(inline string) StCode {
 	println("puttxt", "inline:", inline)
 	if lastln < MAXLINES {
-		lastln := lastln + 1
+		lastln = lastln + 1
 		buf[lastln].txt = strings.Clone(inline)
 		putmark(lastln, false)
 		blkmove(lastln, lastln, curln)

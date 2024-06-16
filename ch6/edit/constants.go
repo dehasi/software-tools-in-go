@@ -1,4 +1,4 @@
-package main
+package edit
 
 import "ch6/io"
 
