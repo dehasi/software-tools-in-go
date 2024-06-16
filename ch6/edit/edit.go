@@ -32,7 +32,14 @@ func Edit() {
 				status = doglob(line, i, cursave, status)
 			} else if status != ERR {
 				status = docmd(line, i, false)
-			} // else error, do nothing
+				if status == ERR {
+					io.Putstr("?", io.STDOUT)
+				} else if status == ENDDATA {
+					break
+				}
+			} else {
+				io.Putstr("?", io.STDOUT)
+			}
 		} else if status == ERR {
 			io.Putstr("?", io.STDOUT)
 		} else if status == ENDDATA {
@@ -215,10 +222,10 @@ func getone(lin string, i int) (int, int, StCode) {
 		}
 	}
 	if num < 0 || num > lastln {
-		return -1, -1, ERR
+		return -1, i, ERR
 	}
 	if i <= istart {
-		return 1, -1, ENDDATA
+		return 1, i, ENDDATA
 	}
 	return num, i, OK
 
@@ -252,9 +259,8 @@ func getnum(lin string, i int) (int, int, StCode) {
 
 	if status == OK {
 		i = i + 1 // next character to be examined
-		return num, i, OK
 	}
-	return -1, i, status
+	return num, i, status
 }
 
 // patscan -- find next occurrence of pattern after line n

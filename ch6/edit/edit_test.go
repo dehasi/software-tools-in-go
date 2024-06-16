@@ -34,8 +34,8 @@ func Test_getnum(t *testing.T) {
 		{line: "$p", i: 0, status: OK, num: 4, ii: 1, line1: 1, line2: 2, nlines: 4, curln: 3, lastln: 4},
 		// parses a number into num
 		{line: "42p", i: 0, status: OK, num: 42, ii: 2, line1: 1, line2: 2, nlines: 4, curln: 3, lastln: 4},
-		// end data
-		{line: "p", i: 0, status: ENDDATA, num: -1, ii: 0, line1: 1, line2: 2, nlines: 4, curln: 3, lastln: 4},
+		// no numbers returns ENDDATA
+		{line: "p", i: 0, status: ENDDATA, num: 0, ii: 0, line1: 1, line2: 2, nlines: 4, curln: 3, lastln: 4},
 	}
 
 	for _, test := range tests {
