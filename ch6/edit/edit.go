@@ -32,15 +32,10 @@ func Edit() {
 				status = doglob(line, i, cursave, status)
 			} else if status != ERR {
 				status = docmd(line, i, false)
-				if status == ERR {
-					io.Putstr("?", io.STDOUT)
-				} else if status == ENDDATA {
-					break
-				}
-			} else {
-				io.Putstr("?", io.STDOUT)
-			}
-		} else if status == ERR {
+
+			} // ERR do nothing
+		}
+		if status == ERR {
 			io.Putstr("?", io.STDOUT)
 		} else if status == ENDDATA {
 			break
