@@ -350,14 +350,13 @@ func getnum(lin string, i int) (int, int, StCode) {
 func patscan(way byte) (int, StCode) {
 
 	n := curln
-	line := ""
 	for {
 		if way == SCAN {
 			n = nextln(n)
 		} else {
 			n = prevln(n)
 		}
-		line = gettxt(n)
+		line := gettxt(n)
 		if find.Match(line, pat) {
 			return n, OK
 		}
