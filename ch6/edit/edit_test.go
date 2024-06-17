@@ -20,6 +20,7 @@ func Test_docmd_subst(t *testing.T) {
 		glob bool
 		// return
 		status StCode
+
 		// globals
 		before globals
 		after  globals
@@ -37,6 +38,10 @@ func Test_docmd_subst(t *testing.T) {
 		status := docmd(test.line, test.i, test.glob)
 		if status != test.status {
 			t.Errorf("status: got %v want %v", status, test.status)
+		}
+		txt := gettxt(curln)
+		if txt != "aaaFFFccc\n" {
+			t.Errorf("status: got %v want %v", txt, "aaaFFFccc\n")
 		}
 
 		assert_gobals(t, test.after)
