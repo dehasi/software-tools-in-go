@@ -67,13 +67,13 @@ func Match(line string, pattern string) bool {
 	pos := -1
 	n := len(line)
 	for i := 0; i < n && pos == -1; i++ {
-		pos = amatch(line, i, pattern, 0)
+		pos = Amatch(line, i, pattern, 0)
 	}
 	return pos >= 0
 }
 
 // amatch -- looks for match of pat[j] ... at line[offset] .
-func amatch(line string, offset int, pattern string, j int) int {
+func Amatch(line string, offset int, pattern string, j int) int {
 	n := len(pattern)
 	for j < n {
 		if pattern[j] == CLOSURE {
@@ -92,7 +92,7 @@ func amatch(line string, offset int, pattern string, j int) int {
 			// shrink closure by 1 after each failure }
 			k := -1
 			for i >= offset {
-				k = amatch(line, i, pattern, j+patsize(pattern, j))
+				k = Amatch(line, i, pattern, j+patsize(pattern, j))
 				if k >= 0 { // matched rest of pattern
 					break
 				} else {

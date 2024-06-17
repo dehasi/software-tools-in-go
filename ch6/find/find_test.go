@@ -53,7 +53,7 @@ func Test_Match_closure(t *testing.T) {
 	}
 }
 
-func Test_amatch(t *testing.T) {
+func Test_Amatch(t *testing.T) {
 	tests := []struct {
 		line     string
 		i        int
@@ -67,7 +67,7 @@ func Test_amatch(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result := amatch(test.line, test.i, test.pattern, test.j)
+		result := Amatch(test.line, test.i, test.pattern, test.j)
 		if result != test.expected {
 			t.Errorf("got %v want %v", result, test.expected)
 		}

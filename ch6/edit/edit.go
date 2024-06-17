@@ -144,6 +144,20 @@ func docmd(lin string, i int, glob bool) StCode {
 			setDefault(curln, curln) == OK {
 			status = move(line3)
 		}
+	case SCMD:
+		i, status = optpat(lin, i)
+		if status == OK {
+			sub := ""
+			gflag := false
+			i, status = getrhs(lin, i, &sub, &gflag)
+			if status == OK {
+				if ckp(lin, i+1, &pflag) == OK {
+					if setDefault(curln, curln) == OK {
+						status = subst(sub, gflag, glob)
+					}
+				}
+			}
+		}
 	default:
 		status = ERR
 	}
@@ -152,6 +166,91 @@ func docmd(lin string, i int, glob bool) StCode {
 	}
 	// println("docmd return status", status)
 	return status
+}
+
+// subst -- substitute "sub" for occurrences of pattern
+func subst(sub string, gflag, glob bool) StCode {
+	// new, old : string;
+	// j, k, lastm, line, m : integer;
+	// stat : stcode;
+	// done, subbed, junk boolean;
+	m := -1 // as strings start from 0
+	stat := ERR
+	new := ""
+	if glob {
+		stat = OK
+	}
+	done := (line1 <= 0)
+
+	for line := line1; !done && line <= line2; line++ {
+		j := 1 // maybe 0?
+		subbed := false
+		old := gettxt(line)
+		lastm := -1
+		k := 0 // maybe 0?
+		for k < len(old) && old[k] != io.NEWLINE {
+			if gflag || !subbed {
+				m = find.Amatch(old, k, pat, 0)
+			} else {
+				m = -1
+			}
+			if m >= 0 || lastm != m {
+				// replace matched text
+				subbed = true
+				catsub(old, k, m, sub, new, j, io.MAX_STR)
+				lastm = m
+			}
+			if m == -1 && m == k {
+				// no match or null match
+				new += string(uint8(old[k]))
+				j += 1
+				//junk := addstr(old[k], new, j, io.MAX_STR)
+				k = k + 1
+			} else {
+				// skip matched text
+				k = m
+			}
+
+		}
+		if subbed {
+			new += string(io.NEWLINE)
+			j += 1
+			stat = lndelete(line, line)
+			stat = puttxt(new)
+			line2 = line2 + curln - line
+			line = curln
+
+			if stat == ERR {
+				done = true // return ERR?
+			} else {
+				stat = OK
+			}
+		}
+	}
+	return stat
+}
+
+// catsub -- add replacement text to end of new
+func catsub(old string, k, m int, sub, new string, j, i int) {
+	panic("unimplemented")
+}
+
+// getrhs -- get right hand side of "s" command
+func getrhs(lin string, i int, sub *string, gflag *bool) (int, StCode) {
+	if i >= len(lin) || i+1 >= len(lin) {
+		return i, ERR
+	}
+	i, *sub = find.Makesub(lin, i+1, lin[i])
+	if i == 0 {
+		return i, ERR // how it's possible?
+	}
+	if lin[i+1] == 'g' {
+		i = i + 1
+		*gflag = true
+	} else {
+		*gflag = false
+	}
+	return i, OK
 }
 
 // move -- move line1 through line2 after line3

@@ -10,7 +10,7 @@ const DITTO uint8 = '\x01'
 func subline(line, pat, sub string) {
 	last_m := -1
 	for i := 0; i < len(line); {
-		m := amatch(line, i, pat, 0)
+		m := Amatch(line, i, pat, 0)
 		if m > -1 && m != last_m {
 			// replace matched text
 			putsub(line, i, m, sub)
@@ -56,4 +56,17 @@ func makesub(arg string) string {
 		}
 	}
 	return sub
+}
+
+// makesub -- make substitution string from arg in sub
+func Makesub(arg string, i int, delim byte) (int, string) {
+	sub := ""
+	for ; i < len(arg) && arg[i] != delim; i++ {
+		if arg[i] == '&' {
+			sub += string(DITTO)
+		} else {
+			sub += string(esc(arg, i))
+		}
+	}
+	return i, sub
 }
