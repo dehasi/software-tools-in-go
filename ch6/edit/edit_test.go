@@ -13,6 +13,46 @@ func prepareState(test globals) {
 	pat = test.pat
 }
 
+func Test_getnum_contextSerch(t *testing.T) {
+	tests := []struct {
+		line string
+		i    int
+		// return
+		num    int
+		ii     int
+		status StCode
+		// globals
+		// global state
+		before globals
+		after  globals
+	}{
+		// parses simple pattern
+		{line: "\\bb\\p", i: 0, status: OK, ii: 4, num: 2,
+			before: globals{line1: -1, line2: -1, nlines: 0, curln: 0, lastln: 0, pat: ""},
+			after:  globals{line1: -1, line2: -1, nlines: 0, curln: 4, lastln: 4, pat: "cbcb"}},
+	}
+
+	for _, test := range tests {
+		prepareState(test.before)
+		puttxt("1aaa\n")
+		puttxt("2bbb\n")
+		puttxt("3ccc\n")
+		puttxt("4ddd\n")
+
+		num, i, status := getnum(test.line, test.i)
+		if status != test.status {
+			t.Errorf("status: got %v want %v", status, test.status)
+		}
+		if i != test.ii {
+			t.Errorf("i: got %v want %v", i, test.ii)
+		}
+		if num != test.num {
+			t.Errorf("num: got %v want %v", num, test.num)
+		}
+
+		assert_gobals(t, test.after)
+	}
+}
 func Test_getnum(t *testing.T) {
 	tests := []struct {
 		line string

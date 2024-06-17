@@ -329,10 +329,12 @@ func getnum(lin string, i int) (int, int, StCode) {
 	} else if lin[i] == LASTLINE {
 		num = lastln
 	} else if lin[i] == SCAN || lin[i] == BACKSCAN {
-		if optpat(lin, i) == ERR { // build pattern
+		way := lin[i]
+		i, status = optpat(lin, i)
+		if status == ERR { // build pattern
 			status = ERR
 		} else {
-			status = patscan(lin[i], num)
+			num, status = patscan(way)
 		}
 	} else {
 		status = ENDDATA
@@ -345,11 +347,9 @@ func getnum(lin string, i int) (int, int, StCode) {
 }
 
 // patscan -- find next occurrence of pattern after line n
-func patscan(way byte, n int) StCode {
+func patscan(way byte) (int, StCode) {
 
-	// n = curln // do we need it? it always be after curln
-	patscanSt := ERR
-	done := false
+	n := curln
 	line := ""
 	for {
 		if way == SCAN {
@@ -359,19 +359,18 @@ func patscan(way byte, n int) StCode {
 		}
 		line = gettxt(n)
 		if find.Match(line, pat) {
-			patscanSt = OK
-			done = true
+			return n, OK
 		}
 		// until n == curln || done
-		if n == curln || done {
+		if n == curln {
 			break
 		}
 	}
-	return patscanSt
+	return n, ERR
 }
 
 // optpat -- get optional pattern from lin[i], increment i
-func optpat(lin string, i int) StCode {
+func optpat(lin string, i int) (int, StCode) {
 	// not sure what we need to return besides i, maybe pat?
 	// or pat should be global like lastln?
 	n := len(lin)
@@ -384,13 +383,23 @@ func optpat(lin string, i int) StCode {
 		pat = find.Makepat(lin, i+1, lin[i])
 		if pat == "" {
 			i = 0
+		} else {
+			i = shiftPat(lin, i+1, lin[i])
 		}
 	}
 	if i == 0 {
 		pat = ""
-		return ERR
+		return i, ERR
 	}
-	return OK
+
+	return i, OK
+}
+
+func shiftPat(lin string, i int, ch byte) int {
+	for i < len(lin) && lin[i] != ch {
+		i++
+	}
+	return i
 }
 
 // skipbl -- skip blanks and tabs at s[i]
