@@ -13,6 +13,36 @@ func prepareState(test globals) {
 	pat = test.pat
 }
 
+func Test_docmd_subst(t *testing.T) {
+	tests := []struct {
+		line string
+		i    int
+		glob bool
+		// return
+		status StCode
+		// globals
+		before globals
+		after  globals
+	}{
+		// parses simple pattern
+		{line: ".,.s/bbb/ddd/", i: 3, status: OK,
+			before: globals{line1: 1, line2: 1, nlines: 2, curln: 1, lastln: 1, pat: ""},
+			after:  globals{line1: 1, line2: 1, nlines: 2, curln: 1, lastln: 1, pat: ""}},
+	}
+
+	for _, test := range tests {
+		puttxt("aaabbbccc\n")
+		prepareState(test.before)
+
+		status := docmd(test.line, test.i, test.glob)
+		if status != test.status {
+			t.Errorf("status: got %v want %v", status, test.status)
+		}
+
+		assert_gobals(t, test.after)
+	}
+}
+
 func Test_getnum_contextSerch(t *testing.T) {
 	tests := []struct {
 		line string
@@ -53,6 +83,7 @@ func Test_getnum_contextSerch(t *testing.T) {
 		assert_gobals(t, test.after)
 	}
 }
+
 func Test_getnum(t *testing.T) {
 	tests := []struct {
 		line string

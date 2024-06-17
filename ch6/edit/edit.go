@@ -20,6 +20,16 @@ var curln int     // current line -- value of dot
 var lastln int    // last line -- value of $
 var pat string    // pattern
 
+// for debug
+func printlnGlobs() {
+	println("line1:", line1)
+	println("line2:", line2)
+	println("nlines:", nlines)
+	println("curln:", curln)
+	println("lastln:", lastln)
+	println("pat:", pat)
+}
+
 func Edit() {
 
 	for line, ok := io.Getline(io.STDIN, io.MAXLINE); ok; line, ok = io.Getline(io.STDIN, io.MAXLINE) {
@@ -75,7 +85,9 @@ func doprint(n1 int, n2 int) StCode {
 // docmd -- handle all commands except globals
 // The false argument to docmd says that it is not being called from within a global prefix
 func docmd(lin string, i int, glob bool) StCode {
-	// println("docmd", "lin", lin, "i", i, "lin[i]", lin[i])
+	println("docmd", "lin", lin, "i", i, "lin[i]", string(lin[i]))
+	printlnGlobs()
+
 	status := ERR
 	pflag := false // may be set by d, m, s
 	switch lin[i] {
@@ -169,6 +181,7 @@ func docmd(lin string, i int, glob bool) StCode {
 }
 
 // subst -- substitute "sub" for occurrences of pattern
+// (.,.)s/pattern/new/g
 func subst(sub string, gflag, glob bool) StCode {
 	// new, old : string;
 	// j, k, lastm, line, m : integer;
@@ -197,7 +210,9 @@ func subst(sub string, gflag, glob bool) StCode {
 			if m >= 0 || lastm != m {
 				// replace matched text
 				subbed = true
-				catsub(old, k, m, sub, new, j, io.MAX_STR)
+				// NOTE: we matched in 'old' from 'k' to 'm'
+				// NOTE: we need to subtiture old[k:m] to sub, and put it into new
+				new += catsub(old, k, m, sub)
 				lastm = m
 			}
 			if m == -1 && m == k {
@@ -231,8 +246,19 @@ func subst(sub string, gflag, glob bool) StCode {
 }
 
 // catsub -- add replacement text to end of new
-func catsub(old string, k, m int, sub, new string, j, i int) {
-	panic("unimplemented")
+func catsub(lin string, s1 int, s2 int, sub string) string {
+	return lin[:s1] + sub + lin[s2:] // maybe s1+1
+	// for i := 0; i < len(sub); i++ {
+	// 	if sub[i] == find.DITTO {
+	// 		for j := s1; j <= s2; j++ {
+	// 			new += string(lin[j])
+	// 		}
+	// 	} else {
+	// 		new += string(sub[i])
+	// 	}
+
+	// }
+	// panic("unimplemented")
 }
 
 // getrhs -- get right hand side of "s" command
