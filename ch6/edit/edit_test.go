@@ -61,7 +61,7 @@ func Test_docmd_subst_few_lines(t *testing.T) {
 		after  globals
 	}{
 		// parses simple pattern
-		{line: "1,$s/bbb/FFF/\n", i: 3, status: OK,
+		{line: "1,$s/bbb/FFF/g\n", i: 3, status: OK,
 			before: globals{line1: 1, line2: 5, nlines: 5, curln: 5, lastln: 5, pat: ""},
 			after:  globals{line1: 1, line2: 5, nlines: 5, curln: 5, lastln: 5, pat: "cbcbcb"}},
 	}
