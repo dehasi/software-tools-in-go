@@ -3,7 +3,7 @@
 
 In this chapter I eventually started using packages.
 
-Stopped at PDF page 209, book page 200
+Stopped at PDF page 213, book page 205. Finished with substitute, next is p6.7 Input/Output
 
 
 == Debigging
