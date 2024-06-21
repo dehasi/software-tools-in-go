@@ -26,9 +26,9 @@ func Test_docmd_subst(t *testing.T) {
 		after  globals
 	}{
 		// parses simple pattern
-		{line: ".,.s/bbb/FFF/", i: 3, status: OK,
+		{line: ".,.s/bbb/FFF/\n", i: 3, status: OK,
 			before: globals{line1: 1, line2: 1, nlines: 2, curln: 1, lastln: 1, pat: ""},
-			after:  globals{line1: 1, line2: 1, nlines: 2, curln: 1, lastln: 1, pat: ""}},
+			after:  globals{line1: 1, line2: 1, nlines: 2, curln: 1, lastln: 1, pat: "cbcbcb"}},
 	}
 
 	for _, test := range tests {

@@ -157,6 +157,7 @@ func docmd(lin string, i int, glob bool) StCode {
 			status = move(line3)
 		}
 	case SCMD:
+		i = i + 1
 		i, status = optpat(lin, i)
 		if status == OK {
 			sub := ""
@@ -207,7 +208,7 @@ func subst(sub string, gflag, glob bool) StCode {
 			} else {
 				m = -1
 			}
-			if m >= 0 || lastm != m {
+			if m >= 0 && lastm != m {
 				// replace matched text
 				subbed = true
 				// NOTE: we matched in 'old' from 'k' to 'm'
@@ -215,7 +216,7 @@ func subst(sub string, gflag, glob bool) StCode {
 				new += catsub(old, k, m, sub)
 				lastm = m
 			}
-			if m == -1 && m == k {
+			if m == -1 || m == k {
 				// no match or null match
 				new += string(uint8(old[k]))
 				j += 1
@@ -223,7 +224,7 @@ func subst(sub string, gflag, glob bool) StCode {
 				k = k + 1
 			} else {
 				// skip matched text
-				k = m
+				k = m // ??
 			}
 
 		}
@@ -247,18 +248,19 @@ func subst(sub string, gflag, glob bool) StCode {
 
 // catsub -- add replacement text to end of new
 func catsub(lin string, s1 int, s2 int, sub string) string {
-	return lin[:s1] + sub + lin[s2:] // maybe s1+1
-	// for i := 0; i < len(sub); i++ {
-	// 	if sub[i] == find.DITTO {
-	// 		for j := s1; j <= s2; j++ {
-	// 			new += string(lin[j])
-	// 		}
-	// 	} else {
-	// 		new += string(sub[i])
-	// 	}
+	// return lin[:s1] + sub + lin[s2:] // maybe s1+1
+	new := ""
+	for i := 0; i < len(sub); i++ {
+		if sub[i] == find.DITTO {
+			for j := s1; j <= s2; j++ {
+				new += string(lin[j])
+			}
+		} else {
+			new += string(sub[i])
+		}
 
-	// }
-	// panic("unimplemented")
+	}
+	return new
 }
 
 // getrhs -- get right hand side of "s" command
