@@ -4,30 +4,8 @@ In this chapter I eventually started using packages.
 
 Stopped at PDF page 209, book page 200
 
-We have `p` and `a` comands and in-memory buffer. So, time to debug and write unit tests
 
-After writing some unit tests, append and print seems working
-----
-$ go build *.go  && ./main
-$a
-1111
-22222
-3333
-.
-.p
-3333
-$p
-3333
-1p
-1111
-2p
-22222
-3p
-3333
-0p
-4p
-?^C
-----
+== Debigging
 
 > Pascal, like many languages, does not guarantee any particular order for evaluation of logical expressions (or any other expressions, for that matter), nor does
 it guarantee that evaluation of a logical expression will terminate as soon as the
@@ -53,9 +31,36 @@ confinguration to use input from terminal while debugging
 }
 ----
 
+== Commands
+Examples of running some commands
 
-Pattern matching will be tested in 6.6 chapter "The Substitute Command".
 
+=== Append and print
+----
+$ go build *.go  && ./main
+$a
+1111
+22222
+3333
+.
+.p
+3333
+$p
+3333
+1p
+1111
+2p
+22222
+3p
+3333
+0p
+4p
+?^C
+----
+
+
+
+=== Move 
 
 Move
 ----
@@ -78,7 +83,7 @@ i
 666
 ----
 
-Change and Delete
+=== Change and Delete
 ----
 $ go build *.go  && ./main
 i
@@ -109,5 +114,10 @@ ddd
 666
 ----
 
+
+=== Substitute
+
+----
+----
 
 /aaa/p -- doesn't work. it needs some debugging
