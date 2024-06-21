@@ -85,8 +85,8 @@ func doprint(n1 int, n2 int) StCode {
 // docmd -- handle all commands except globals
 // The false argument to docmd says that it is not being called from within a global prefix
 func docmd(lin string, i int, glob bool) StCode {
-	println("docmd", "lin", lin, "i", i, "lin[i]", string(lin[i]))
-	printlnGlobs()
+	// println("docmd", "lin", lin, "i", i, "lin[i]", string(lin[i]))
+	// printlnGlobs()
 
 	status := ERR
 	pflag := false // may be set by d, m, s
@@ -190,7 +190,7 @@ func subst(sub string, gflag, glob bool) StCode {
 	// done, subbed, junk boolean;
 	m := -1 // as strings start from 0
 	stat := ERR
-	new := ""
+
 	if glob {
 		stat = OK
 	}
@@ -198,6 +198,7 @@ func subst(sub string, gflag, glob bool) StCode {
 
 	for line := line1; !done && line <= line2; line++ {
 		j := 1 // maybe 0?
+		new := ""
 		subbed := false
 		old := gettxt(line)
 		lastm := -1

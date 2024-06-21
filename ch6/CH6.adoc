@@ -119,6 +119,24 @@ ddd
 === Substitute
 
 ----
+$ go build *.go  && ./main
+i
+aaabbbccc
+ababcc
+ccfffaaa
+bbbfffddd
+bbbbbbbbb
+.
+1,$s/bbb/FFF/
+1,$p
+aaaFFFccc
+ababcc
+ccfffaaa
+aaaFFFccc
+ababccccfffaaaFFFfffddd
+aaaFFFccc
+ababccccfffaaaFFFfffddd
+FFFbbbbbb
 ----
 
 /aaa/p -- doesn't work. it needs some debugging

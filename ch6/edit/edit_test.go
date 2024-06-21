@@ -48,6 +48,47 @@ func Test_docmd_subst(t *testing.T) {
 	}
 }
 
+func Test_docmd_subst_few_lines(t *testing.T) {
+	tests := []struct {
+		line string
+		i    int
+		glob bool
+		// return
+		status StCode
+
+		// globals
+		before globals
+		after  globals
+	}{
+		// parses simple pattern
+		{line: "1,$s/bbb/FFF/\n", i: 3, status: OK,
+			before: globals{line1: 1, line2: 5, nlines: 5, curln: 5, lastln: 5, pat: ""},
+			after:  globals{line1: 1, line2: 5, nlines: 5, curln: 5, lastln: 5, pat: "cbcbcb"}},
+	}
+
+	for _, test := range tests {
+		puttxt("bbbfffddd\n")
+		puttxt("ababcc\n")
+		puttxt("ccfffaaa\n")
+		puttxt("aaabbbccc\n")
+		puttxt("bbbbbbbbb\n")
+		prepareState(test.before)
+
+		status := docmd(test.line, test.i, test.glob)
+		if status != test.status {
+			t.Errorf("status: got %v want %v", status, test.status)
+		}
+
+		assert_equals(gettxt(1), "FFFfffddd\n", t)
+		assert_equals(gettxt(2), "ababcc\n", t)
+		assert_equals(gettxt(3), "ccfffaaa\n", t)
+		assert_equals(gettxt(4), "aaaFFFccc\n", t)
+		assert_equals(gettxt(5), "FFFbbbbbb\n", t)
+
+		assert_gobals(t, test.after)
+	}
+}
+
 func Test_getnum_contextSerch(t *testing.T) {
 	tests := []struct {
 		line string
@@ -225,5 +266,11 @@ func assert_gobals(t *testing.T, test globals) {
 
 	if pat != test.pat {
 		t.Errorf("pat: got %v want %v", pat, test.pat)
+	}
+}
+
+func assert_equals(actual string, extected string, t *testing.T) {
+	if actual != extected {
+		t.Errorf("status: got %v want %v", actual, extected)
 	}
 }
