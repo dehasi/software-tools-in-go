@@ -122,21 +122,18 @@ ddd
 $ go build *.go  && ./main
 i
 aaabbbccc
-ababcc
-ccfffaaa
-bbbfffddd
+abababcc
+cccaaabbb
+bbbaaaccc
 bbbbbbbbb
 .
-1,$s/bbb/FFF/
+1,$s/bbb/FF/
 1,$p
-aaaFFFccc
-ababcc
-ccfffaaa
-aaaFFFccc
-ababccccfffaaaFFFfffddd
-aaaFFFccc
-ababccccfffaaaFFFfffddd
-FFFbbbbbb
+aaaFFccc
+abababcc
+cccaaaFF
+FFaaaccc
+FFbbbbbb
 ----
 
 /aaa/p -- doesn't work. it needs some debugging
