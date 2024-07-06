@@ -381,7 +381,7 @@ func append(line int, glob bool) StCode {
 }
 
 func doglob(line string, i, cursave int, status StCode) StCode {
-	panic("unimplemented")
+	panic("doglob: unimplemented")
 }
 
 // ckglob looks for g/.../ or x/.../;

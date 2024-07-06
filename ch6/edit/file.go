@@ -43,10 +43,12 @@ func doread(n int, file string) StCode {
 
 // dowrite -- write lines n1 .. n2 into file
 func dowrite(n1 int, n2 int, file string) StCode {
-	fd, err := os.Open(file)
+	fd, err := os.OpenFile(file, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
+		println("err:", err)
 		return ERR
 	}
+
 	for i := n1; i <= n2; i++ {
 		line := gettxt(i)
 		io.Putstr(line, fd)
