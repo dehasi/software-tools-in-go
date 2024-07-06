@@ -223,8 +223,8 @@ func fcopy(fin *os.File, fout *os.File) {
 	}
 	//fin.Close()
 	//fout.Close()
-	close(fin)
-	close(fout)
+	Close(fin)
+	Close(fout)
 }
 
 // getword -- gets word from s[i] into out
