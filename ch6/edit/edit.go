@@ -190,7 +190,7 @@ func docmd(lin string, i int, glob bool) StCode {
 				savefile = file
 				io.Putstr(savefile, io.STDOUT)
 				io.Putc(io.NEWLINE)
-				status = OK
+				return OK
 			}
 		}
 	case RCMD:

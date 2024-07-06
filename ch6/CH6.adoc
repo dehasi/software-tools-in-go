@@ -153,3 +153,34 @@ p
 BBBBBBBBB
 q
 ----
+
+== File Operations
+
+.write to file
+----
+$ go build *.go  && ./main
+i
+qqq
+www
+.
+1,$w output
+2
+q
+
+$ cat output 
+qqq
+www
+----
+
+.read file
+----
+$ go build *.go  && ./main
+r output
+2
+1,$p
+qqq
+www
+f
+output
+q
+----
