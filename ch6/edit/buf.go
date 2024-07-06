@@ -22,7 +22,8 @@ func setbuf() {
 // clrbuf (in memory) -- initialize for new file
 // discards the scratch file, if one is used.
 func clrbuf() StCode {
-	panic("unimplemented")
+	// in memory, nothing to do
+	return OK
 }
 
 // puttxt (in memory) -- put text from lin after curln
