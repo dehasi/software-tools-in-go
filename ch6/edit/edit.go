@@ -180,7 +180,7 @@ func docmd(lin string, i int, glob bool) StCode {
 				savefile = file
 				clrbuf()
 				setbuf()
-				status = OK
+				return OK
 			}
 		}
 	case FCMD:

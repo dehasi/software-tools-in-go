@@ -184,3 +184,23 @@ f
 output
 q
 ----
+
+.edit file
+----
+$ go build *.go  && ./main
+e fff.txt
+i
+qwe
+qwe
+qwe
+.
+1,2w
+2
+f
+fff.txt
+q
+
+$ cat fff.txt 
+qwe
+qwe
+----
