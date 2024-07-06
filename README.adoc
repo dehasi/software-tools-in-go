@@ -13,6 +13,7 @@ Each chapter has its own readme.
 * link:ch3/CH3.adoc[]
 * link:ch4/CH4.adoc[]
 * link:ch5/CH5.adoc[]
+* link:ch6/CH6.adoc[]
 
 
 == Contributing

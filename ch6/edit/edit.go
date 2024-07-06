@@ -20,6 +20,8 @@ var curln int     // current line -- value of dot
 var lastln int    // last line -- value of $
 var pat string    // pattern
 
+var savefile string // remembered file name
+
 // for debug
 func printlnGlobs() {
 	println("line1:", line1)
@@ -170,6 +172,36 @@ func docmd(lin string, i int, glob bool) StCode {
 					}
 				}
 			}
+		}
+	case ECMD:
+		if nlines == 0 {
+			file, status := getfn(lin, i)
+			if status == OK {
+				io.SCcopy(file, 1, savefile, 1) // TODO: maybe it should be in buf?
+				clrbuf()
+				setbuf()
+				status = OK
+			}
+		}
+	case FCMD:
+		if nlines == 0 {
+			file, status := getfn(lin, i)
+			if status == OK {
+				io.SCcopy(file, 1, savefile, 1)
+				io.Putstr(savefile, io.STDOUT)
+				io.Putc(io.NEWLINE)
+				status = OK
+			}
+		}
+	case RCMD:
+		file, status := getfn(lin, i)
+		if status == OK {
+			return doread(line2, file)
+		}
+	case WCMD:
+		file, status := getfn(lin, i)
+		if status == OK {
+			return dowrite(line1, line2, file)
 		}
 	default:
 		status = ERR

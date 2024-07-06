@@ -216,6 +216,9 @@ func putcf(c uint8, f *os.File) {
 	f.Write(b)
 }
 
+func SCcopy(fin string, i int, fout string, j int) {
+
+}
 func fcopy(fin *os.File, fout *os.File) {
 	var c uint8 = 0
 	for getcf(&c, fin) != ENDFILE {
