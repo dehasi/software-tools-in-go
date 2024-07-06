@@ -177,7 +177,7 @@ func docmd(lin string, i int, glob bool) StCode {
 		if nlines == 0 {
 			file, status := getfn(lin, i)
 			if status == OK {
-				io.SCcopy(file, 1, savefile, 1) // TODO: maybe it should be in buf?
+				savefile = file
 				clrbuf()
 				setbuf()
 				status = OK
@@ -187,7 +187,7 @@ func docmd(lin string, i int, glob bool) StCode {
 		if nlines == 0 {
 			file, status := getfn(lin, i)
 			if status == OK {
-				io.SCcopy(file, 1, savefile, 1)
+				savefile = file
 				io.Putstr(savefile, io.STDOUT)
 				io.Putc(io.NEWLINE)
 				status = OK

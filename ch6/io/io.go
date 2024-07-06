@@ -216,9 +216,6 @@ func putcf(c uint8, f *os.File) {
 	f.Write(b)
 }
 
-func SCcopy(fin string, i int, fout string, j int) {
-
-}
 func fcopy(fin *os.File, fout *os.File) {
 	var c uint8 = 0
 	for getcf(&c, fin) != ENDFILE {
@@ -231,7 +228,7 @@ func fcopy(fin *os.File, fout *os.File) {
 }
 
 // getword -- gets word from s[i] into out
-func getword(s string, i int) (out string, b int) {
+func Getword(s string, i int) (out string, ni int) {
 	// debug("getword :" + s + ":" + itoc(i))
 	space := []uint8{BLANK, TAB, NEWLINE}
 	for i < len(s) && has(space, uint8(s[i])) {

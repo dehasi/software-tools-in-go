@@ -1,7 +1,22 @@
 package edit
 
+import (
+	"ch6/io"
+)
+
 // getfn -- get file name from line[i]
 func getfn(line string, i int) (string, StCode) {
+	if line[i+1] == io.BLANK {
+		file, k := io.Getword(line, i+2) // get new filename
+		if k > 0 && line[k] == io.NEWLINE {
+			if len(savefile) <= 0 {
+				savefile = file
+			}
+			return savefile, OK
+		}
+	} else if line[i+1] == io.NEWLINE && len(savefile) > 0 {
+		return savefile, OK
+	}
 	return "", ERR
 }
 
