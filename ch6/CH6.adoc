@@ -3,7 +3,7 @@
 
 In this chapter I eventually started using packages.
 
-Stopped at PDF page 213, book page 205. Finished with substitute, next is p6.7 Input/Output
+Stopped at PDF page 217, book page 208. Finished with substitute, next is p6.8 Global Commands
 
 
 == Debigging
