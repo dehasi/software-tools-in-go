@@ -163,7 +163,7 @@ func atef(name string) *os.File {
 	return file
 }
 
-func close(fd *os.File) {
+func Close(fd *os.File) {
 	if fd == STDIN || fd == STDOUT || fd == STDERR {
 		return
 	}

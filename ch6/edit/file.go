@@ -2,6 +2,7 @@ package edit
 
 import (
 	"ch6/io"
+	"os"
 )
 
 // getfn -- get file name from line[i]
@@ -22,7 +23,22 @@ func getfn(line string, i int) (string, StCode) {
 
 // doread -- read "file" after line n
 func doread(n int, file string) StCode {
-	return ERR
+	fd, err := os.Open(file)
+	if err != nil {
+		return ERR
+	}
+	count := 0
+	for inline, t := io.Getline(fd, io.MAXLINE); t; inline, t = io.Getline(fd, io.MAXLINE) {
+		stat := puttxt(inline)
+		if stat != OK {
+			return stat
+		}
+		count++
+	}
+	io.Close(fd)
+	io.Putdec(count, 1)
+	io.Putc(io.NEWLINE)
+	return OK
 }
 
 // dowrite -- write lines n1 .. n2 into file
