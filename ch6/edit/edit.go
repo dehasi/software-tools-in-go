@@ -40,7 +40,8 @@ func Edit() {
 		cursave := curln
 		i, status := getlist(line, i)
 		if status == OK {
-			if ckglob(line, i, status) == OK {
+			i, status = ckglob(line, i)
+			if status == OK {
 				status = doglob(line, i, cursave, status)
 			} else if status != ERR {
 				status = docmd(line, i, false)
@@ -384,10 +385,35 @@ func doglob(line string, i, cursave int, status StCode) StCode {
 	panic("doglob: unimplemented")
 }
 
+// ckglob -- if global prefix, mark lines to be affected
 // ckglob looks for g/.../ or x/.../;
 // if either is found, ckglob marks the lines for processing by doglob,
-func ckglob(line string, i int, status StCode) StCode {
-	return ENDDATA
+func ckglob(line string, i int) (int, StCode) {
+	if line[i] != GCMD && line[i] != XCMD {
+		return i, ENDDATA
+	}
+	gflag := line[i] == GCMD
+	i = i + 1
+	i, status := optpat(line, i)
+	if status == ERR {
+		return i, ERR
+	}
+	if setDefault(1, lastln) == ERR {
+		return i, ERR
+	}
+	i = i + 1 // mark affected lines, TODO: maybe call 'doglob' with i+1
+
+	for n := line1; n <= line2; n++ {
+		temp := gettxt(n)
+		putmark(n, find.Match(temp, pat) == gflag)
+	}
+	for n := 0; n < line1; n++ {
+		putmark(n, false)
+	}
+	for n := line2 + 1; n <= lastln; n++ {
+		putmark(n, false)
+	}
+	return i, OK
 }
 
 // getlist -- get list of line nums at lin[i], increment i
