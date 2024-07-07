@@ -13,13 +13,12 @@ const (
 	ENDDATA StCode = 2
 )
 
-var line1 int = 0 // first line number
-var line2 int = 0 // second line number
-var nlines int    // # of line numbers specified
-var curln int     // current line -- value of dot
-var lastln int    // last line -- value of $
-var pat string    // pattern
-
+var line1 int = 0   // first line number
+var line2 int = 0   // second line number
+var nlines int      // # of line numbers specified
+var curln int       // current line -- value of dot
+var lastln int      // last line -- value of $
+var pat string      // pattern
 var savefile string // remembered file name
 
 // for debug
