@@ -3,7 +3,7 @@
 
 In this chapter I eventually started using packages.
 
-Stopped at PDF page 217, book page 208. Finished with substitute, next is p6.8 Global Commands
+Stopped at PDF page 228, book page 219. Finished globals, next is p6.10 Scratch Files
 
 
 == Debigging
@@ -203,4 +203,38 @@ q
 $ cat fff.txt 
 qwe
 qwe
+----
+
+== Globals
+
+.g - include pattern
+----
+$ go build *.go  && ./main
+i
+aaaa
+bababa
+ababab
+accc
+.
+g/%a/p
+aaaa
+ababab
+accc
+q
+----
+
+
+.x - exlude pattern
+----
+$ go build *.go  && ./main
+i
+bbbbb
+ababab
+cacaca
+aaaaa
+.
+x/%a/p
+bbbbb
+cacaca
+q
 ----

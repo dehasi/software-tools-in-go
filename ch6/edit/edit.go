@@ -42,7 +42,7 @@ func Edit() {
 		if status == OK {
 			i, status = ckglob(line, i)
 			if status == OK {
-				status = doglob(line, i, cursave)
+				status = doglob(line, i)
 			} else if status != ERR {
 				status = docmd(line, i, false)
 
@@ -382,10 +382,10 @@ func append(line int, glob bool) StCode {
 }
 
 // doglob -- do command at line[i] on all marked lines
-func doglob(line string, i) StCode { // , cursave int
+func doglob(line string, i int) StCode { // , cursave int
 
 	istart := i
-	for n := line1; n < lastln && n != -1; n = nextln(n) {
+	for n := line1; n <= lastln && n != -1; n = nextln(n) {
 		if getmark(n) {
 			putmark(n, false)
 			curln = n
