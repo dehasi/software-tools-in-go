@@ -37,12 +37,12 @@ func Edit() {
 	for line, ok := io.Getline(io.STDIN, io.MAXLINE); ok; line, ok = io.Getline(io.STDIN, io.MAXLINE) {
 		// println("process line: ", line)
 		i := 0
-		cursave := curln
+		///cursave := curln
 		i, status := getlist(line, i)
 		if status == OK {
 			i, status = ckglob(line, i)
 			if status == OK {
-				status = doglob(line, i, cursave, status)
+				status = doglob(line, i, cursave)
 			} else if status != ERR {
 				status = docmd(line, i, false)
 
@@ -381,8 +381,26 @@ func append(line int, glob bool) StCode {
 	return stat
 }
 
-func doglob(line string, i, cursave int, status StCode) StCode {
-	panic("doglob: unimplemented")
+// doglob -- do command at line[i] on all marked lines
+func doglob(line string, i) StCode { // , cursave int
+
+	istart := i
+	for n := line1; n < lastln && n != -1; n = nextln(n) {
+		if getmark(n) {
+			putmark(n, false)
+			curln = n
+			i = istart
+			i, status := getlist(line, i)
+			if status != OK {
+				return status
+			}
+			status = docmd(line, i, true)
+			if status != OK {
+				return status
+			}
+		}
+	}
+	return OK
 }
 
 // ckglob -- if global prefix, mark lines to be affected
