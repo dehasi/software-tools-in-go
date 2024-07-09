@@ -1,0 +1,251 @@
+= Chapter 6
+:toc: auto
+
+In this chapter I eventually started using packages.
+
+Stopped at PDF page 228, book page 219. Finished globals, next is p6.10 Scratch Files
+
+
+== Debugging
+
+Confinguration to use input from terminal while debugging
+
+[source, json]
+----
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+          "name": "Debug Main Edit",
+          "type": "go",
+          "request": "launch",
+          "mode": "auto",
+          "program": "${workspaceFolder}/ch6",
+          "console": "integratedTerminal"
+        }
+      ]
+}
+----
+
+== Commands
+Examples of running some commands
+
+
+=== Append and print
+
+----
+$ go build *.go  && ./main
+$a
+1111
+22222
+3333
+.
+.p
+3333
+$p
+3333
+1p
+1111
+2p
+22222
+3p
+3333
+0p
+4p
+?^C
+----
+
+
+
+=== Move 
+
+.move
+----
+$ go build *.go  && ./main
+i 
+111
+222
+333
+444
+555
+666
+.
+1,3m5
+1,$p
+444
+555
+111
+222
+333
+666
+q
+----
+
+=== Change and Delete
+
+----
+$ go build *.go  && ./main
+i
+111
+222
+333
+444
+555
+666
+.
+2,3c
+aaa
+bbb
+ccc
+ddd
+.
+1,$p
+111
+aaa
+bbb
+ccc
+ddd
+444
+555
+2,$-1d
+1,$p
+111
+666
+q
+----
+
+=== Substitute
+
+----
+$ go build *.go  && ./main
+i
+aaabbbccc
+abababcc
+cccaaabbb
+bbbaaaccc
+bbbbbbbbb
+.
+1,$s/bbb/FF/
+1,$p
+aaaFFccc
+abababcc
+cccaaaFF
+FFaaaccc
+FFbbbbbb
+q
+----
+
+=== Substitute global
+
+----
+$ go build *.go  && ./main
+i
+bbbbbbbbb
+.
+p
+bbbbbbbbb
+s/bbb/BBB/g
+p
+BBBBBBBBB
+q
+----
+
+=== File Operations
+
+.write to file
+----
+$ go build *.go  && ./main
+i
+qqq
+www
+.
+1,$w output
+2
+q
+
+$ cat output 
+qqq
+www
+----
+
+.read file
+----
+$ go build *.go  && ./main
+r output
+2
+1,$p
+qqq
+www
+f
+output
+q
+----
+
+.edit file
+----
+$ go build *.go  && ./main
+e fff.txt
+i
+qwe
+qwe
+qwe
+.
+1,2w
+2
+f
+fff.txt
+q
+
+$ cat fff.txt 
+qwe
+qwe
+----
+
+=== Globals
+
+.g - include pattern
+----
+$ go build *.go  && ./main
+i
+aaaa
+bababa
+ababab
+accc
+.
+g/%a/p
+aaaa
+ababab
+accc
+q
+----
+
+
+.x - exlude pattern
+----
+$ go build *.go  && ./main
+i
+bbbbb
+ababab
+cacaca
+aaaaa
+.
+x/%a/p
+bbbbb
+cacaca
+q
+----
+
+== Scratch Files
+
+In paragraph `6.10` "Scratch Files" I cheated with `seek` function.
+In my implemenrations, it just opens `edtemp` file and reads `n-th` line.
+
+To make testt run I added
+
+[source, go]
+----
+func Test_docmd_subst(t *testing.T) {
+	setbuf()
+	defer clrbuf()
+}
+----
