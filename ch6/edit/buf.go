@@ -93,17 +93,16 @@ func reverse(n1 int, n2 int) {
 // places the mark m on line n for global prefix processing.
 func putmark(n int, mark bool) {
 	buf[n].mark = mark
-	// panic("unimplemented")
 }
 
 // returns the mark on line n.
 func getmark(n int) bool {
 	return buf[n].mark
-	// panic("unimplemented")
 }
 
 // seek (UCB) -- special version of primitive for edit
 func seek(recno int) string {
+	// cheat: reopen scratch file by name
 	fd := io.Mustopen(edittemp)
 	for i := 1; i < recno; i++ {
 		_, _ = io.Getline(fd, io.MAX_STR)
