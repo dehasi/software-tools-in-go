@@ -126,7 +126,7 @@ func GetArg(index int) string {
 	return os.Args[index]
 }
 
-func mustopen(name string) *os.File {
+func Mustopen(name string) *os.File {
 	file, err := os.Open(name)
 	if err != nil {
 		Putstr(name, STDERR)
@@ -144,7 +144,7 @@ func create(name string) *os.File {
 	return file
 }
 
-func mustcreate(name string) *os.File {
+func Mustcreate(name string) *os.File {
 	file, err := os.Create(name)
 	if err != nil {
 		Putstr(name, STDERR)
@@ -170,7 +170,7 @@ func Close(fd *os.File) {
 	fd.Close()
 }
 
-func remove(filename string) {
+func Remove(filename string) {
 	os.Remove(filename)
 }
 

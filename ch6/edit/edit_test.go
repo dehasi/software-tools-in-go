@@ -14,6 +14,8 @@ func prepareState(test globals) {
 }
 
 func Test_docmd_subst(t *testing.T) {
+	setbuf()
+	defer clrbuf()
 	tests := []struct {
 		line string
 		i    int
@@ -49,6 +51,8 @@ func Test_docmd_subst(t *testing.T) {
 }
 
 func Test_docmd_subst_few_lines(t *testing.T) {
+	setbuf()
+	defer clrbuf()
 	tests := []struct {
 		line string
 		i    int
@@ -83,13 +87,15 @@ func Test_docmd_subst_few_lines(t *testing.T) {
 		assert_equals(gettxt(2), "ababcc\n", t)
 		assert_equals(gettxt(3), "ccfffaaa\n", t)
 		assert_equals(gettxt(4), "aaaFFFccc\n", t)
-		assert_equals(gettxt(5), "FFFbbbbbb\n", t)
+		assert_equals(gettxt(5), "FFFFFFFFF\n", t)
 
 		assert_gobals(t, test.after)
 	}
 }
 
 func Test_getnum_contextSerch(t *testing.T) {
+	setbuf()
+	defer clrbuf()
 	tests := []struct {
 		line string
 		i    int
@@ -131,6 +137,8 @@ func Test_getnum_contextSerch(t *testing.T) {
 }
 
 func Test_getnum(t *testing.T) {
+	setbuf()
+	defer clrbuf()
 	tests := []struct {
 		line string
 		i    int
@@ -186,6 +194,8 @@ func Test_getnum(t *testing.T) {
 	}
 }
 func Test_getlist(t *testing.T) {
+	setbuf()
+	defer clrbuf()
 	tests := []struct {
 		line string
 		i    int

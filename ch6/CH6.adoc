@@ -234,3 +234,18 @@ bbbbb
 cacaca
 q
 ----
+
+== Scratch Files
+
+In paragraph `6.10` "Scratch Files" I cheated with `seek` function.
+In my implemenrations, it just opens `edtemp` file and reads `n-th` line.
+
+To make testt run I added
+
+[source, go]
+----
+func Test_docmd_subst(t *testing.T) {
+	setbuf()
+	defer clrbuf()
+}
+----

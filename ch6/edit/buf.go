@@ -1,39 +1,51 @@
 package edit
 
 import (
-	"strings"
+	"ch6/io"
+	"os"
 )
 
 type buftype struct {
-	txt  string // text of line
-	mark bool   // mark for line
+	txt  int  // text of line
+	mark bool // mark for line
 }
 
 var buf [MAXLINES]buftype
+var scrout *os.File // scratch input fd
+var scrin *os.File  // scratch output fd
+var recin int       // next record to read from scrin
+var recout int      // next record to write on scrout
+var edittemp string // temp file name 'edtemp'
 
-// setbuf (in memory) -- initialize line storage buffer
+// setbuf (scratch file) -- create scratch file, set up line 0
 // initializes the buffer to contain only a valid line zero, and creates a scratch file if necessary
 func setbuf() {
-	buf[0].txt = ""
+	edittemp = "edtemp"
+	scrout = io.Mustcreate(edittemp)
+	scrin = io.Mustopen(edittemp)
+	recout = 1
+	recin = 1
 	curln = 0
 	lastln = 0
 }
 
-// clrbuf (in memory) -- initialize for new file
-// discards the scratch file, if one is used.
+// clrbuf (scratch file) -- dispose of scratch file
 func clrbuf() StCode {
-	// in memory, nothing to do
+	io.Close(scrin)
+	io.Close(scrout)
+	io.Remove(edittemp)
 	return OK
 }
 
-// puttxt (in memory) -- put text from lin after curln
+// puttxt (scratch file) -- put text from lin after curln
 // copies the text in lin into the buffer immediately after the current line and sets curln to the last line added.
 func puttxt(inline string) StCode {
-	// println("puttxt", "inline:", inline)
 	if lastln < MAXLINES {
 		lastln = lastln + 1
-		buf[lastln].txt = strings.Clone(inline)
+		io.Putstr(inline, scrout)
 		putmark(lastln, false)
+		buf[lastln].txt = recout
+		recout += 1
 		blkmove(lastln, lastln, curln)
 		curln = curln + 1
 		return OK
@@ -41,12 +53,16 @@ func puttxt(inline string) StCode {
 	return ERR
 }
 
-// gettxt (in memory) -- get text from line n into s
+// gettxt (scratch file) -- get text from line n into s
 // copies the contents of line n into the string s.
 func gettxt(n int) string {
-	// println("gettxt", "n:", n)
 	// scopy(buf(n].txt, 1, s, 1)
-	return strings.Clone(buf[n].txt)
+	if n == 0 {
+		return ""
+	}
+	line := seek(buf[n].txt)
+	recin = recin + 1
+	return line
 }
 
 // blkmove -- move block of lines n1 .. n2 to after n3
@@ -84,4 +100,14 @@ func putmark(n int, mark bool) {
 func getmark(n int) bool {
 	return buf[n].mark
 	// panic("unimplemented")
+}
+
+// seek (UCB) -- special version of primitive for edit
+func seek(recno int) string {
+	fd := io.Mustopen(edittemp)
+	for i := 1; i < recno; i++ {
+		_, _ = io.Getline(fd, io.MAX_STR)
+	}
+	line, _ := io.Getline(fd, io.MAX_STR)
+	return line
 }

@@ -32,7 +32,7 @@ func printlnGlobs() {
 }
 
 func Edit() {
-
+	setbuf()
 	for line, ok := io.Getline(io.STDIN, io.MAXLINE); ok; line, ok = io.Getline(io.STDIN, io.MAXLINE) {
 		// println("process line: ", line)
 		i := 0
@@ -53,6 +53,7 @@ func Edit() {
 			break
 		}
 	}
+	clrbuf()
 }
 
 // setDefault -- set defaulted line numbers, original name 'default'
