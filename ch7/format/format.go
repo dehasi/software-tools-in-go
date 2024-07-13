@@ -84,16 +84,23 @@ func command(buf string) {
 	if cmd != UNKNOWN {
 		val = getval(buf, argtype)
 	}
-	switch cmd { // TODO: figure our why sometimes we have 'break' right after 'begin'
+	switch cmd {
 	case FI:
+		breakk()
 		fill = true
+
 	case NF:
+		breakk()
 		fill = false
+
 	case BR:
-		break
+		breakk()
+
 	case LS:
 		setparam(lsval, val, argtype, 1, 1, HUGE)
+
 	case CE:
+		breakk()
 		setparam(ceval, val, argtype, 1, 0, HUGE)
 
 	case UL:
@@ -101,6 +108,7 @@ func command(buf string) {
 
 	case HE:
 		gettl(buf, header)
+
 	case FO:
 		gettl(buf, header)
 
