@@ -233,7 +233,6 @@ func getcmd(buf string) CmdType {
 }
 
 // getval -- evaluate optional numeric argument
-// TODO: check if I need to return argtype
 func getval(buf string, argtype *int) int {
 	i := 0
 	// skip over command nam
