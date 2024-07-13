@@ -1,6 +1,8 @@
 package format
 
-import "ch7/io"
+import (
+	"ch7/io"
+)
 
 // fmtcons -- constants for format
 const CMD uint8 = '.'
@@ -107,10 +109,10 @@ func command(buf string) {
 		setparam(&ulval, val, argtype, 1, 0, HUGE)
 
 	case HE:
-		gettl(buf, header)
+		header = gettl(buf)
 
 	case FO:
-		gettl(buf, header)
+		footer = gettl(buf)
 
 	case BP:
 		page()
@@ -155,28 +157,76 @@ func space(n int) {
 }
 
 // gettl -- copy title from buf to ttl
-func gettl(buf, ttl string) {
-	panic("unimplemented")
+// The title is assumed to begin with the first non-blank character,
+// but a leading apostrophe or quote is stripped off, to permit a title to begin with blanks,
+// for example, to right-justify it.
+func gettl(buf string) string {
+	i := 0
+	// skip command name
+	for !io.IsBlank(buf[i]) {
+		i++
+	}
+	i = io.Skipbl(buf, i) // find argumen
+	if buf[i] == '\'' || buf[i] == '"' {
+		i++ // strip leading quote
+	}
+	return buf[i:]
 }
 
 // puttl -- put out title line with optional page number
-func puttl(but string, pageno int) {
-	panic("unimplemented")
+func puttl(buf string, pageno int) {
+	for i := 0; i < len(buf); i++ {
+		if buf[i] == PAGENUM {
+			io.Putdec(pageno, 1)
+		} else {
+			io.Putc(buf[i])
+		}
+	}
 }
 
 // put -- put out line with proper spacing and indenting
 func put(buf string) {
-	panic("unimplemented")
+	if lineno <= 0 || lineno > bottom {
+		puthead()
+	}
+	for i := 1; i < inval+tival; i++ {
+		io.Putc(io.BLANK)
+	}
+	tival = 0
+	io.Putstr(buf, io.STDOUT)
+	skip(min(lsval-1, bottom-lineno))
+	lineno += lsval
+	if lineno > bottom {
+		putfoot()
+	}
+}
+
+// skip -- produces n empty lines (NEWLINE only) if n is positive, and does nothing if n is less than one
+func skip(n int) {
+	for i := 1; i <= n; i++ {
+		io.Putc(io.NEWLINE)
+	}
 }
 
 // puthead -- put out page header
 func puthead() {
-	panic("unimplemented")
+	curpage = newpage
+	newpage = newpage + 1
+	if m1val > 0 {
+		skip(m1val - 1)
+		puttl(header, curpage)
+	}
+	skip(m2val)
+	lineno = m1val + m2val + 1
 }
 
 // putfoot -- put out page footer
 func putfoot() {
-	panic("unimplemented")
+	skip(m3val)
+	if m4val > 0 {
+		puttl(footer, curpage)
+		skip(m4val - 1)
+	}
 }
 
 // setparam -- set parameter and check range
@@ -235,7 +285,7 @@ func getcmd(buf string) CmdType {
 // getval -- evaluate optional numeric argument
 func getval(buf string, argtype *int) int {
 	i := 0
-	// skip over command nam
+	// skip over command name
 	for !io.IsBlank(buf[i]) {
 		i++
 	}
