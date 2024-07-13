@@ -153,7 +153,15 @@ func page() {
 
 // space -- space n lines or to bottom of page
 func space(n int) {
-	panic("unimplemented")
+	if lineno <= bottom {
+		if lineno <= 0 {
+			puthead()
+		}
+		skip(min(n, bottom+1-lineno))
+		if lineno > bottom {
+			putfoot()
+		}
+	}
 }
 
 // gettl -- copy title from buf to ttl
