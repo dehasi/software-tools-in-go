@@ -82,7 +82,7 @@ func command(buf string) {
 	argtype := 0
 	cmd := getcmd(buf)
 	if cmd != UNKNOWN {
-		val = getval(buf, argtype)
+		val = getval(buf, &argtype)
 	}
 	switch cmd {
 	case FI:
@@ -234,15 +234,15 @@ func getcmd(buf string) CmdType {
 
 // getval -- evaluate optional numeric argument
 // TODO: check if I need to return argtype
-func getval(buf string, argtype int) int {
+func getval(buf string, argtype *int) int {
 	i := 0
 	// skip over command nam
 	for !io.IsBlank(buf[i]) {
 		i++
 	}
 	i = io.Skipbl(buf, i)
-	argtype = int(buf[i])
-	if argtype == '+' || argtype == '-' {
+	*argtype = int(buf[i])
+	if *argtype == '+' || *argtype == '-' {
 		i = i + 1
 	}
 	return io.Ctoi(buf[i:])

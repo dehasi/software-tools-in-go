@@ -1,7 +1,7 @@
 = Chapter 7 Formatting
 :toc: auto
 
-
+Stopped at page 247, 238, p7.4 Page layout
 
 == Notes
 
