@@ -72,7 +72,7 @@ func Format() {
 			text(inbuf)
 		}
 	}
-	//page() // flush last output, if any
+	page() // flush last output, if any
 }
 
 // command -- perform formatting command
@@ -86,6 +86,7 @@ func command(buf string) {
 	if cmd != UNKNOWN {
 		val = getval(buf, &argtype)
 	}
+	println("command", "val:", val)
 	switch cmd {
 	case FI:
 		breakk()
@@ -143,12 +144,23 @@ func command(buf string) {
 
 // break -- end current filled line
 func breakk() {
-	panic("unimplemented")
+	//panic("unimplemented")
+	if outp > 0 {
+		put(outbuf + "\n")
+	}
+	outp = 0
+	outw = 0
+	outwds = 0
 }
 
 // page -- get to top of new page
 func page() {
-	panic("unimplemented")
+	breakk()
+	if lineno > 0 && lineno <= bottom {
+		skip(bottom + 1 - lineno)
+		putfoot()
+	}
+	lineno = 0
 }
 
 // space -- space n lines or to bottom of page
@@ -239,6 +251,7 @@ func putfoot() {
 
 // setparam -- set parameter and check range
 func setparam(param *int, val, argtype, defval, minval, maxval int) {
+	// println("setparam:", val, argtype, defval, minval, maxval)
 	if argtype == int(io.NEWLINE) { // defaulted
 		*param = defval
 	} else if argtype == '+' { // relative +
@@ -250,6 +263,7 @@ func setparam(param *int, val, argtype, defval, minval, maxval int) {
 	}
 	*param = min(*param, maxval)
 	*param = max(*param, minval)
+	// println("setparam:", "param:", *param)
 }
 
 // getcmd -- decode command type
@@ -302,7 +316,8 @@ func getval(buf string, argtype *int) int {
 	if *argtype == '+' || *argtype == '-' {
 		i = i + 1
 	}
-	return io.Ctoi(buf[i:])
+	_, n := io.Ctoi2(buf, i)
+	return n
 }
 
 // text -- process text lines (interim version 1)

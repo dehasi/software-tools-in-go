@@ -1,4 +1,4 @@
 .he Title
+.sp 1
 This is a text
-
 .fo Footer
