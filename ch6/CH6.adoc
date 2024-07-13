@@ -3,9 +3,6 @@
 
 In this chapter I eventually started using packages.
 
-Stopped at PDF page 228, book page 219. Finished globals, next is p6.10 Scratch Files
-
-
 == Debugging
 
 Confinguration to use input from terminal while debugging
