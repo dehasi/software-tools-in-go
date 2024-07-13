@@ -72,7 +72,7 @@ func Format() {
 			text(inbuf)
 		}
 	}
-	page() // flush last output, if any
+	//page() // flush last output, if any
 }
 
 // command -- perform formatting command

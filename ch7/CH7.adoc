@@ -8,3 +8,9 @@ Stopped at page 247, 238, p7.4 Page layout
 > We use IND instead of IN to avoid a possible collision with the keyword in
 
 Because Pascal is case insensitive. When work is done I'll rename IND => IN because all other commands are two-letters length.
+
+== Examples
+
+----
+$ go build *.go  && cat text.txt |  ./main
+----
