@@ -35,8 +35,17 @@ var ceval int // # of lines to center; init=O
 var ulval int // # of lines to underline; init=O
 
 // maybe different type
-var header string
-var footer string
+var curpage int   // current output page number; init=O
+var newpage int   // next output page number; init=1
+var lineno int    // next line to be printed; init=O
+var plval int     // page length in lines; init=PAGELEN=66
+var m1val int     // margin before and including header
+var m2val int     // margin after header
+var m3val int     // margin after last text line
+var m4val int     // bottom margin, including footer
+var bottom int    // last line on page, =plval-m3val-m4val
+var header string // top of page title; init=NEWLINE
+var footer string // bottom of page title; init=NEWLINE
 
 func Format() {
 	initfmt()
