@@ -112,6 +112,30 @@ func command(buf string) {
 	case FO:
 		gettl(buf, header)
 
+	case BP:
+		page()
+		setparam(curpage, val, argtype, curpage+1, -HUGE, HUGE)
+		newpage = curpage
+
+	case SP:
+		setparam(spval, val, argtype, 1, 0, HUGE)
+		space(spval)
+
+	case IND:
+		setparam(inval, val, argtype, 0, 0, rmval-1)
+
+	case RM:
+		setparam(rmval, val, argtype, PAGEWIDTH, inval+tival+1, HUGE)
+
+	case TI:
+		breakk()
+		setparam(tival, val, argtype, 0, -HUGE, rmval)
+
+	case PL:
+		setparam(plval, val, argtype, PAGELEN, m1val+m2val+m3val+m4val+1, HUGE)
+		bottom = plval - m3val - m4val
+
+	case UNKNOWN: // ignore
 	}
 }
 
