@@ -246,6 +246,20 @@ func Getword(s string, i int) (out string, ni int) {
 	}
 }
 
+// skipbl -- skip blanks and tabs at s[i]
+func Skipbl(s string, i int) int {
+	// As Go strings don't have EOL marker, so I need to be creative
+	for i < len(s) && s[i] != NEWLINE && (s[i] == TAB || s[i] == BLANK) {
+		i += 1
+	}
+	return i
+}
+
+// IsBlank == checks is c is tab or space or newline
+func IsBlank(c uint8) bool {
+	return c == BLANK || c == TAB || c == NEWLINE
+}
+
 func has(arr []uint8, item uint8) bool {
 	for _, elem := range arr {
 		if elem == item {

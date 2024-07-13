@@ -97,14 +97,14 @@ func command(buf string) {
 		breakk()
 
 	case LS:
-		setparam(lsval, val, argtype, 1, 1, HUGE)
+		setparam(&lsval, val, argtype, 1, 1, HUGE)
 
 	case CE:
 		breakk()
-		setparam(ceval, val, argtype, 1, 0, HUGE)
+		setparam(&ceval, val, argtype, 1, 0, HUGE)
 
 	case UL:
-		setparam(ulval, val, argtype, 1, 0, HUGE)
+		setparam(&ulval, val, argtype, 1, 0, HUGE)
 
 	case HE:
 		gettl(buf, header)
@@ -114,25 +114,25 @@ func command(buf string) {
 
 	case BP:
 		page()
-		setparam(curpage, val, argtype, curpage+1, -HUGE, HUGE)
+		setparam(&curpage, val, argtype, curpage+1, -HUGE, HUGE)
 		newpage = curpage
 
 	case SP:
-		setparam(spval, val, argtype, 1, 0, HUGE)
+		setparam(&spval, val, argtype, 1, 0, HUGE)
 		space(spval)
 
 	case IND:
-		setparam(inval, val, argtype, 0, 0, rmval-1)
+		setparam(&inval, val, argtype, 0, 0, rmval-1)
 
 	case RM:
-		setparam(rmval, val, argtype, PAGEWIDTH, inval+tival+1, HUGE)
+		setparam(&rmval, val, argtype, PAGEWIDTH, inval+tival+1, HUGE)
 
 	case TI:
 		breakk()
-		setparam(tival, val, argtype, 0, -HUGE, rmval)
+		setparam(&tival, val, argtype, 0, -HUGE, rmval)
 
 	case PL:
-		setparam(plval, val, argtype, PAGELEN, m1val+m2val+m3val+m4val+1, HUGE)
+		setparam(&plval, val, argtype, PAGELEN, m1val+m2val+m3val+m4val+1, HUGE)
 		bottom = plval - m3val - m4val
 
 	case UNKNOWN: // ignore
@@ -180,8 +180,18 @@ func putfoot() {
 }
 
 // setparam -- set parameter and check range
-func setparam(param, val, argtype, defval, minval, maxval int) {
-	panic("unimplemented")
+func setparam(param *int, val, argtype, defval, minval, maxval int) {
+	if argtype == int(io.NEWLINE) { // defaulted
+		*param = defval
+	} else if argtype == '+' { // relative +
+		*param += val
+	} else if argtype == '-' { // relative -
+		*param -= val
+	} else { // absolute
+		*param = val
+	}
+	*param = min(*param, maxval)
+	*param = max(*param, minval)
 }
 
 // getcmd -- decode command type
@@ -223,8 +233,19 @@ func getcmd(buf string) CmdType {
 }
 
 // getval -- evaluate optional numeric argument
+// TODO: check if I need to return argtype
 func getval(buf string, argtype int) int {
-	panic("unimplemented")
+	i := 0
+	// skip over command nam
+	for !io.IsBlank(buf[i]) {
+		i++
+	}
+	i = io.Skipbl(buf, i)
+	argtype = int(buf[i])
+	if argtype == '+' || argtype == '-' {
+		i = i + 1
+	}
+	return io.Ctoi(buf[i:])
 }
 
 // text -- process text lines (interim version 1)
