@@ -2,8 +2,12 @@ package format
 
 import "ch7/io"
 
+// fmtcons -- constants for format
 const CMD uint8 = '.'
-const HUGE int = 42
+const PAGENUM uint8 = '#'
+const PAGEWIDTH int = 60
+const PAGELEN int = 66
+const HUGE int = 10000
 
 type CmdType int8
 
@@ -25,16 +29,7 @@ const (
 	UNKNOWN CmdType = 0
 )
 
-var fill bool // fill if true; init=true
-var lsval int // current line spacing; init=1
-var spval int // # of lines to space }
-var inval int // current indent; >= 0; init=O
-var rmval int // right margin; init=PAGEWIDTH=60
-var tival int // current temporary indent; init=O
-var ceval int // # of lines to center; init=O
-var ulval int // # of lines to underline; init=O
-
-// maybe different type
+// page parameters
 var curpage int   // current output page number; init=O
 var newpage int   // next output page number; init=1
 var lineno int    // next line to be printed; init=O
@@ -47,15 +42,35 @@ var bottom int    // last line on page, =plval-m3val-m4val
 var header string // top of page title; init=NEWLINE
 var footer string // bottom of page title; init=NEWLINE
 
+// global parameters
+var fill bool // fill if true; init=true
+var lsval int // current line spacing; init=1
+var spval int // # of lines to space }
+var inval int // current indent; >= 0; init=O
+var rmval int // right margin; init=PAGEWIDTH=60
+var tival int // current temporary indent; init=O
+var ceval int // # of lines to center; init=O
+var ulval int // # of lines to underline; init=O
+
+// output area
+var outp int      // last char pos in outbuf; init=O
+var outw int      // width of text in outbuf; init=O
+var outwds int    // number of words in outbuf; init=O
+var outbuf string // lines to be filled collect here
+var dir int       // 0..1 direction for blank padding
+var inbuf string  // input line
+
 func Format() {
 	initfmt()
-	for inbuf, result := io.Getline(io.STDIN, io.MAX_STR); result; inbuf, result = io.Getline(io.STDIN, io.MAX_STR) {
+	result := false
+	for inbuf, result = io.Getline(io.STDIN, io.MAX_STR); result; inbuf, result = io.Getline(io.STDIN, io.MAX_STR) {
 		if inbuf[0] == CMD {
 			command(inbuf)
 		} else {
 			text(inbuf)
 		}
 	}
+	page() // flush last output, if any
 }
 
 // command -- perform formatting command
@@ -132,10 +147,12 @@ func putfoot() {
 	panic("unimplemented")
 }
 
+// setparam -- set parameter and check range
 func setparam(param, val, argtype, defval, minval, maxval int) {
 	panic("unimplemented")
 }
 
+// getcmd -- decode command type
 func getcmd(buf string) CmdType {
 	panic("unimplemented")
 }
@@ -150,6 +167,30 @@ func text(inbuf string) {
 	put(inbuf)
 }
 
+// initfmt -- set format parameters to default values
 func initfmt() {
+	fill = true
+	dir = 0
+	inval = 0
+	rmval = PAGEWIDTH
+	tival = 0
+	lsval = 1
+	spval = 0
+	ceval = 0
+	ulval = 0
+	lineno = 0
+	curpage = 0
+	newpage = 1
+	plval = PAGELEN
+	m1val = 3
+	m2val = 2
+	m3val = 2
+	m4val = 3
+	bottom = plval - m3val - m4val
+	header = string(io.NEWLINE) // initial titles
+	footer = string(io.NEWLINE)
 
+	outp = 0
+	outw = 0
+	outwds = 0
 }
