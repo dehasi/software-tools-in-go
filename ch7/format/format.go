@@ -86,7 +86,7 @@ func command(buf string) {
 	if cmd != UNKNOWN {
 		val = getval(buf, &argtype)
 	}
-	println("command", "val:", val)
+	// println("command", "val:", val)
 	switch cmd {
 	case FI:
 		breakk()
