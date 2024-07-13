@@ -1,3 +1,10 @@
 = Chapter 7 Formatting
 :toc: auto
 
+
+
+== Notes
+
+> We use IND instead of IN to avoid a possible collision with the keyword in
+
+Because Pascal is case insensitive. When work is done I'll rename IND => IN because all other commands are two-letters length.

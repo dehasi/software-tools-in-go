@@ -186,7 +186,40 @@ func setparam(param, val, argtype, defval, minval, maxval int) {
 
 // getcmd -- decode command type
 func getcmd(buf string) CmdType {
-	panic("unimplemented")
+	cmd := buf[1:2]
+	switch cmd {
+	case "fi":
+		return FI
+	case "nf":
+		return NF
+	case "br":
+		return BR
+	case "ls":
+		return LS
+	case "bp":
+		return BP
+	case "sp":
+		return SP
+	case "in":
+		return IND
+	case "rm":
+		return RM
+	case "ti":
+		return TI
+	case "ce":
+		return CE
+	case "ul":
+		return UL
+	case "he":
+		return HE
+	case "fo":
+		return FO
+	case "pl":
+		return PL
+
+	default:
+		return UNKNOWN
+	}
 }
 
 // getval -- evaluate optional numeric argument
