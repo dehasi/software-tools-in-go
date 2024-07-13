@@ -196,7 +196,7 @@ func setparam(param *int, val, argtype, defval, minval, maxval int) {
 
 // getcmd -- decode command type
 func getcmd(buf string) CmdType {
-	cmd := buf[1:2]
+	cmd := buf[1:3]
 	switch cmd {
 	case "fi":
 		return FI
