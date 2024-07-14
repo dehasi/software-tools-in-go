@@ -1,7 +1,7 @@
 = Chapter 7 Formatting
 :toc: auto
 
-Stopped at page 254, 245, p7.5 Identing
+Stopped at page 258, 249, p7.7 Right Margin Justification
 
 == Notes
 
@@ -11,6 +11,52 @@ Because Pascal is case insensitive. When work is done I'll rename IND => IN beca
 
 == Examples
 
+.script
+----
+.pl 2
+.he Title
+This is       line 1
+This is       line 2
+.bp
+This  new page
+.br
+This is line    3
+This is line    4
+.fo Footer
+----
+
+.result
 ----
 $ go build *.go  && cat text.txt |  ./main
+
+
+Title
+
+
+This is line 1 This is line 2
+
+
+
+
+
+
+
+Title
+
+
+This new page
+
+
+
+
+
+
+
+Title
+
+
+This is line 3 This is line 4
+
+
+Footer
 ----

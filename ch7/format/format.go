@@ -170,6 +170,7 @@ func space(n int) {
 			puthead()
 		}
 		skip(min(n, bottom+1-lineno))
+		lineno = lineno + n
 		if lineno > bottom {
 			putfoot()
 		}
@@ -209,7 +210,7 @@ func put(buf string) {
 	if lineno <= 0 || lineno > bottom {
 		puthead()
 	}
-	for i := 1; i < inval+tival; i++ {
+	for i := 1; i < inval+tival; i++ { // indenting
 		io.Putc(io.BLANK)
 	}
 	tival = 0
@@ -219,6 +220,18 @@ func put(buf string) {
 	if lineno > bottom {
 		putfoot()
 	}
+}
+
+// leadbl -- delete leading blanks, set tival
+func leadbl(buf string) string {
+	breakk()
+	i := 0
+	for ; buf[i] == io.BLANK; i++ {
+	}
+	if buf[i] != io.NEWLINE {
+		tival = tival + i - 1
+	}
+	return buf[i:]
 }
 
 // skip -- produces n empty lines (NEWLINE only) if n is positive, and does nothing if n is less than one
@@ -320,9 +333,55 @@ func getval(buf string, argtype *int) int {
 	return n
 }
 
-// text -- process text lines (interim version 1)
+// text -- process text lines (interim version 2)
 func text(inbuf string) {
-	put(inbuf)
+	if inbuf[0] == io.BLANK || inbuf[0] == io.NEWLINE {
+		inbuf = leadbl(inbuf)
+	}
+	if inbuf[0] == io.NEWLINE { // all blank line
+		put(inbuf)
+	} else if !fill { // unfilled text
+		put(inbuf)
+	} else { // filled text
+		for wordbuf, i := io.Getword(inbuf, 0); i != 0; wordbuf, i = io.Getword(inbuf, i) {
+			putword(wordbuf)
+		}
+	}
+}
+
+func putword(wordbuf string) {
+	// , nextra, int
+	w := width(wordbuf)
+	last := len(wordbuf) + outp + 1 // new end of outbuf
+	llval := rmval - tival - inval
+	if outp > 0 && ((outw+w > llval) || (last >= io.MAX_STR)) {
+		last = last - outp // remember end of wordbuf
+		breakk()           // flush previous line
+	}
+
+	if outp > 0 {
+		outbuf += " " + wordbuf
+	} else {
+		outbuf = wordbuf
+	}
+	outp = last
+	outw = outw + w + 1 // 1 for blank
+	outwds = outwds + 1
+
+}
+
+// width -- compute width of character string
+func width(buf string) int {
+	w := 0
+	for i := 0; i < len(buf); i++ {
+		if buf[i] == '\b' { // BACKSPACE
+			w--
+		} else if buf[i] != io.NEWLINE {
+
+			w++
+		}
+	}
+	return w
 }
 
 // initfmt -- set format parameters to default values

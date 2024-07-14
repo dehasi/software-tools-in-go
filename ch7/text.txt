@@ -1,6 +1,10 @@
-.pl 1
+.pl 2
 .he Title
-This is line 1
-This is line 2
-This is line 3
+This is       line 1
+This is       line 2
+.bp
+This  new page
+.br
+This is line    3
+This is line    4
 .fo Footer
