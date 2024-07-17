@@ -1,7 +1,7 @@
 = Chapter 7 Formatting
 :toc: auto
 
-Stopped at page 258, 249, p7.7 Right Margin Justification
+Stopped at page 261, 252, p7.8 Centering and Underlining
 
 == Notes
 
