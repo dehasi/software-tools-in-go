@@ -46,3 +46,26 @@ func Test_gettl(t *testing.T) {
 		}
 	}
 }
+
+func Test_spread(t *testing.T) {
+	tests := []struct {
+		buf    string
+		nextra int
+		result string
+
+		outwds int
+		outp   int
+	}{
+		{buf: "a b c", outwds: 3, outp: 5, nextra: 2, result: "a  b  c"},
+	}
+	for _, test := range tests {
+		outwds = test.outwds
+		outp = test.outp
+
+		result := spread(test.buf, test.nextra)
+
+		if result != test.result {
+			t.Errorf("status: got [%v] want [%v]", result, test.result)
+		}
+	}
+}

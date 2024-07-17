@@ -349,6 +349,7 @@ func text(inbuf string) {
 	}
 }
 
+// putword -- put word in outbuf; does margin justification
 func putword(wordbuf string) {
 	// , nextra, int
 	w := width(wordbuf)
@@ -356,7 +357,12 @@ func putword(wordbuf string) {
 	llval := rmval - tival - inval
 	if outp > 0 && ((outw+w > llval) || (last >= io.MAX_STR)) {
 		last = last - outp // remember end of wordbuf
-		breakk()           // flush previous line
+		nextra := llval - outw + 1
+		if (nextra > 0) && (outwds > 1) {
+			outbuf = spread(outbuf, nextra)
+			outp = outp + nextra
+		}
+		breakk() // flush previous line
 	}
 
 	if outp > 0 {
@@ -367,6 +373,45 @@ func putword(wordbuf string) {
 	outp = last
 	outw = outw + w + 1 // 1 for blank
 	outwds = outwds + 1
+
+}
+
+// spread -- spread words to justify right margin
+// intput 'a b c', 2 => 'a  b  c'
+func spread(buf string, nextra int) string {
+	println("spread", "buf:", buf, ",nextra:", nextra)
+	if (nextra > 0) && (outwds > 1) {
+		dir = 1 - dir // reverse previous direction
+		nholes := outwds - 1
+		i := outp - 1
+		j := min(io.MAX_STR-2, i+nextra) //room for NEWLINE and ENDSTR ???
+		println("j:", j, "len(buf):", len(buf))
+		newStr := make([]uint8, j+1)
+		for i < j {
+			newStr[j] = buf[i]
+			if buf[i] == io.BLANK {
+				var nb = 0
+				if dir == 0 {
+					nb = (nextra-1)/nholes + 1
+				} else {
+					nb = nextra / nholes
+				}
+				nextra = nextra - nb
+				nholes = nholes - 1
+				for nb > 0 {
+					j = j - 1
+					newStr[j] = io.BLANK
+					nb = nb - 1
+				}
+			}
+			i--
+			j--
+		}
+		newStr[0] = buf[0]
+		return string(newStr)
+	} else {
+		return buf
+	}
 
 }
 
