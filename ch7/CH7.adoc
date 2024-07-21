@@ -1,0 +1,96 @@
+= Chapter 7 Formatting
+:toc: auto
+
+
+== Notes
+
+> We use IND instead of IN to avoid a possible collision with the keyword in
+
+Because Pascal is case insensitive. I renamed IND => IN because all other commands are two-letters length.
+
+
+For undeline I used https://howellza.ch/blog/simple-cli-colorizing-in-go/[this] blogpost. 
+Technically, it's possible to extend the "formatter" to use colors or bold/italic fonts.
+
+
+== Examples
+
+.script
+----
+.pl 2
+.he Title
+This is       line 1
+This is       line 2
+.bp
+This  new page
+.br
+This is line    3
+This is line    4
+.fo Footer
+----
+
+.result
+----
+$ go build *.go  && cat text.txt |  ./main
+
+
+Title
+
+
+This is line 1 This is line 2
+
+
+
+
+
+
+
+Title
+
+
+This new page
+
+
+
+
+
+
+
+Title
+
+
+This is line 3 This is line 4
+
+
+Footer
+----
+
+
+.script
+----
+.he Title
+.ce
+This text is centered
+.br
+.ul
+This undetrlined
+
+This is       line 1
+This is       line 2
+
+.fo Footer
+----
+
+.result
+----
+Title
+
+
+                  This text is centered
+This undetrlined
+
+This is line 1 This is line 2
+
+
+Footer
+----
