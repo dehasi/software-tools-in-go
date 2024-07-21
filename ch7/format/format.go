@@ -20,7 +20,7 @@ const (
 	FI      CmdType = 4
 	FO      CmdType = 5
 	HE      CmdType = 6
-	IND     CmdType = 7
+	IN      CmdType = 7
 	LS      CmdType = 8
 	NF      CmdType = 9
 	PL      CmdType = 10
@@ -124,7 +124,7 @@ func command(buf string) {
 		setparam(&spval, val, argtype, 1, 0, HUGE)
 		space(spval)
 
-	case IND:
+	case IN:
 		setparam(&inval, val, argtype, 0, 0, rmval-1)
 
 	case RM:
@@ -296,7 +296,7 @@ func getcmd(buf string) CmdType {
 	case "sp":
 		return SP
 	case "in":
-		return IND
+		return IN
 	case "rm":
 		return RM
 	case "ti":

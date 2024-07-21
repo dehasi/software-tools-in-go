@@ -1,17 +1,17 @@
 = Chapter 7 Formatting
 :toc: auto
 
-Stopped at page 261, 252, p7.8 Centering and Underlining
 
 == Notes
 
 > We use IND instead of IN to avoid a possible collision with the keyword in
 
-Because Pascal is case insensitive. When work is done I'll rename IND => IN because all other commands are two-letters length.
+Because Pascal is case insensitive. I renamed IND => IN because all other commands are two-letters length.
 
 
 For undeline I used https://howellza.ch/blog/simple-cli-colorizing-in-go/[this] blogpost. 
 Technically, it's possible to extend the "formatter" to use colors or bold/italic fonts.
+
 
 == Examples
 
