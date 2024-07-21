@@ -10,7 +10,8 @@ Stopped at page 261, 252, p7.8 Centering and Underlining
 Because Pascal is case insensitive. When work is done I'll rename IND => IN because all other commands are two-letters length.
 
 
-For undeline I used https://howellza.ch/blog/simple-cli-colorizing-in-go/[this] blogpost.
+For undeline I used https://howellza.ch/blog/simple-cli-colorizing-in-go/[this] blogpost. 
+Technically, it's possible to extend the "formatter" to use colors or bold/italic fonts.
 
 == Examples
 
@@ -59,6 +60,36 @@ Title
 
 
 This is line 3 This is line 4
+
+
+Footer
+----
+
+
+.script
+----
+.he Title
+.ce
+This text is centered
+.br
+.ul
+This undetrlined
+
+This is       line 1
+This is       line 2
+
+.fo Footer
+----
+
+.result
+----
+Title
+
+
+                  This text is centered
+This undetrlined
+
+This is line 1 This is line 2
 
 
 Footer

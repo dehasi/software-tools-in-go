@@ -359,8 +359,7 @@ func text(inbuf string) {
 		center(inbuf)
 		put(inbuf)
 		ceval = ceval - 1
-	}
-	if inbuf[0] == io.NEWLINE { // all blank line
+	} else if inbuf[0] == io.NEWLINE { // all blank line
 		put(inbuf)
 	} else if !fill { // unfilled text
 		put(inbuf)
