@@ -9,6 +9,9 @@ Stopped at page 261, 252, p7.8 Centering and Underlining
 
 Because Pascal is case insensitive. When work is done I'll rename IND => IN because all other commands are two-letters length.
 
+
+For undeline I used https://howellza.ch/blog/simple-cli-colorizing-in-go/[this] blogpost.
+
 == Examples
 
 .script

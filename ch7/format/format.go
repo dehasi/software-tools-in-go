@@ -333,10 +333,32 @@ func getval(buf string, argtype *int) int {
 	return n
 }
 
+// center -- center a line by setting tival
+func center(buf string) {
+	tival = max((rmval+tival-width(buf))/2, 0)
+}
+
+const Reset = "\033[0m"
+const Underline = "\033[4m"
+
+// underln -- underline a line
+func underln(buf string, size int) string {
+	return Underline + buf[0:len(buf)-1] + Reset + "\n"
+}
+
 // text -- process text lines (interim version 2)
 func text(inbuf string) {
 	if inbuf[0] == io.BLANK || inbuf[0] == io.NEWLINE {
 		inbuf = leadbl(inbuf)
+	}
+	if ulval > 0 {
+		inbuf = underln(inbuf, io.MAX_STR)
+		ulval--
+	}
+	if ceval > 0 {
+		center(inbuf)
+		put(inbuf)
+		ceval = ceval - 1
 	}
 	if inbuf[0] == io.NEWLINE { // all blank line
 		put(inbuf)
