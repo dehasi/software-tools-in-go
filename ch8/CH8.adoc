@@ -1,0 +1,79 @@
+= Chapter 8 Macro Processing
+:toc: auto
+
+Stopped at p304/295 (8.6)
+However it's worth rereading paragraph 8.5
+
+== Citates
+
+> The important thing is to start with a good design. It is much easier to relax
+the standards for something written well than it is to tighten them for something
+done badly
+
+> Hard cases can wait until the easy ones are well under control.
+
+== Notes
+
+For simplicity I'll use `byte` instead of `rune`.
+I will test only with ASCII symbols.
+
+`buf` indexing starts with `1`. 
+It's easier then to check if `buf` is initialised by checking `bp > 0`.
+
+Is this chapter I experimented with type definiions like
+
+[source, go]
+----
+type charpos = int // 1..MAXCHARS
+type charbuf [MAXCHARS]byte
+----
+
+Pascal custom type definitions looks much powerful, like
+[source, pascal]
+----
+type
+    charpos = 1 .. MAXCHARS;
+----
+
+In `Go` arrays are copied when they are passed as funciton argument. That's why I've adjusted `cscopy` and `sccopy` to use `ndtable` directly.
+
+
+I will use backtick `\`` as a left quote and apostrophe `'` as a right quote.
+
+== Simple Text Replacement
+
+----
+$ cat test
+define(ENDFILE, (-1))
+define(DONE, ENDFILE)
+    
+if (getit(line) = DONE) then
+    putit(sumline);
+
+$ go build *.go && cat test | ./main
+
+    
+if (getit(line) = (-1)) then
+    putit(sumline);
+----
+
+== Macro Processing
+
+See `macro_test.go` for mote examples
+
+----
+$ cat test-macro 
+define(sqr, $1 * $1)
+x = sqr(3)
+
+$ go build *.go && cat test-macro | ./main
+
+x =  3 * 3
+----
+
+== ToDon't List
+
+* [ ] Rewrite `ndtable` to builtin `map`
+* [ ] Rewrite `buf` and other stackarrays
+* [ ] Rewrite `expr` without updating params
+* [ ] Rewrite in general in idiomacti Go

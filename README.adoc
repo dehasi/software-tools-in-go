@@ -15,6 +15,7 @@ Each chapter has its own readme.
 * link:ch5/CH5.adoc[]
 * link:ch6/CH6.adoc[]
 * link:ch7/CH7.adoc[]
+* link:ch8/CH8.adoc[]
 
 == Good to Know
 
